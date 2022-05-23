@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330153394499",
+    "project_id": "pssswd",
+    "storage_bucket": "pssswd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330153394499:android:6e29de526657e6fc492ff6",
+        "android_client_info": {
+          "package_name": "com.example.pssswd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330153394499-15nqojdopks1crkvso36v4fc06lsquvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrdvbpRpGyrPb-Wn2VDOehGKuGNVcyiwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330153394499-15nqojdopks1crkvso36v4fc06lsquvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
