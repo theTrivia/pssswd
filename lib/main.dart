@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
+
 import 'package:pssswd/providers/user_entries.dart';
 import 'firebase_options.dart';
 
@@ -33,27 +34,9 @@ void main() async {
   ));
 }
 
-Future fetchEntries() async {
-  var fetchedEntries = [];
-  var db = FirebaseFirestore.instance;
-  final res = await db.collection("password_entries").get().then((event) {
-    for (var doc in event.docs) {
-      var resDic = {
-        "entry_id": doc.id,
-        "data": doc.data(),
-      };
-      fetchedEntries.add(resDic);
-      // print(fetchedEntries);
-    }
-  });
-  print('11111');
-  return fetchedEntries;
-}
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // print(FlutterConfig.get('storageBucket'));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -77,18 +60,15 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final data =
         Provider.of<UserEntries>(context, listen: false).fetchEntries();
   }
 
-//   @override
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Container(child: Text(context.watch<UserEntries>().entries.toString())),
         PasswdList(),
         RaisedButton(
           onPressed: () async {
@@ -103,79 +83,5 @@ class _BodyState extends State<Body> {
         ),
       ],
     );
-    // final entriesState = Provider.of<UserEntries>(context);
-    // entriesState.fetchEntries();
-    // final entries = entriesState.getFirstTimeSetEntry;
-    // print('------tararampam--------');
-    // print(entries);
-    // var valueForLife;
-
-    // print('2222');
-    // setState(() {});
-    // UserEntries();
-
-    // context.read<UserEntries>().fetchEntries();
-    // return Column(
-    //   children: [
-    //     RaisedButton(onPressed: () {
-    //       // context.read<UserEntries>().increment();
-    //     }),
-    //     Container(child: Text(context.watch<UserEntries>().aaa.toString())),
-    //   ],
-    // );
-
-//     return FutureBuilder(
-//         future: Provider.of<UserEntries>(context).fetchEntries(),
-//         builder: (context, snapshot) {
-//           print('ehllo');
-//           if (context.watch<UserEntries>().entries == []) {
-//             return Text('Loading');
-//           }
-//           // UserEntries();
-//           // valueForLife = ;
-//           // context.read<UserEntries>().fetchEntries();
-//           // context.read<UserEntries>().setFirstTimeEntry(valueForLife);
-
-//           return Column(children: [
-//             // PasswdList(valueForLife, fetchEntries),
-//             // PasswdList(),
-
-//             Container(
-//               child: Text(context.watch<UserEntries>().entries.toString()),
-//             ),
-
-// /////////
-// /////////
-//             RaisedButton(
-//               onPressed: () async {
-//                 await Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => AddPasswd(),
-//                   ),
-//                 );
-//               },
-//               child: Text('Add pssswd'),
-//             ),
-
-// ////
-// //////
-
-//             // RaisedButton(
-//             //   onPressed: () async {
-//             //     final data = await Navigator.push(
-//             //       context,
-//             //       MaterialPageRoute(
-//             //         builder: (context) => AddPasswd(fetchEntries),
-//             //       ),
-//             //     );
-//             //     setState(() {
-//             //       valueForLife = data;
-//             //     });
-//             //   },
-//             //   child: Text('Add Psswd'),
-//             // ),
-//           ]);
-//         });
   }
 }

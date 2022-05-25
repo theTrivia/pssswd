@@ -8,9 +8,6 @@ import 'package:pssswd/models/passwd.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
 class AddPasswd extends StatefulWidget {
-  // Function refreshEntries;
-  // AddPasswd(this.refreshEntries);
-
   @override
   State<AddPasswd> createState() => _AddPasswdState();
 }
@@ -46,7 +43,6 @@ class _AddPasswdState extends State<AddPasswd> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    //backend logic to be implemented
                     Random random = new Random();
                     final newEntry = Passwd(
                       user_id: 'dummy_user_id' + random.nextInt(100).toString(),
@@ -73,10 +69,6 @@ class _AddPasswdState extends State<AddPasswd> {
                         .then(
                           (value) => print('submitted: ${value.id}'),
                         );
-
-                    // var val = await widget.refreshEntries();
-                    // print('vaaaaaal');
-                    // print(val[0]);
 
                     await Provider.of<UserEntries>(context, listen: false)
                         .fetchEntries();
