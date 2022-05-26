@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pssswd/functions/passwordEncrypter.dart';
 
 import 'package:pssswd/models/passwd.dart';
 import 'package:pssswd/providers/user_entries.dart';
@@ -28,9 +29,9 @@ class _AddPasswdState extends State<AddPasswd> {
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: [
-                Container(
-                  child: Text(context.watch<UserEntries>().entries.toString()),
-                ),
+                // Container(
+                //   child: Text(context.watch<UserEntries>().entries.toString()),
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Enter the domain',
@@ -51,10 +52,27 @@ class _AddPasswdState extends State<AddPasswd> {
                       timestamp: Timestamp.now(),
                     );
 
+                    var pss = PasswordEnrypter();
+                    final encryptedPasswordMap =
+                        await pss.encryptPassword(newEntry.password);
+                    // final encryptedPasswordMap =
+                    //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
+
+                    // print(
+                    //     'Encrypted Pssword data ------------ ${encryptedPasswordMap['key']}');
+
+                    // var decryptedPasswordpp =
+                    // await pss.getDecryptedPassword(
+                    //     encryptedPasswordMap['encryptedPassword'],
+                    //     encryptedPasswordMap['key']);
+                    // print(
+                    //     'decrypted password data -------------- ${decryptedPasswordpp}');
+
                     final newEntryPush = {
                       "user_id": newEntry.user_id,
                       "domain": newEntry.domain,
-                      "password": newEntry.password,
+                      "password": encryptedPasswordMap['encryptedPassword'],
+                      "password_key": encryptedPasswordMap['key'],
                       "timestamp": newEntry.timestamp,
                     };
 

@@ -639,6 +639,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_config (0.0.1):
     - Flutter
+  - flutter_string_encryption (0.0.1):
+    - Flutter
+    - SCrypto (~> 2.0)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -714,6 +717,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (2.1.0)
+  - SCrypto (2.0.0)
   - Toast (4.0.0)
 
 DEPENDENCIES:
@@ -721,6 +725,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
+  - flutter_string_encryption (from `.symlinks/plugins/flutter_string_encryption/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
 
 SPEC REPOS:
@@ -739,6 +744,7 @@ SPEC REPOS:
     - Libuv-gRPC
     - nanopb
     - PromisesObjC
+    - SCrypto
     - Toast
 
 EXTERNAL SOURCES:
@@ -750,6 +756,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_config:
     :path: ".symlinks/plugins/flutter_config/ios"
+  flutter_string_encryption:
+    :path: ".symlinks/plugins/flutter_string_encryption/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
 
@@ -764,6 +772,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: d7023faff8e1b4fd69d0adbcf18e65129bc03842
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_config: 2226c1df19c78fe34a05eb7f1363445f18e76fc1
+  flutter_string_encryption: e382d87149c0d6b947204315e6c601a9c4792655
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
@@ -773,6 +782,7 @@ SPEC CHECKSUMS:
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
+  SCrypto: 8287dcf6151df38f9bc0efad2ed982c54a96d1b8
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea

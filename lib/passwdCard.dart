@@ -9,13 +9,15 @@ import 'package:pssswd/passwdList.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
 import 'addPasswd.dart';
+import 'functions/passwordDecrypter.dart';
 
 class PasswdCard extends StatefulWidget {
   var domain;
+  var password_key;
   var password;
   var entry_id;
 
-  PasswdCard(this.domain, this.password, this.entry_id);
+  PasswdCard(this.domain, this.password, this.password_key, this.entry_id);
 
   @override
   State<PasswdCard> createState() => _PasswdCardState();
@@ -45,8 +47,12 @@ class _PasswdCardState extends State<PasswdCard> {
                 width: 210,
               ),
               IconButton(
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: passwd));
+                onPressed: () async {
+                  var pss = PasswordDecrypter();
+                  final decryptedPassword = await pss.getDecryptedPassword(
+                      widget.password, widget.password_key);
+                  // print('psssssssssssssss ${decryptedPassword}');
+                  Clipboard.setData(ClipboardData(text: decryptedPassword));
 
                   Fluttertoast.showToast(
                     msg: 'pssswd copied!',

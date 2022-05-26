@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:pssswd/functions/passwordSalter.dart';
+import 'package:pssswd/SomeNewPage.dart';
+import 'package:pssswd/functions/passwordEncrypter.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 import 'firebase_options.dart';
@@ -70,6 +71,10 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // RaisedButton(onPressed: () {
+        //   Navigator.push(
+        //       context, MaterialPageRoute(builder: (context) => SomeNewPage()));
+        // }),
         PasswdList(),
         RaisedButton(
           onPressed: () async {
