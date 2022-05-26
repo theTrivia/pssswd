@@ -16,8 +16,8 @@ class ChangePassword extends StatelessWidget {
     return ElevatedButton(
       onPressed: () async {
         var db = FirebaseFirestore.instance;
-        print('----------------');
-        print(newPassword);
+        // print('----------------');
+        // print(newPassword);
         await db.collection('password_entries').doc(entry_id).update(
             {'password': newPassword}).then((value) => print('doc edited'));
         await Provider.of<UserEntries>(context, listen: false).fetchEntries();

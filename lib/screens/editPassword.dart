@@ -7,7 +7,7 @@ import 'package:pssswd/main.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 
-import 'components/changePassword.dart';
+import '../components/changePassword.dart';
 
 class EditPassword extends StatefulWidget {
   final password;
@@ -21,6 +21,7 @@ class EditPassword extends StatefulWidget {
 }
 
 class _EditPasswordState extends State<EditPassword> {
+  @override
   final newPasswordController = TextEditingController();
 
   TextEditingController get newDomainContrEditollerc =>
@@ -29,7 +30,7 @@ class _EditPasswordState extends State<EditPassword> {
   var newPasswordValue = '';
   @override
   Widget build(BuildContext context) {
-    print(widget.password);
+    // print(widget.password);
     return Scaffold(
         appBar: AppBar(
           title: Text('Edit Password'),

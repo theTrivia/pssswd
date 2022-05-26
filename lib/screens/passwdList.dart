@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/functions/passwordDecrypter.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
-import 'package:pssswd/passwdCard.dart';
+import 'package:pssswd/components/passwdCard.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
 class PasswdList extends StatefulWidget {
@@ -28,7 +28,7 @@ class _PasswdListState extends State<PasswdList> {
             child: ListView.builder(
               itemCount: context.watch<UserEntries>().entries.length,
               itemBuilder: (ctx, index) {
-                print(context.watch<UserEntries>().entries.length);
+                // print(context.watch<UserEntries>().entries.length);
 
                 // final decryptedPassword =
                 //     pss.getDecryptedPassword(newEntry.password);

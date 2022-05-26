@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pssswd/SomeNewPage.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
+import 'package:pssswd/functions/userLogin.dart';
+import 'package:pssswd/functions/userSignup.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
+import 'package:pssswd/screens/landingPage.dart';
+import 'package:pssswd/screens/loginScreen.dart';
+import 'package:pssswd/screens/signupScreen.dart';
 import 'firebase_options.dart';
 
-import 'package:pssswd/addPasswd.dart';
-import 'package:pssswd/passwdList.dart';
+import 'package:pssswd/screens/addPasswd.dart';
+import 'package:pssswd/screens/passwdList.dart';
+
+import 'screens/appMainPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,58 +44,46 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+initializeStorage() async {
+  final LocalStorage storage = new LocalStorage('pssswd');
+  await storage.ready;
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    initializeStorage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Pssswd'),
-        ),
-        body: Body(),
-      ),
+      // home: LandingPage(),
+
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     title: Text('Pssswd'),
+      //   ),
+      //   body: AppMainPage(),
+      // ),
       // routes: {
       //   '/addPasswd': (context) => AddPasswd(fetchEntries),
       // },
-    );
-  }
-}
 
-class Body extends StatefulWidget {
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  @override
-  void initState() {
-    super.initState();
-    final data =
-        Provider.of<UserEntries>(context, listen: false).fetchEntries();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // RaisedButton(onPressed: () {
-        //   Navigator.push(
-        //       context, MaterialPageRoute(builder: (context) => SomeNewPage()));
-        // }),
-        PasswdList(),
-        RaisedButton(
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddPasswd(),
-              ),
-            );
-          },
-          child: Text('Add pssswd'),
-        ),
-      ],
+      initialRoute: '/',
+      routes: {
+        "/": (context) => LandingPage(),
+        "/login": (context) => LoginScreen(),
+        "/signup": (context) => SignupScreen(),
+        "/appMainPage": (context) => AppMainPage(),
+      },
     );
   }
 }

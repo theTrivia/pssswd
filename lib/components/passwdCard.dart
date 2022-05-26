@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/editPassword.dart';
-import 'package:pssswd/passwdList.dart';
+import 'package:pssswd/screens/editPassword.dart';
+import 'package:pssswd/screens/passwdList.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 
-import 'addPasswd.dart';
-import 'functions/passwordDecrypter.dart';
+import '../screens/addPasswd.dart';
+import '../functions/passwordDecrypter.dart';
 
 class PasswdCard extends StatefulWidget {
   var domain;
@@ -65,11 +65,14 @@ class _PasswdCardState extends State<PasswdCard> {
           ),
           IconButton(
               onPressed: () async {
+                var pss = PasswordDecrypter();
+                final decryptedPassword = await pss.getDecryptedPassword(
+                    widget.password, widget.password_key);
                 var res = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditPassword(
-                        widget.domain, widget.password, widget.entry_id),
+                        widget.domain, decryptedPassword, widget.entry_id),
                   ),
                 );
               },
