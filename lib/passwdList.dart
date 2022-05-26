@@ -22,7 +22,7 @@ class _PasswdListState extends State<PasswdList> {
           }
 
           return Container(
-            height: 710,
+            height: 680,
             child: ListView.builder(
               itemCount: context.watch<UserEntries>().entries.length,
               itemBuilder: (ctx, index) {

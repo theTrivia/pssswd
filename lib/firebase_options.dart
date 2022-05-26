@@ -3,7 +3,6 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -15,32 +14,18 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
-///
-void abc() {
-  print('abc');
-}
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -58,14 +43,40 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyB46wnO-xs_D-DZ4ORUWDgnMJXFEEs-1NY',
+    appId: '1:330153394499:web:d11be7c5f503883d492ff6',
+    messagingSenderId: '330153394499',
+    projectId: 'pssswd',
+    authDomain: 'pssswd.firebaseapp.com',
+    storageBucket: 'pssswd.appspot.com',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDrdvbpRpGyrPb-Wn2VDOehGKuGNVcyiwQ',
+    appId: '1:330153394499:android:6e29de526657e6fc492ff6',
+    messagingSenderId: '330153394499',
+    projectId: 'pssswd',
+    storageBucket: 'pssswd.appspot.com',
+  );
+
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDn6dU-T5-Xf7zfc4p4Jt8eMAF4IsD2pEA',
     appId: '1:330153394499:ios:ca9f73cab6c901f2492ff6',
     messagingSenderId: '330153394499',
     projectId: 'pssswd',
     storageBucket: 'pssswd.appspot.com',
-    iosClientId:
-        '330153394499-1666324npkojjpvq9kr85t9su88ir4oi.apps.googleusercontent.com',
+    iosClientId: '330153394499-1666324npkojjpvq9kr85t9su88ir4oi.apps.googleusercontent.com',
+    iosBundleId: 'com.example.pssswd',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDn6dU-T5-Xf7zfc4p4Jt8eMAF4IsD2pEA',
+    appId: '1:330153394499:ios:ca9f73cab6c901f2492ff6',
+    messagingSenderId: '330153394499',
+    projectId: 'pssswd',
+    storageBucket: 'pssswd.appspot.com',
+    iosClientId: '330153394499-1666324npkojjpvq9kr85t9su88ir4oi.apps.googleusercontent.com',
     iosBundleId: 'com.example.pssswd',
   );
 }
