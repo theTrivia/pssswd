@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController.text,
                   passwordController.text,
                 );
-                // print(res);
+                print('output for res     ${res}');
                 if (res != 'login-success') {
                   setState(() {
                     _userDidLogin = false;

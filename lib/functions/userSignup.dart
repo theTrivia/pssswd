@@ -8,7 +8,11 @@ class UserSignup {
         email: emailAddress,
         password: password,
       );
-      print(credential);
+
+      return {
+        'isLoginSuccess': 'login-success',
+        'isUserNew': credential.additionalUserInfo!.isNewUser,
+      };
       return 'signup-success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

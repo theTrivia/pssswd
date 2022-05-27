@@ -11,7 +11,6 @@ class UserLogin {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
       // print(credential);
-
       return 'login-success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
