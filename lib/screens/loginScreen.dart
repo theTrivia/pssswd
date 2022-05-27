@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:pssswd/functions/localStorageReadWriteData.dart';
 import 'package:pssswd/functions/userLogin.dart';
 import 'package:pssswd/screens/appMainPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/loginFailure.dart';
 
@@ -49,7 +52,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 }
                 print(_userDidLogin);
+
+                // if _userDidLogin == true && _userHavaMasterPasswordConfigured
+                // -> Navigate to App Main Page
+                // else Ask user to create a Master password
+                // ->if _userHavaMasterPasswordConfigured == true
+                // ->->Navigate to App Main Page
+
                 if (_userDidLogin == true) {
+                  // final LocalStorage storage = new LocalStorage('pssswd');
+                  // var b = storage.getItem('isUserLoggedInUsingMasterPassword');
+                  // await storage.setItem(
+                  //     'isUserLoggedInUsingMasterPassword', true);
+                  final prefs = await SharedPreferences.getInstance();
+                  // await prefs.setBool(
+                  //     'isUserLoggedInUsingMasterPassword', true);
+                  await prefs.setBool('isUserLoggedInUsingEmailPassword', true);
+
                   await Navigator.push(
                     context,
                     MaterialPageRoute(

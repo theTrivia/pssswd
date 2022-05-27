@@ -6,11 +6,9 @@ import 'package:pssswd/models/passwd.dart';
 class UserLogin {
   performLogin(emailAddress, password) async {
     try {
-      // print(emailAddress);
-      // print(password);
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      // print(credential);
+
       return 'login-success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

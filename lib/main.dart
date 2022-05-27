@@ -8,10 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:pssswd/SomeNewPage.dart';
+
 import 'package:pssswd/functions/passwordEncrypter.dart';
 import 'package:pssswd/functions/userLogin.dart';
 import 'package:pssswd/functions/userSignup.dart';
+import 'package:pssswd/providers/userDetails.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 import 'package:pssswd/screens/landingPage.dart';
@@ -38,6 +39,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(
         create: (_) => UserEntries(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserDetails(),
       ),
     ],
     child: MyApp(),

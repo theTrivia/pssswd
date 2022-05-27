@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^3.3.19
   firebase_auth_web: ^3.3.16
   localstorage: any
+  shared_preferences: ^2.0.15
   
 
 dev_dependencies:

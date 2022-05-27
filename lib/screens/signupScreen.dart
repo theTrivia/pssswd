@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pssswd/functions/userSignup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final masterPasswordController = TextEditingController();
 
   var isUserSignedUp = false;
+
+  var _userAckForMasterPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,18 +72,58 @@ class _SignupScreenState extends State<SignupScreen> {
                         InputDecoration(labelText: '5 digit Master password'),
                     controller: masterPasswordController,
                   ),
-                  ElevatedButton(
+                  if (_userAckForMasterPassword == false)
+                    ElevatedButton(
                       onPressed: () {
                         print(
                           'master password ${masterPasswordController.text}',
                         );
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Master Password Acknowledgement'),
+                            content: Text('Master Password Ack content string'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _userAckForMasterPassword = true;
+                                  });
+                                  Navigator.pop(context);
+                                },
 
+                                //store the hash of the password in database
+                                //
+                                child: Text('I acknowledge'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _userAckForMasterPassword = false;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Go Back'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Text('Submit'),
+                    ),
+                  if (_userAckForMasterPassword)
+                    RaisedButton(
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool(
+                            'isUserLoggedInUsingEmailPassword', true);
                         Navigator.pushNamed(
                           context,
                           '/appMainPage',
                         );
                       },
-                      child: Text('Submit')),
+                      child: Text('You are good to go!!! Lets go'),
+                    )
                 ],
               ),
             if (isUserSignedUp == false)

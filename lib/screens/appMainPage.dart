@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'addPasswd.dart';
 import 'passwdList.dart';
@@ -26,12 +27,15 @@ class _AppMainPageState extends State<AppMainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('pssswd'),
+        automaticallyImplyLeading: false,
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: GestureDetector(
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('isUserLoggedInUsingEmailPassword');
                 Navigator.pushNamed(context, '/');
               },
               child: Icon(Icons.logout),

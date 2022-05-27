@@ -8,12 +8,13 @@ class PasswordEnrypter {
   //key should be generated upon user creation.
   //each user should have unique key
   //for now, lets make it constant.
-  final key = Key.fromUtf8("4zTp0jEOeZsT/kfZCAumxg==");
-  final iv = IV.fromLength(16);
 
-  String getPassword(String s) {
-    return s + 'ffff';
-  }
+  // final key = Key.fromUtf8("4zTp0jEOeZsT/kfZCAumxg==");
+  // final iv = IV.fromLength(16);
+
+  // String getPassword(String s) {
+  //   return s + 'ffff';
+  // }
 
   //5 digit user password should be sent as a parameter at the time of launching the app
   encryptPassword(String rawPd) async {
