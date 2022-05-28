@@ -6,6 +6,8 @@ import 'package:pssswd/functions/passwordEncrypter.dart';
 import 'package:pssswd/components/passwdCard.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
+import '../providers/userDetails.dart';
+
 class PasswdList extends StatefulWidget {
   @override
   State<PasswdList> createState() => _PasswdListState();
@@ -32,15 +34,19 @@ class _PasswdListState extends State<PasswdList> {
 
                 // final decryptedPassword =
                 //     pss.getDecryptedPassword(newEntry.password);
-                return PasswdCard(
-                  context.watch<UserEntries>().entries[index]['data']['domain'],
-                  // context.watch<UserEntries>().entries[index]['data']
-                  //     ['password'],
-                  context.watch<UserEntries>().entries[index]['data']
-                      ['password'],
-                  context.watch<UserEntries>().entries[index]['data']
-                      ['password_key'],
-                  context.watch<UserEntries>().entries[index]['entry_id'],
+                return Column(
+                  children: [
+                    PasswdCard(
+                      context.watch<UserEntries>().entries[index]['data']
+                          ['domain'],
+                      context.watch<UserEntries>().entries[index]['data']
+                          ['password'],
+                      context.watch<UserEntries>().entries[index]['data']
+                          ['randForKeyToStore'],
+                      context.watch<UserEntries>().entries[index]['data']
+                          ['randForIV'],
+                    ),
+                  ],
                 );
               },
             ),

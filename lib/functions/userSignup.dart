@@ -11,9 +11,9 @@ class UserSignup {
 
       return {
         'isLoginSuccess': 'login-success',
-        'isUserNew': credential.additionalUserInfo!.isNewUser,
+        'userCredential': credential,
+        // 'isUserNew': credential.additionalUserInfo!.isNewUser,
       };
-      return 'signup-success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

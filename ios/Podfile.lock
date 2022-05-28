@@ -651,6 +651,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_config (0.0.1):
     - Flutter
+  - flutter_secure_storage (3.3.1):
+    - Flutter
   - flutter_string_encryption (0.0.1):
     - Flutter
     - SCrypto (~> 2.0)
@@ -754,6 +756,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_string_encryption (from `.symlinks/plugins/flutter_string_encryption/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
@@ -791,6 +794,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_config:
     :path: ".symlinks/plugins/flutter_config/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_string_encryption:
     :path: ".symlinks/plugins/flutter_string_encryption/ios"
   fluttertoast:
@@ -813,6 +818,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: d7023faff8e1b4fd69d0adbcf18e65129bc03842
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_config: 2226c1df19c78fe34a05eb7f1363445f18e76fc1
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_string_encryption: e382d87149c0d6b947204315e6c601a9c4792655
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b

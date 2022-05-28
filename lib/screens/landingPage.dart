@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../providers/userDetails.dart';
 import 'appMainPage.dart';
 
 class LandingPage extends StatefulWidget {
@@ -23,6 +25,7 @@ class _LandingPageState extends State<LandingPage> {
 
     // print('aaaaaaaaaaaaa before-> ${isUserLoggedInUsingMasterPassword}');
     final prefs = await SharedPreferences.getInstance();
+
     var isUserLoggedInUsingEmailPasswordFromDisk =
         prefs.getBool('isUserLoggedInUsingEmailPassword');
     print('aaaaaaaaaaaaa before-> ${isUserLoggedInUsingEmailPasswordFromDisk}');

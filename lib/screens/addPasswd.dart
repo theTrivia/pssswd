@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
 
 import 'package:pssswd/models/passwd.dart';
+import 'package:pssswd/providers/userDetails.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
 class AddPasswd extends StatefulWidget {
@@ -17,6 +19,17 @@ class _AddPasswdState extends State<AddPasswd> {
   final enteredDomain = TextEditingController();
 
   final enteredPasswd = TextEditingController();
+  // randomFunction() async {
+  //   Provider.of<UserDetails>(context, listen: false).getUserDetails();
+  // }
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  //   randomFunction();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +45,10 @@ class _AddPasswdState extends State<AddPasswd> {
                 // Container(
                 //   child: Text(context.watch<UserEntries>().entries.toString()),
                 // ),
+                Container(
+                  child: Text(
+                      context.watch<UserDetails>().getUserDetails.toString()),
+                ),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Enter the domain',
@@ -52,9 +69,17 @@ class _AddPasswdState extends State<AddPasswd> {
                       timestamp: Timestamp.now(),
                     );
 
+                    final secureStorage = new FlutterSecureStorage();
+
+                    var masterPassword =
+                        await secureStorage.read(key: 'masterPassword');
+
+                    print(
+                        'master password from add password screen!! -??????????????        ${masterPassword}');
+
                     var pss = PasswordEnrypter();
-                    final encryptedPasswordMap =
-                        await pss.encryptPassword(newEntry.password);
+                    final encryptedPasswordMap = await pss.encryptPassword(
+                        newEntry.password, masterPassword!);
                     // final encryptedPasswordMap =
                     //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
 
@@ -72,7 +97,9 @@ class _AddPasswdState extends State<AddPasswd> {
                       "user_id": newEntry.user_id,
                       "domain": newEntry.domain,
                       "password": encryptedPasswordMap['encryptedPassword'],
-                      "password_key": encryptedPasswordMap['key'],
+                      "randForKeyToStore":
+                          encryptedPasswordMap['randForKeyToStore'],
+                      "randForIV": encryptedPasswordMap['randForIV'],
                       "timestamp": newEntry.timestamp,
                     };
 

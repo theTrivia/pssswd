@@ -26,6 +26,7 @@ class UserEntries extends ChangeNotifier {
       _entries = abc;
 
       // print(_entries);
+      print(_entries);
       notifyListeners();
     });
   }

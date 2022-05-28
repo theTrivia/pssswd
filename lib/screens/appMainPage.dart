@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,10 @@ class _AppMainPageState extends State<AppMainPage> {
                 await FirebaseAuth.instance.signOut();
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('isUserLoggedInUsingEmailPassword');
+
+                final secureStorage = new FlutterSecureStorage();
+                await secureStorage.deleteAll();
+
                 Navigator.pushNamed(context, '/');
               },
               child: Icon(Icons.logout),

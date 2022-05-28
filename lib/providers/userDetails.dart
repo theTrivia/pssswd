@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class UserDetails extends ChangeNotifier {
-  var _userDetails;
+import '../models/User.dart';
 
-  get userDetails {
-    return _userDetails;
+class UserDetails extends ChangeNotifier {
+  var _details;
+
+  get getUserDetails {
+    return _details;
   }
 
   // fetchUserDetails() async {
@@ -30,7 +32,7 @@ class UserDetails extends ChangeNotifier {
   // }
 
   setUserDetails(details) {
-    details = _userDetails;
+    _details = details;
     notifyListeners();
   }
 }
