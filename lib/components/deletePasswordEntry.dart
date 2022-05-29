@@ -1,17 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/userDetails.dart';
 import '../providers/user_entries.dart';
 
 class DeletePasswordEntry extends StatelessWidget {
   var entry_id;
   DeletePasswordEntry(this.entry_id);
+  final secureStorage = new FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
+    var _uid = secureStorage.read(key: 'loggedInUserId');
     return ElevatedButton(
       onPressed: () async {
         showModalBottomSheet(

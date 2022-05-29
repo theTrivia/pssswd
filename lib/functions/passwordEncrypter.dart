@@ -24,7 +24,9 @@ class PasswordEnrypter {
   //   };
   // }
 
-  encryptPassword(String rawPd, String masterPassword) async {
+  encryptPassword(rawPd, masterPassword) async {
+    print(' raw password ->>>>>>>> ${rawPd}');
+    print('masterPasswordHash ->>>>>>>>>> ${masterPassword}');
     const _chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();

@@ -40,9 +40,9 @@ void main() async {
       ChangeNotifierProvider(
         create: (_) => UserEntries(),
       ),
-      ChangeNotifierProvider(
-        create: (_) => UserDetails(),
-      ),
+      // ChangeNotifierProvider(
+      //   create: (_) => UserDetails(),
+      // ),
     ],
     child: MyApp(),
   ));

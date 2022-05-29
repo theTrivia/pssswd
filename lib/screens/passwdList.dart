@@ -6,7 +6,7 @@ import 'package:pssswd/functions/passwordEncrypter.dart';
 import 'package:pssswd/components/passwdCard.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
-import '../providers/userDetails.dart';
+// import '../providers/userDetails.dart';
 
 class PasswdList extends StatefulWidget {
   @override
@@ -18,6 +18,8 @@ class _PasswdListState extends State<PasswdList> {
 
   @override
   Widget build(BuildContext context) {
+    // var _uid = context.watch<UserDetails>().getUserDetails['uniqueUserId'];
+    // var userUniqueIdentity = context.watch<UserDetails>().getUserDetails;
     return FutureBuilder(
         future: Provider.of<UserEntries>(context, listen: false).fetchEntries(),
         builder: (context, snapshot) {

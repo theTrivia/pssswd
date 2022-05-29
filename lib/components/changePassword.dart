@@ -1,18 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/userDetails.dart';
 import '../providers/user_entries.dart';
 
 class ChangePassword extends StatelessWidget {
   var entry_id;
   var domain;
   var newPassword;
+  final secureStorage = FlutterSecureStorage();
   ChangePassword(this.entry_id, this.domain, this.newPassword);
 
   @override
   Widget build(BuildContext context) {
+    var _uid = secureStorage.read(key: 'loggedInUserId');
+
     return ElevatedButton(
       onPressed: () async {
         var db = FirebaseFirestore.instance;

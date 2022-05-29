@@ -6,6 +6,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../providers/userDetails.dart';
 import 'addPasswd.dart';
 import 'passwdList.dart';
 import '../providers/user_entries.dart';
@@ -19,12 +20,15 @@ class _AppMainPageState extends State<AppMainPage> {
   @override
   void initState() {
     super.initState();
+
     final data =
         Provider.of<UserEntries>(context, listen: false).fetchEntries();
   }
 
   @override
   Widget build(BuildContext context) {
+    final secureStorage = new FlutterSecureStorage();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('pssswd'),
@@ -35,10 +39,11 @@ class _AppMainPageState extends State<AppMainPage> {
             child: GestureDetector(
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('isUserLoggedInUsingEmailPassword');
+                // final prefs = await SharedPreferences.getInstance();
+                // await prefs.remove('isUserLoggedInUsingEmailPassword');
+                // await prefs.remove('masterPasswordHash');
+                // await prefs.remove('loggedInUserId');
 
-                final secureStorage = new FlutterSecureStorage();
                 await secureStorage.deleteAll();
 
                 Navigator.pushNamed(context, '/');

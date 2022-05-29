@@ -28,15 +28,17 @@ class _LoginScreenState extends State<LoginScreen> {
   var _userDidLogin;
   var _isMasterPasswordPresent;
   var loggedInUser;
+  final secureStorage = FlutterSecureStorage();
+
   @override
   void initState() {
     super.initState();
     final secureStorage = new FlutterSecureStorage();
-    var masterPassword =
-        secureStorage.read(key: 'masterPassword').then((value) {
+    var masterPasswordHash =
+        secureStorage.read(key: 'masterPasswordHash').then((value) {
       _isMasterPasswordPresent = value;
     });
-    // print(hashedMasterPassword);
+    print(masterPasswordHash);
   }
 
   @override
@@ -61,6 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController.text,
                   passwordController.text,
                 );
+                print(
+                    'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
 
                 // print('output for loginResult     ${loginResult}');
                 if (loginResult['loginStatus'] != 'login-success') {
@@ -85,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 var creationTime =
                     loginResult['userCredential']['creationTime'];
-                var uniqueUserId = loginResult['userCredential']['uid'];
+                var uniqueUserId =
+                    loginResult['userCredential']['uniqueUserId'];
                 var masterPasswordHash =
                     loginResult['userCredential']['masterPasswordHash'];
 
@@ -108,8 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // print(
                 //     'Logged in USer after giving email and password from login screen ----- >${loggedInUser}');
 
-                Provider.of<UserDetails>(context, listen: false)
-                    .setUserDetails(loggedInUser);
+                // Provider.of<UserDetails>(context, listen: false)
+                //     .setUserDetails(loggedInUser);
                 // print('${context.watch<UserDetails>().getUserDetails}');
                 // print(loggedInUser);
                 // if _userDidLogin == true && _userHavaMasterPasswordConfigured
@@ -119,8 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 // ->->Navigate to App Main Page
 
                 if (_userDidLogin == true) {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('isUserLoggedInUsingEmailPassword', true);
+                  await secureStorage.write(
+                      key: 'isUserLoggedInUsingEmailPassword', value: 'true');
+                  // await prefs.setBool('isUserLoggedInUsingEmailPassword', true);
                   if (_isMasterPasswordPresent != null) {
                     await Navigator.push(
                       context,
@@ -143,10 +149,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      // var abc =
-                      // print(abc);
                       var masterPasswordHash =
                           loggedInUser['masterPasswordHash'];
+
                       final mph = MasterPasswordHash();
                       var res = mph.checkIfMasterPasswordValid(
                           masterPasswordController.text, masterPasswordHash);
@@ -162,6 +167,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         print(_isMasterPasswordPresent);
 
                         if (_isMasterPasswordPresent != null) {
+                          // Provider.of<UserEntries>(context, listen: false)
+                          //     .setUid(loggedInUser['uniqueUserId']);
+
+                          // //required when user is logged in using email/password but not logged in using master password.
+                          // final prefs = await SharedPreferences.getInstance();
+                          // await prefs.setString(
+                          //     'masterPasswordHash', masterPasswordHash);
+                          // //required for login using master password from landing page
+                          // await prefs.setString(
+                          //     'loggedInUserId', loggedInUser['uniqueUserId']);
+
+                          await secureStorage.write(
+                              key: 'loggedInUserId',
+                              value: loggedInUser['uniqueUserId']);
+                          await secureStorage.write(
+                              key: 'email', value: loggedInUser['email']);
+                          await secureStorage.write(
+                              key: 'masterPasswordHash',
+                              value: masterPasswordHash);
+
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -178,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-            Text(context.watch<UserDetails>().getUserDetails.toString()),
+            // Text(context.watch<UserDetails>().getUserDetails.toString()),
             if (_userDidLogin == false) LoginFailure(),
             ElevatedButton(
               onPressed: () {

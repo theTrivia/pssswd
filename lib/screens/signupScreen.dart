@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
 import '../providers/userDetails.dart';
+import '../providers/user_entries.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -20,12 +21,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final passwordController = TextEditingController();
   final masterPasswordController = TextEditingController();
+  final secureStorage = new FlutterSecureStorage();
 
   var isUserSignedUp = false;
 
   var _userAckForMasterPassword = false;
 
-  var signedUser = {};
+  // var signedUser;
   var user;
 
   @override
@@ -81,7 +83,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   //   'isEmailVerified': user.isEmailVerified,
                   //   'creationTime': user.creationTime
                   // };
-                  print(signedUser);
+                  // print(signedUser);
 
                   // print(signupResult);
                   // if (signupResult['isUserNew']) {
@@ -122,13 +124,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           'master password ${masterPasswordController.text}',
                         );
                         final secureStorage = new FlutterSecureStorage();
-                        await secureStorage.write(
-                          key: 'masterPassword',
-                          value: masterPasswordController.text,
-                        );
-                        secureStorage
-                            .read(key: 'masterPassword')
-                            .then((value) => print('master chief -> ${value}'));
+                        // await secureStorage.write(
+                        //   key: 'masterPassword',
+                        //   value: masterPasswordController.text,
+                        // );
+                        // secureStorage
+                        //     .read(key: 'masterPassword')
+                        //     .then((value) => print('master chief -> ${value}'));
 
                         showDialog(
                           context: context,
@@ -166,39 +168,64 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (_userAckForMasterPassword)
                     RaisedButton(
                       onPressed: () async {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool(
-                            'isUserLoggedInUsingEmailPassword', true);
+                        // final prefs = await SharedPreferences.getInstance();
+
+                        await secureStorage.write(
+                            key: 'isUserLoggedInUsingEmailPassword',
+                            value: 'true');
                         // print('----------------------${signedUser}');
-                        final secureStorage = new FlutterSecureStorage();
-                        var hashedMasterPassword = secureStorage
-                            .read(key: 'masterPassword')
-                            .then((password) async {
-                          //Password Hasing logic
-                          var hp = MasterPasswordHash();
-                          var hashedPassword = hp.hashMasterPassword(password!);
-                          print(
-                              'hashed password from signup screen ->>>>> ${hashedPassword}');
+                        // final secureStorage = new FlutterSecureStorage();
+                        // var hashedMasterPassword = secureStorage
+                        //     .read(key: 'masterPassword')
+                        //     .then((password) async {
+                        //Password Hasing logic
+                        var hp = MasterPasswordHash();
+                        var hashedPassword = hp
+                            .hashMasterPassword(masterPasswordController.text);
+                        print(
+                            'hashed password from signup screen ->>>>> ${hashedPassword}');
 
-                          var db = FirebaseFirestore.instance;
-                          final signedUser = {
-                            'uniqueUserId': user.uniqueUserId,
-                            'isNewUser': user.isNewUser,
-                            'email': user.email,
-                            'masterPasswordHash': hashedPassword,
-                            'isEmailVerified': user.isEmailVerified,
-                            'creationTime': user.creationTime
-                          };
+                        var db = FirebaseFirestore.instance;
+                        final signedUser = {
+                          'uniqueUserId': user.uniqueUserId,
+                          'isNewUser': user.isNewUser,
+                          'email': user.email,
+                          'masterPasswordHash': hashedPassword,
+                          'isEmailVerified': user.isEmailVerified,
+                          'creationTime': user.creationTime
+                        };
 
-                          await db
-                              .collection('users')
-                              .doc(signedUser['uniqueUserId'])
-                              .set(signedUser)
-                              .then((value) => print('value set'));
-                          Provider.of<UserDetails>(context, listen: false)
-                              .setUserDetails(signedUser);
-                        });
-                        print(hashedMasterPassword);
+                        await db
+                            .collection('users')
+                            .doc(signedUser['uniqueUserId'])
+                            .set(signedUser)
+                            .then((value) => print('value set'));
+                        // Provider.of<UserDetails>(context, listen: false)
+                        //     .setUserDetails(signedUser);
+
+                        await secureStorage.write(
+                            key: 'loggedInUserId',
+                            value: signedUser['uniqueUserId']);
+                        await secureStorage.write(
+                            key: 'email', value: signedUser['email']);
+                        await secureStorage.write(
+                            key: 'masterPasswordHash', value: hashedPassword);
+                        var masterPassword = await secureStorage.write(
+                            key: 'masterPassword',
+                            value: masterPasswordController.text);
+
+                        // Provider.of<UserEntries>(context, listen: false)
+                        //     .setUid(signedUser['uniqueUserId']);
+
+                        // await prefs.setString(
+                        //     'loggedInUserId', signedUser['uniqueUserId']);
+                        // await prefs.setString(
+                        //     'masterPasswordHash', hashedPassword);
+
+                        print(
+                            'Hashed password from signup screen------------->${hashedPassword}');
+
+                        // final prefs = await SharedPreferences.getInstance();
 
                         Navigator.pushNamed(
                           context,

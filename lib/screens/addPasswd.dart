@@ -16,9 +16,11 @@ class AddPasswd extends StatefulWidget {
 }
 
 class _AddPasswdState extends State<AddPasswd> {
+  final secureStorage = new FlutterSecureStorage();
   final enteredDomain = TextEditingController();
 
   final enteredPasswd = TextEditingController();
+  var _uid;
   // randomFunction() async {
   //   Provider.of<UserDetails>(context, listen: false).getUserDetails();
   // }
@@ -33,6 +35,10 @@ class _AddPasswdState extends State<AddPasswd> {
 
   @override
   Widget build(BuildContext context) {
+    // _uid = context.watch<UserDetails>().getUserDetails['uniqueUserId'];
+
+    print('uid from add password --------->     ${_uid}');
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Add Passwd'),
@@ -45,10 +51,10 @@ class _AddPasswdState extends State<AddPasswd> {
                 // Container(
                 //   child: Text(context.watch<UserEntries>().entries.toString()),
                 // ),
-                Container(
-                  child: Text(
-                      context.watch<UserDetails>().getUserDetails.toString()),
-                ),
+                // Container(
+                //   child: Text(
+                //       context.watch<UserDetails>().getUserDetails.toString()),
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Enter the domain',
@@ -61,15 +67,21 @@ class _AddPasswdState extends State<AddPasswd> {
                 ),
                 RaisedButton(
                   onPressed: () async {
+                    _uid = await secureStorage.read(key: 'loggedInUserId');
+                    // var user_id = await context
+                    //     .watch<UserDetails>()
+                    //     .getUserDetails
+                    //     .toString();
+                    // print(user_id);
                     Random random = new Random();
                     final newEntry = Passwd(
-                      user_id: 'dummy_user_id' + random.nextInt(100).toString(),
+                      user_id: _uid,
                       domain: enteredDomain.text,
                       password: enteredPasswd.text,
                       timestamp: Timestamp.now(),
                     );
 
-                    final secureStorage = new FlutterSecureStorage();
+                    // final secureStorage = new FlutterSecureStorage();
 
                     var masterPassword =
                         await secureStorage.read(key: 'masterPassword');
@@ -79,7 +91,7 @@ class _AddPasswdState extends State<AddPasswd> {
 
                     var pss = PasswordEnrypter();
                     final encryptedPasswordMap = await pss.encryptPassword(
-                        newEntry.password, masterPassword!);
+                        newEntry.password, masterPassword);
                     // final encryptedPasswordMap =
                     //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
 
