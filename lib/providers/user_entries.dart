@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:pssswd/providers/userDetails.dart';
 
 class UserEntries extends ChangeNotifier {
   var _entries;
@@ -60,6 +59,7 @@ class UserEntries extends ChangeNotifier {
           abc.add(resDic);
         }
         _entries = abc;
+        print(_entries);
         notifyListeners();
       },
     );

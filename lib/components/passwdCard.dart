@@ -26,6 +26,7 @@ class PasswdCard extends StatefulWidget {
     this.password,
     this.randForKeyToStore,
     this.randForIV,
+    this.entry_id,
   );
 
   @override
@@ -33,6 +34,7 @@ class PasswdCard extends StatefulWidget {
 }
 
 class _PasswdCardState extends State<PasswdCard> {
+  final secureStorage = new FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     final passwd;
@@ -81,20 +83,30 @@ class _PasswdCardState extends State<PasswdCard> {
               ),
             ],
           ),
-          // IconButton(
-          //     onPressed: () async {
-          //       var pss = PasswordDecrypter();
-          //       final decryptedPassword = await pss.getDecryptedPassword(
-          //           widget.password, widget.password_key);
-          //       var res = await Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => EditPassword(
-          //               widget.domain, decryptedPassword, widget.entry_id),
-          //         ),
-          //       );
-          //     },
-          //     icon: Icon(Icons.edit)),
+          IconButton(
+              onPressed: () async {
+                var pss = PasswordDecrypter();
+                // final decryptedPassword = await pss.getDecryptedPassword(
+                //     widget.password, widget.password_key);
+                var masterPassword =
+                    await secureStorage.read(key: 'masterPassword');
+                final decryptedPassword = await pss.getDecryptedPassword(
+                    widget.password,
+                    widget.randForKeyToStore,
+                    widget.randForIV,
+                    masterPassword);
+                print(decryptedPassword);
+                print(widget.domain);
+                print(widget.entry_id);
+                var res = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditPassword(
+                        widget.domain, decryptedPassword, widget.entry_id),
+                  ),
+                );
+              },
+              icon: Icon(Icons.edit)),
         ],
       ),
     );

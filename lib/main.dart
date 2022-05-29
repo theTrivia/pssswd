@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localstorage/localstorage.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
 import 'package:pssswd/functions/userLogin.dart';
 import 'package:pssswd/functions/userSignup.dart';
-import 'package:pssswd/providers/userDetails.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 import 'package:pssswd/screens/landingPage.dart';
@@ -53,16 +51,10 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-initializeStorage() async {
-  final LocalStorage storage = new LocalStorage('pssswd');
-  await storage.ready;
-}
-
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-    initializeStorage();
   }
 
   @override

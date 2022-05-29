@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:localstorage/localstorage.dart';
+
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../functions/masterPasswordHash.dart';
-import '../providers/userDetails.dart';
+
 import '../providers/user_entries.dart';
 import 'appMainPage.dart';
 
@@ -138,8 +137,6 @@ class _LandingPageState extends State<LandingPage> {
                     isUserLoggedInUsingEmailPassword == null)
                   ElevatedButton(
                     onPressed: () async {
-                      final LocalStorage storage = new LocalStorage('pssswd');
-
                       // var abc =
                       //     storage.getItem('isUserLoggedInUsingEmailPassword');
                       // print(abc);

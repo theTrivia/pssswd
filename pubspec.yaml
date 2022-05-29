@@ -44,8 +44,6 @@ dependencies:
   fluttertoast: ^8.0.9
   firebase_auth: ^3.3.19
   firebase_auth_web: ^3.3.16
-  localstorage: any
-  shared_preferences: ^2.0.15
   flutter_secure_storage: ^5.0.2
   crypto: ^3.0.2
   

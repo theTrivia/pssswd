@@ -47,6 +47,7 @@ class _PasswdListState extends State<PasswdList> {
                           ['randForKeyToStore'],
                       context.watch<UserEntries>().entries[index]['data']
                           ['randForIV'],
+                      context.watch<UserEntries>().entries[index]['entry_id'],
                     ),
                   ],
                 );

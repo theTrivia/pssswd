@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:pssswd/functions/passwordEncrypter.dart';
 
-import '../providers/userDetails.dart';
 import '../providers/user_entries.dart';
 
 class ChangePassword extends StatelessWidget {
@@ -23,8 +23,25 @@ class ChangePassword extends StatelessWidget {
         var db = FirebaseFirestore.instance;
         // print('----------------');
         // print(newPassword);
-        await db.collection('password_entries').doc(entry_id).update(
-            {'password': newPassword}).then((value) => print('doc edited'));
+        // print(entry_id);
+        // print(domain);
+        // print(newPassword);
+
+        //need t0 change the encrypted password after changing the password
+        // store it to the database
+
+        var _masterPassword = await secureStorage.read(key: 'masterPassword');
+
+        final ep = PasswordEnrypter();
+        final encryptedPasswordMap =
+            await ep.encryptPassword(newPassword, _masterPassword);
+
+        await db.collection('password_entries').doc(entry_id).update({
+          "password": encryptedPasswordMap['encryptedPassword'],
+          "randForKeyToStore": encryptedPasswordMap['randForKeyToStore'],
+          "randForIV": encryptedPasswordMap['randForIV'],
+        }).then((value) => print('doc edited'));
+
         await Provider.of<UserEntries>(context, listen: false).fetchEntries();
         Fluttertoast.showToast(
             msg: 'Your password for entry ${domain} has been changed');

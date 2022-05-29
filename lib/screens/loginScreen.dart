@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:localstorage/localstorage.dart';
+
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
-import 'package:pssswd/functions/localStorageReadWriteData.dart';
+
 import 'package:pssswd/functions/masterPasswordHash.dart';
 import 'package:pssswd/functions/userLogin.dart';
 import 'package:pssswd/models/User.dart';
-import 'package:pssswd/providers/userDetails.dart';
+
 import 'package:pssswd/screens/appMainPage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/loginFailure.dart';
 import '../providers/user_entries.dart';

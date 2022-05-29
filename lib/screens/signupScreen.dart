@@ -4,11 +4,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
 import 'package:pssswd/functions/userSignup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
-import '../providers/userDetails.dart';
+
 import '../providers/user_entries.dart';
 
 class SignupScreen extends StatefulWidget {

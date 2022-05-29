@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/deletePasswordEntry.dart';
@@ -23,6 +24,8 @@ class EditPassword extends StatefulWidget {
 class _EditPasswordState extends State<EditPassword> {
   @override
   final newPasswordController = TextEditingController();
+
+  // final secureStorage = new FlutterSecureStorage();
 
   TextEditingController get newDomainContrEditollerc =>
       TextEditingController(text: widget.domain);

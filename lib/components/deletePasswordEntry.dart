@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/userDetails.dart';
 import '../providers/user_entries.dart';
 
 class DeletePasswordEntry extends StatelessWidget {
@@ -45,8 +44,7 @@ class DeletePasswordEntry extends StatelessWidget {
                         Fluttertoast.showToast(
                           msg: "Password has been deleted",
                         );
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
+                        Navigator.pushNamed(context, '/appMainPage');
                       },
                       child: Text('Yes Daddy, let me delete my entry uWu'),
                       style: ElevatedButton.styleFrom(primary: Colors.red),

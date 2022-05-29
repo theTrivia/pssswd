@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
 
 import 'package:pssswd/models/passwd.dart';
-import 'package:pssswd/providers/userDetails.dart';
+
 import 'package:pssswd/providers/user_entries.dart';
 
 class AddPasswd extends StatefulWidget {
@@ -92,6 +92,7 @@ class _AddPasswdState extends State<AddPasswd> {
                     var pss = PasswordEnrypter();
                     final encryptedPasswordMap = await pss.encryptPassword(
                         newEntry.password, masterPassword);
+
                     // final encryptedPasswordMap =
                     //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
 
@@ -124,8 +125,10 @@ class _AddPasswdState extends State<AddPasswd> {
                         .collection('password_entries')
                         .add(newEntryPush)
                         .then(
-                          (value) => print('submitted: ${value.id}'),
-                        );
+                      (value) {
+                        print('submitted: ${value.id}');
+                      },
+                    );
 
                     await Provider.of<UserEntries>(context, listen: false)
                         .fetchEntries();

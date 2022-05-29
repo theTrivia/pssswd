@@ -2,11 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../providers/userDetails.dart';
 import 'addPasswd.dart';
 import 'passwdList.dart';
 import '../providers/user_entries.dart';
@@ -39,10 +36,6 @@ class _AppMainPageState extends State<AppMainPage> {
             child: GestureDetector(
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
-                // final prefs = await SharedPreferences.getInstance();
-                // await prefs.remove('isUserLoggedInUsingEmailPassword');
-                // await prefs.remove('masterPasswordHash');
-                // await prefs.remove('loggedInUserId');
 
                 await secureStorage.deleteAll();
 
