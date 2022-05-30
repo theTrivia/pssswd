@@ -33,6 +33,7 @@ class _EditPasswordState extends State<EditPassword> {
   var newPasswordValue = '';
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     // print(widget.password);
     return Scaffold(
         appBar: AppBar(
@@ -46,7 +47,9 @@ class _EditPasswordState extends State<EditPassword> {
                 width: double.infinity,
                 height: 50,
                 child: Text(
-                  widget.domain,
+                  (widget.domain.length > 10
+                      ? '${widget.domain.substring(0, 7)}...'
+                      : widget.domain),
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -55,14 +58,17 @@ class _EditPasswordState extends State<EditPassword> {
               ),
             ),
             Text('Current Password: ${widget.password}'),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Enter new Password'),
-              controller: newPasswordController,
-              onChanged: (text) {
-                setState(() {
-                  newPasswordValue = text;
-                });
-              },
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Enter new Password'),
+                controller: newPasswordController,
+                onChanged: (text) {
+                  setState(() {
+                    newPasswordValue = text;
+                  });
+                },
+              ),
             ),
             ChangePassword(widget.entry_id, widget.domain, newPasswordValue),
             DeletePasswordEntry(widget.entry_id),

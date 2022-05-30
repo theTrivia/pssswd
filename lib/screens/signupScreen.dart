@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
 import 'package:pssswd/functions/userSignup.dart';
+import 'package:slider_button/slider_button.dart';
 
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
@@ -163,21 +164,91 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ],
                                 ),
                               if (_userGaveMasterPassword)
-                                ButtonTheme(
-                                  minWidth: mediaQuery.size.width * 0.8,
-                                  child: RaisedButton(
-                                    onPressed: () async {
-                                      // final prefs = await SharedPreferences.getInstance();
+                                //Default button
+                                // ButtonTheme(
+                                //   minWidth: mediaQuery.size.width * 0.8,
+                                //   child: RaisedButton(
+                                //     onPressed: () async {
+                                //       // final prefs = await SharedPreferences.getInstance();
 
+                                //       await secureStorage.write(
+                                //           key:
+                                //               'isUserLoggedInUsingEmailPassword',
+                                //           value: 'true');
+
+                                //       //Password Hasing logic
+                                //       var hp = MasterPasswordHash();
+                                //       var hashedPassword =
+                                //           hp.hashMasterPassword(
+                                //               masterPasswordController.text);
+                                //       print(
+                                //           'hashed password from signup screen ->>>>> ${hashedPassword}');
+
+                                //       var db = FirebaseFirestore.instance;
+                                //       final signedUser = {
+                                //         'uniqueUserId': user.uniqueUserId,
+                                //         'isNewUser': user.isNewUser,
+                                //         'email': user.email,
+                                //         'masterPasswordHash': hashedPassword,
+                                //         'isEmailVerified': user.isEmailVerified,
+                                //         'creationTime': user.creationTime
+                                //       };
+
+                                //       await db
+                                //           .collection('users')
+                                //           .doc(signedUser['uniqueUserId'])
+                                //           .set(signedUser)
+                                //           .then((value) => print('value set'));
+
+                                //       await secureStorage.write(
+                                //           key: 'loggedInUserId',
+                                //           value: signedUser['uniqueUserId']);
+                                //       await secureStorage.write(
+                                //           key: 'email',
+                                //           value: signedUser['email']);
+                                //       await secureStorage.write(
+                                //           key: 'masterPasswordHash',
+                                //           value: hashedPassword);
+                                //       var masterPassword =
+                                //           await secureStorage.write(
+                                //               key: 'masterPassword',
+                                //               value: masterPasswordController
+                                //                   .text);
+
+                                //       print(
+                                //           'Hashed password from signup screen------------->${hashedPassword}');
+
+                                //       // final prefs = await SharedPreferences.getInstance();
+
+                                //       Navigator.pushNamed(
+                                //         context,
+                                //         '/appMainPage',
+                                //       );
+                                //     },
+                                //     shape: StadiumBorder(),
+                                //     child: Text(
+                                //       'You are good to go!!! Lets go',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.white,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+
+                                Center(
+                                  child: SliderButton(
+                                    height:
+                                        null ?? mediaQuery.size.height * 0.07,
+                                    buttonSize:
+                                        null ?? mediaQuery.size.height * 0.07,
+                                    width: null ?? mediaQuery.size.width * 0.6,
+                                    action: () async {
                                       await secureStorage.write(
                                           key:
                                               'isUserLoggedInUsingEmailPassword',
                                           value: 'true');
-                                      // print('----------------------${signedUser}');
-                                      // final secureStorage = new FlutterSecureStorage();
-                                      // var hashedMasterPassword = secureStorage
-                                      //     .read(key: 'masterPassword')
-                                      //     .then((password) async {
+
                                       //Password Hasing logic
                                       var hp = MasterPasswordHash();
                                       var hashedPassword =
@@ -201,8 +272,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .doc(signedUser['uniqueUserId'])
                                           .set(signedUser)
                                           .then((value) => print('value set'));
-                                      // Provider.of<UserDetails>(context, listen: false)
-                                      //     .setUserDetails(signedUser);
 
                                       await secureStorage.write(
                                           key: 'loggedInUserId',
@@ -219,14 +288,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                               value: masterPasswordController
                                                   .text);
 
-                                      // Provider.of<UserEntries>(context, listen: false)
-                                      //     .setUid(signedUser['uniqueUserId']);
-
-                                      // await prefs.setString(
-                                      //     'loggedInUserId', signedUser['uniqueUserId']);
-                                      // await prefs.setString(
-                                      //     'masterPasswordHash', hashedPassword);
-
                                       print(
                                           'Hashed password from signup screen------------->${hashedPassword}');
 
@@ -237,12 +298,19 @@ class _SignupScreenState extends State<SignupScreen> {
                                         '/appMainPage',
                                       );
                                     },
-                                    shape: StadiumBorder(),
-                                    child: Text(
-                                      'You are good to go!!! Lets go',
+                                    label: Text(
+                                      'Lets save pssswd',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                          color: Color(0xff4a4a4a),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17),
+                                    ),
+                                    icon: Text(
+                                      'x',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 35,
                                       ),
                                     ),
                                   ),

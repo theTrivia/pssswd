@@ -35,15 +35,45 @@ class _AppMainPageState extends State<AppMainPage> {
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: GestureDetector(
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
+              // onTap: () async {
+              //   await FirebaseAuth.instance.signOut();
 
-                await secureStorage.deleteAll();
-                await Provider.of<UserEntries>(context, listen: false)
-                    .setEntriesToNull();
+              //   await secureStorage.deleteAll();
+              //   await Provider.of<UserEntries>(context, listen: false)
+              //       .setEntriesToNull();
 
-                Navigator.pushNamed(context, '/');
+              //   Navigator.pushNamed(context, '/');
+              // },
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('Log Out?'),
+                          content: Text('Are you sure you want to logout?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Go Back'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
+
+                                await secureStorage.deleteAll();
+                                await Provider.of<UserEntries>(context,
+                                        listen: false)
+                                    .setEntriesToNull();
+
+                                Navigator.pushNamed(context, '/');
+                              },
+                              child: Text('Logout'),
+                            ),
+                          ],
+                        ));
               },
+
               child: Icon(Icons.logout),
             ),
           ),

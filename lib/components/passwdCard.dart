@@ -68,7 +68,7 @@ class _PasswdCardState extends State<PasswdCard> {
                 // color: Colors.amber,
                 width: mediaQuery.size.width * 0.65,
                 child: Text(
-                  (widget.domain.length > 10
+                  (widget.domain.length > 15
                       ? '${widget.domain.substring(0, 15)}...'
                       : widget.domain),
                   style: TextStyle(
