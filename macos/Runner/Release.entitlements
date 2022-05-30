@@ -10,7 +10,7 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.soham.pssswd</string>
+		<string>$(AppIdentifierPrefix)com.example.pssswd</string>
 	</array>
 </dict>
 </plist>
