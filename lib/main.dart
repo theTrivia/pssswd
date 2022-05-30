@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,13 @@ import 'firebase_options.dart';
 import 'package:pssswd/screens/addPasswd.dart';
 import 'package:pssswd/screens/passwdList.dart';
 
+import 'functions/materialColorGenerator.dart';
 import 'screens/appMainPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await dotenv.load(fileName: '.env');
-  await FlutterConfig.loadEnvVariables();
+  // await FlutterConfig.loadEnvVariables();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -38,9 +39,6 @@ void main() async {
       ChangeNotifierProvider(
         create: (_) => UserEntries(),
       ),
-      // ChangeNotifierProvider(
-      //   create: (_) => UserDetails(),
-      // ),
     ],
     child: MyApp(),
   ));
@@ -53,26 +51,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    // TODO: implement initState
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // final Color color = HexColor.fromHex('#aabbcc');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: LandingPage(),
-
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     title: Text('Pssswd'),
-      //   ),
-      //   body: AppMainPage(),
-      // ),
-      // routes: {
-      //   '/addPasswd': (context) => AddPasswd(fetchEntries),
-      // },
-
+      theme: ThemeData(
+        primarySwatch: MaterialColorGenerator.createMaterialColor(
+            Color.fromARGB(247, 14, 14, 14)),
+        // textSelectionColor: createMaterialColor(Color(0xFF636363)),
+      ),
       initialRoute: '/',
       routes: {
         "/": (context) => LandingPage(),

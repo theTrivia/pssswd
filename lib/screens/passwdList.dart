@@ -20,40 +20,47 @@ class _PasswdListState extends State<PasswdList> {
   Widget build(BuildContext context) {
     // var _uid = context.watch<UserDetails>().getUserDetails['uniqueUserId'];
     // var userUniqueIdentity = context.watch<UserDetails>().getUserDetails;
-    return FutureBuilder(
-        future: Provider.of<UserEntries>(context, listen: false).fetchEntries(),
-        builder: (context, snapshot) {
-          if (context.watch<UserEntries>().entries == null) {
-            return Text('Loading');
-          }
+    final mediaQuery = MediaQuery.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: FutureBuilder(
+          future:
+              Provider.of<UserEntries>(context, listen: false).fetchEntries(),
+          builder: (context, snapshot) {
+            if (context.watch<UserEntries>().entries == null) {
+              return Text('Loading');
+            }
 
-          return Container(
-            height: 680,
-            child: ListView.builder(
-              itemCount: context.watch<UserEntries>().entries.length,
-              itemBuilder: (ctx, index) {
-                // print(context.watch<UserEntries>().entries.length);
+            return Container(
+              height: (mediaQuery.size.height - AppBar().preferredSize.height) *
+                  0.79,
+              child: ListView.builder(
+                itemCount: context.watch<UserEntries>().entries.length,
+                itemBuilder: (ctx, index) {
+                  // print(context.watch<UserEntries>().entries.length);
 
-                // final decryptedPassword =
-                //     pss.getDecryptedPassword(newEntry.password);
-                return Column(
-                  children: [
-                    PasswdCard(
-                      context.watch<UserEntries>().entries[index]['data']
-                          ['domain'],
-                      context.watch<UserEntries>().entries[index]['data']
-                          ['password'],
-                      context.watch<UserEntries>().entries[index]['data']
-                          ['randForKeyToStore'],
-                      context.watch<UserEntries>().entries[index]['data']
-                          ['randForIV'],
-                      context.watch<UserEntries>().entries[index]['entry_id'],
-                    ),
-                  ],
-                );
-              },
-            ),
-          );
-        });
+                  // final decryptedPassword =
+                  //     pss.getDecryptedPassword(newEntry.password);
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PasswdCard(
+                        context.watch<UserEntries>().entries[index]['data']
+                            ['domain'],
+                        context.watch<UserEntries>().entries[index]['data']
+                            ['password'],
+                        context.watch<UserEntries>().entries[index]['data']
+                            ['randForKeyToStore'],
+                        context.watch<UserEntries>().entries[index]['data']
+                            ['randForIV'],
+                        context.watch<UserEntries>().entries[index]['entry_id'],
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          }),
+    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../functions/masterPasswordHash.dart';
 
+import '../functions/materialColorGenerator.dart';
 import '../providers/user_entries.dart';
 import 'appMainPage.dart';
 
@@ -17,25 +18,13 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   final secureStorage = new FlutterSecureStorage();
-
-  var isUserLoggedInUsingEmailPassword;
   final masterPasswordController = TextEditingController();
 
+  var isUserLoggedInUsingEmailPassword;
+
   fetchisUserLoggedInUsingEmailPassword() async {
-    // final LocalStorage storage = new LocalStorage('pssswd');
-    // await storage.ready;
-
-    // isUserLoggedInUsingMasterPassword =
-    //     storage.getItem('isUserLoggedInUsingMasterPassword');
-
-    // print('aaaaaaaaaaaaa before-> ${isUserLoggedInUsingMasterPassword}');
-    // final prefs = await SharedPreferences.getInstance();
     var isUserLoggedInUsingEmailPasswordFromDisk =
         await secureStorage.read(key: 'isUserLoggedInUsingEmailPassword');
-
-    // var isUserLoggedInUsingEmailPasswordFromDisk =
-    //     prefs.getBool('isUserLoggedInUsingEmailPassword');
-    print('aaaaaaaaaaaaa before-> ${isUserLoggedInUsingEmailPasswordFromDisk}');
     setState(() {
       isUserLoggedInUsingEmailPassword =
           isUserLoggedInUsingEmailPasswordFromDisk;
@@ -52,108 +41,144 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
-      // appBar: AppBar(title: Text('pssswd')),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset(
-              'assets/images/pssswd.jpeg',
-              // height: 100,
-              // width: 100,
+            Container(
+              // color: Colors.amber,
+              height: (mediaQuery.size.height -
+                      mediaQuery.padding.top -
+                      mediaQuery.padding.bottom) *
+                  0.5,
+              child: Image.asset(
+                'assets/images/lastpass.png',
+              ),
             ),
             if (isUserLoggedInUsingEmailPassword == 'true')
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              Container(
+                // color: Colors.blue,
+                height: mediaQuery.size.height * 0.3,
                 child: Column(
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Master Password'),
-                      controller: masterPasswordController,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Master Password',
+                        ),
+                        controller: masterPasswordController,
+                      ),
                     ),
-                    RaisedButton(
-                      onPressed: () async {
-                        // await Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => AppMainPage(),
-                        //   ),
-                        // );
-                        // final prefs = await SharedPreferences.getInstance();
-                        // var masterPasswordHash = prefs.getString(
-                        //   'masterPasswordHash',
-                        // );
+                    ButtonTheme(
+                      shape: StadiumBorder(),
+                      minWidth: mediaQuery.size.width * 0.8,
+                      child: RaisedButton(
+                        onPressed: () async {
+                          var masterPasswordHash = await secureStorage.read(
+                              key: 'masterPasswordHash');
 
-                        var masterPasswordHash =
-                            await secureStorage.read(key: 'masterPasswordHash');
+                          print('-----------${masterPasswordHash}');
 
-                        print('-----------${masterPasswordHash}');
-                        // if (masterPasswordHash == null) {
-                        //   Navigator.pushNamed(context, '/login');
-                        // }
+                          final mph = MasterPasswordHash();
+                          var res = mph.checkIfMasterPasswordValid(
+                              masterPasswordController.text,
+                              masterPasswordHash);
+                          print(res);
 
-                        final mph = MasterPasswordHash();
-                        var res = mph.checkIfMasterPasswordValid(
-                            masterPasswordController.text, masterPasswordHash);
-                        print(res);
+                          if (res == true) {
+                            final secureStorage = new FlutterSecureStorage();
+                            var masterPassword = await secureStorage.write(
+                                key: 'masterPassword',
+                                value: masterPasswordController.text);
 
-                        if (res == true) {
-                          final secureStorage = new FlutterSecureStorage();
-                          var masterPassword = await secureStorage.write(
-                              key: 'masterPassword',
-                              value: masterPasswordController.text);
+                            var userId =
+                                await secureStorage.read(key: 'loggedInUserId');
 
-                          // if (_isMasterPasswordPresent != null) {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppMainPage(),
+                              ),
+                            );
+                            // }
+                          } else {
+                            print('you are an idiot!!!');
 
-                          // var userId = await prefs.getString('loggedInUserId');
-                          var userId =
-                              await secureStorage.read(key: 'loggedInUserId');
-                          // Provider.of<UserEntries>(context, listen: false)
-                          //     .setUid(userId);
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppMainPage(),
-                            ),
-                          );
-                          // }
-                        } else {
-                          print('you are an idiot!!!');
-
-                          return;
-                        }
-                      },
-                      child: Text('Login'),
+                            return;
+                          }
+                        },
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // if (isUserLoggedInUsingMasterPassword)
-                if (isUserLoggedInUsingEmailPassword == "false" ||
-                    isUserLoggedInUsingEmailPassword == null)
-                  ElevatedButton(
-                    onPressed: () async {
-                      // var abc =
-                      //     storage.getItem('isUserLoggedInUsingEmailPassword');
-                      // print(abc);
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: Text('Login'),
+            if (isUserLoggedInUsingEmailPassword != 'true')
+              Container(
+                height: (mediaQuery.size.height -
+                        mediaQuery.padding.top -
+                        mediaQuery.padding.bottom) *
+                    0.45,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (isUserLoggedInUsingEmailPassword == "false" ||
+                        isUserLoggedInUsingEmailPassword == null)
+                      ButtonTheme(
+                        minWidth: mediaQuery.size.width * 0.7,
+                        child: RaisedButton(
+                          shape: StadiumBorder(),
+                          onPressed: () async {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                color:
+                                    MaterialColorGenerator.createMaterialColor(
+                                  Color.fromARGB(247, 220, 220, 220),
+                                ),
+                                fontWeight: FontWeight.w800),
+                          ),
+                        ),
+                      ),
+                    if (isUserLoggedInUsingEmailPassword == "false" ||
+                        isUserLoggedInUsingEmailPassword == null)
+                      ButtonTheme(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                          child: Text('New To pssswd? Lets Sign Up'),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+            if (isUserLoggedInUsingEmailPassword == 'false')
+              Container(
+                height: (mediaQuery.size.height -
+                        mediaQuery.padding.top -
+                        mediaQuery.padding.bottom) *
+                    0.05,
+                child: Text(
+                  'Made in 🇮🇳 with ❤️ by Soham Pal',
+                  style: TextStyle(
+                    color: MaterialColorGenerator.createMaterialColor(
+                        Color.fromARGB(247, 14, 14, 14)),
                   ),
-                if (isUserLoggedInUsingEmailPassword == "false" ||
-                    isUserLoggedInUsingEmailPassword == null)
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
-                    child: Text('Sign Up'),
-                  )
-              ],
-            )
+                ),
+              )
           ],
         ),
       ),

@@ -38,6 +38,11 @@ class UserEntries extends ChangeNotifier {
   //   });
   // }
 
+  setEntriesToNull() {
+    _entries = null;
+    notifyListeners();
+  }
+
   fetchEntries() async {
     print(_uid);
     var db = FirebaseFirestore.instance;

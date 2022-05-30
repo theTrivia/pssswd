@@ -46,6 +46,7 @@ dependencies:
   firebase_auth_web: ^3.3.16
   flutter_secure_storage: ^5.0.2
   crypto: ^3.0.2
+  hexcolor: ^2.0.7
   
 
 dev_dependencies:
@@ -75,6 +76,7 @@ flutter:
   assets:
     - .env
     - assets/images/pssswd.jpeg
+    - assets/images/lastpass.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

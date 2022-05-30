@@ -38,6 +38,7 @@ class _PasswdCardState extends State<PasswdCard> {
   @override
   Widget build(BuildContext context) {
     final passwd;
+    final mediaQuery = MediaQuery.of(context);
 
     passwd = widget.password;
     var editedVal;
@@ -53,10 +54,29 @@ class _PasswdCardState extends State<PasswdCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.domain),
-              SizedBox(
-                width: 210,
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 8.0),
+              //   child: Container(
+              //     color: Colors.pink,
+              //     width: mediaQuery.size.width * 0.05,
+              //     child: Card(
+              //       child: Text(' '),
+              //     ),
+              //   ),
+              // ),
+              Container(
+                // color: Colors.amber,
+                width: mediaQuery.size.width * 0.65,
+                child: Text(
+                  (widget.domain.length > 10
+                      ? '${widget.domain.substring(0, 15)}...'
+                      : widget.domain),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
+
               IconButton(
                 onPressed: () async {
                   final secureStorage = new FlutterSecureStorage();

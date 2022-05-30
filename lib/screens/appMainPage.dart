@@ -24,6 +24,7 @@ class _AppMainPageState extends State<AppMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final secureStorage = new FlutterSecureStorage();
 
     return Scaffold(
@@ -38,6 +39,8 @@ class _AppMainPageState extends State<AppMainPage> {
                 await FirebaseAuth.instance.signOut();
 
                 await secureStorage.deleteAll();
+                await Provider.of<UserEntries>(context, listen: false)
+                    .setEntriesToNull();
 
                 Navigator.pushNamed(context, '/');
               },
@@ -49,19 +52,58 @@ class _AppMainPageState extends State<AppMainPage> {
       body: Column(
         children: [
           PasswdList(),
-          RaisedButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddPasswd(),
+          Container(
+            // color: Colors.amber,
+            height:
+                (mediaQuery.size.height - AppBar().preferredSize.height) * 0.10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ButtonTheme(
+                  height: mediaQuery.size.height * 0.05,
+                  minWidth: mediaQuery.size.width * 0.9,
+                  // height: mediaQuery.size.height * 0.05,
+                  child: RaisedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddPasswd(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Add pssswd',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    shape: StadiumBorder(),
+                  ),
                 ),
-              );
-            },
-            child: Text('Add pssswd'),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+
+
+// ButtonTheme(
+//               height: mediaQuery.size.height * 0.05,
+//               child: ElevatedButton(
+//                 onPressed: () async {
+//                   await Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => AddPasswd(),
+//                     ),
+//                   );
+//                 },
+//                 child: Text('Add pssswd'),
+//               ),
+//             ),
