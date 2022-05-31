@@ -165,7 +165,7 @@ class _LandingPageState extends State<LandingPage> {
                   ],
                 ),
               ),
-            if (isUserLoggedInUsingEmailPassword == 'false')
+            if (isUserLoggedInUsingEmailPassword != 'true')
               Container(
                 height: (mediaQuery.size.height -
                         mediaQuery.padding.top -
