@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
@@ -27,107 +28,115 @@ class _AppMainPageState extends State<AppMainPage> {
     final mediaQuery = MediaQuery.of(context);
     final secureStorage = new FlutterSecureStorage();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('pssswd'),
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              // onTap: () async {
-              //   await FirebaseAuth.instance.signOut();
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('pssswd'),
+          automaticallyImplyLeading: false,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                // onTap: () async {
+                //   await FirebaseAuth.instance.signOut();
 
-              //   await secureStorage.deleteAll();
-              //   await Provider.of<UserEntries>(context, listen: false)
-              //       .setEntriesToNull();
+                //   await secureStorage.deleteAll();
+                //   await Provider.of<UserEntries>(context, listen: false)
+                //       .setEntriesToNull();
 
-              //   Navigator.pushNamed(context, '/');
-              // },
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          title: Text('Log Out?'),
-                          content: Text(
-                            'Are you sure you want to logout?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Go Back',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                //   Navigator.pushNamed(context, '/');
+                // },
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Log Out?'),
+                            content: Text(
+                              'Are you sure you want to logout?',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            TextButton(
-                              onPressed: () async {
-                                await FirebaseAuth.instance.signOut();
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Go Back',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await FirebaseAuth.instance.signOut();
 
-                                await secureStorage.deleteAll();
-                                await Provider.of<UserEntries>(context,
-                                        listen: false)
-                                    .setEntriesToNull();
+                                  await secureStorage.deleteAll();
+                                  await Provider.of<UserEntries>(context,
+                                          listen: false)
+                                      .setEntriesToNull();
 
-                                Navigator.pushNamed(context, '/');
-                              },
-                              child: Text('Logout'),
-                            ),
-                          ],
-                        ));
-              },
+                                  Navigator.pushNamed(context, '/');
+                                },
+                                child: Text('Logout'),
+                              ),
+                            ],
+                          ));
+                },
 
-              child: Icon(Icons.logout),
+                child: Icon(Icons.logout),
+              ),
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          PasswdList(),
-          Container(
-            // color: Colors.amber,
-            height:
-                (mediaQuery.size.height - AppBar().preferredSize.height) * 0.10,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonTheme(
-                  height: mediaQuery.size.height * 0.05,
-                  minWidth: mediaQuery.size.width * 0.9,
-                  // height: mediaQuery.size.height * 0.05,
-                  child: RaisedButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddPasswd(),
+          ],
+        ),
+        body: Column(
+          children: [
+            PasswdList(),
+            Container(
+              // color: Colors.amber,
+              height: (mediaQuery.size.height - AppBar().preferredSize.height) *
+                  0.10,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ButtonTheme(
+                    height: mediaQuery.size.height * 0.05,
+                    minWidth: mediaQuery.size.width * 0.9,
+                    // height: mediaQuery.size.height * 0.05,
+                    child: RaisedButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddPasswd(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Add pssswd',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
-                    child: const Text(
-                      'Add pssswd',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
                       ),
+                      shape: StadiumBorder(),
                     ),
-                    shape: StadiumBorder(),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      onWillPop: onWillPop,
     );
+  }
+
+  Future<bool> onWillPop() {
+    // SystemNavigator.pop();
+    return Future.value(false);
   }
 }
 
