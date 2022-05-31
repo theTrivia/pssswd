@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pinput/pinput.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
@@ -28,7 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   var _isMasterPasswordPresent;
   var loggedInUser;
   final secureStorage = FlutterSecureStorage();
-
+  final GlobalKey<FormState> _masterPasswordFormValidationKey =
+      GlobalKey<FormState>();
   // final _loginFormValidationKey<FormState> = GlobalKey<FormState>();
 
   @override
@@ -44,6 +46,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: Color.fromARGB(255, 42, 49, 56)),
+      borderRadius: BorderRadius.circular(8),
+    );
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
@@ -79,73 +97,95 @@ class _LoginScreenState extends State<LoginScreen> {
                 //   height: mediaQuery.size.height * 0.05,
                 // ),
                 (_isMasterPasswordPresent == null && _userDidLogin == true)
-                    ? Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: 'Enter your master password'),
-                              controller: masterPasswordController,
-                            ),
-                          ),
-                          ButtonTheme(
-                            minWidth: mediaQuery.size.width * 0.8,
-                            child: RaisedButton(
-                              onPressed: () async {
-                                var masterPasswordHash =
-                                    loggedInUser['masterPasswordHash'];
-
-                                final mph = MasterPasswordHash();
-                                var res = mph.checkIfMasterPasswordValid(
-                                    masterPasswordController.text,
-                                    masterPasswordHash);
-                                print(res);
-
-                                if (res == true) {
-                                  final secureStorage =
-                                      new FlutterSecureStorage();
-                                  var masterPassword =
-                                      await secureStorage.write(
-                                          key: 'masterPassword',
-                                          value: masterPasswordController.text);
-                                  _isMasterPasswordPresent = await secureStorage
-                                      .read(key: 'masterPassword');
-                                  print(_isMasterPasswordPresent);
-
-                                  if (_isMasterPasswordPresent != null) {
-                                    await secureStorage.write(
-                                        key: 'loggedInUserId',
-                                        value: loggedInUser['uniqueUserId']);
-                                    await secureStorage.write(
-                                        key: 'email',
-                                        value: loggedInUser['email']);
-                                    await secureStorage.write(
-                                        key: 'masterPasswordHash',
-                                        value: masterPasswordHash);
-
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => AppMainPage(),
-                                      ),
-                                    );
+                    ? Form(
+                        key: _masterPasswordFormValidationKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
+                              // child: TextFormField(
+                              //   decoration: InputDecoration(
+                              //       hintText: 'Enter your master password'),
+                              //   controller: masterPasswordController,
+                              // ),
+                              child: Pinput(
+                                length: 5,
+                                defaultPinTheme: defaultPinTheme,
+                                focusedPinTheme: focusedPinTheme,
+                                controller: masterPasswordController,
+                                onCompleted: (pin) => print(pin),
+                                validator: (val) {
+                                  if (val == '') {
+                                    return "Please provide your master password.";
                                   }
-                                } else {
-                                  print('you are an idiot!!!');
-                                  return;
-                                }
-                              },
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
+                                  return null;
+                                },
                               ),
-                              shape: StadiumBorder(),
                             ),
-                          ),
-                        ],
+                            ButtonTheme(
+                              minWidth: mediaQuery.size.width * 0.8,
+                              child: RaisedButton(
+                                onPressed: () async {
+                                  if (_masterPasswordFormValidationKey
+                                      .currentState!
+                                      .validate()) {}
+                                  var masterPasswordHash =
+                                      loggedInUser['masterPasswordHash'];
+
+                                  final mph = MasterPasswordHash();
+                                  var res = mph.checkIfMasterPasswordValid(
+                                      masterPasswordController.text,
+                                      masterPasswordHash);
+                                  print(res);
+
+                                  if (res == true) {
+                                    final secureStorage =
+                                        new FlutterSecureStorage();
+                                    var masterPassword =
+                                        await secureStorage.write(
+                                            key: 'masterPassword',
+                                            value:
+                                                masterPasswordController.text);
+                                    _isMasterPasswordPresent =
+                                        await secureStorage.read(
+                                            key: 'masterPassword');
+                                    print(_isMasterPasswordPresent);
+
+                                    if (_isMasterPasswordPresent != null) {
+                                      await secureStorage.write(
+                                          key: 'loggedInUserId',
+                                          value: loggedInUser['uniqueUserId']);
+                                      await secureStorage.write(
+                                          key: 'email',
+                                          value: loggedInUser['email']);
+                                      await secureStorage.write(
+                                          key: 'masterPasswordHash',
+                                          value: masterPasswordHash);
+
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AppMainPage(),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    print('you are an idiot!!!');
+                                    return;
+                                  }
+                                },
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                shape: StadiumBorder(),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     : Column(
                         children: [
