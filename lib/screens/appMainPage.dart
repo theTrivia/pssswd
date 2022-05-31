@@ -49,13 +49,23 @@ class _AppMainPageState extends State<AppMainPage> {
                     context: context,
                     builder: (context) => AlertDialog(
                           title: Text('Log Out?'),
-                          content: Text('Are you sure you want to logout?'),
+                          content: Text(
+                            'Are you sure you want to logout?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text('Go Back'),
+                              child: Text(
+                                'Go Back',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                             TextButton(
                               onPressed: () async {

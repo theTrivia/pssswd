@@ -30,38 +30,64 @@ class DeletePasswordEntry extends StatelessWidget {
                 child: Center(
                   child: Column(
                     children: [
-                      Text('Are you sure about deleting the entry?'),
-                      ElevatedButton(
-                        onPressed: () async {
-                          var db = FirebaseFirestore.instance;
-
-                          await db
-                              .collection("password_entries")
-                              .doc(entry_id)
-                              .delete()
-                              .then(
-                                (doc) => print("Document deleted"),
-                                onError: (e) =>
-                                    print("Error updating document $e"),
-                              );
-                          await Provider.of<UserEntries>(context, listen: false)
-                              .fetchEntries();
-                          Fluttertoast.showToast(
-                            msg: "Password has been deleted",
-                          );
-                          Navigator.pushNamed(context, '/appMainPage');
-                        },
-                        child: Text('Yes Daddy, let me delete my entry uWu'),
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
+                      Text(
+                        'Are you sure about deleting the entry?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // Navigator.of(context)
-                          //     .popUntil((route) => route.isFirst);
-                        },
-                        child: Text('No please Daddy let me go!!! uWu'),
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                      ButtonTheme(
+                        minWidth: mediaQuery.size.width * 0.8,
+                        shape: StadiumBorder(),
+                        buttonColor: Colors.red,
+                        child: RaisedButton(
+                          onPressed: () async {
+                            var db = FirebaseFirestore.instance;
+
+                            await db
+                                .collection("password_entries")
+                                .doc(entry_id)
+                                .delete()
+                                .then(
+                                  (doc) => print("Document deleted"),
+                                  onError: (e) =>
+                                      print("Error updating document $e"),
+                                );
+                            await Provider.of<UserEntries>(context,
+                                    listen: false)
+                                .fetchEntries();
+                            Fluttertoast.showToast(
+                              msg: "Password has been deleted",
+                            );
+                            Navigator.pushNamed(context, '/appMainPage');
+                          },
+                          child: Text(
+                            'Delete',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          // style: ElevatedButton.styleFrom(primary: Colors.red),
+                        ),
+                      ),
+                      ButtonTheme(
+                        minWidth: mediaQuery.size.width * 0.8,
+                        shape: StadiumBorder(),
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            // Navigator.of(context)
+                            //     .popUntil((route) => route.isFirst);
+                          },
+                          child: Text(
+                            'Go Back',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),

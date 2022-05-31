@@ -302,14 +302,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                       'Lets save pssswd',
                                       style: TextStyle(
                                           color: Color(0xff4a4a4a),
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 17),
                                     ),
                                     icon: Text(
-                                      'x',
+                                      'X',
                                       style: TextStyle(
                                         color: Colors.red,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 35,
                                       ),
                                     ),
@@ -335,70 +335,82 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                     if (isUserSignedUp == false)
-                      ElevatedButton(
-                        onPressed: () async {
-                          var signupObject = UserSignup();
-                          var signupResult = await signupObject.performSignup(
-                            emailController.text,
-                            passwordController.text,
-                          );
-                          print(signupResult);
+                      ButtonTheme(
+                        minWidth: mediaQuery.size.width * 0.8,
+                        shape: StadiumBorder(),
+                        child: RaisedButton(
+                          onPressed: () async {
+                            var signupObject = UserSignup();
+                            var signupResult = await signupObject.performSignup(
+                              emailController.text,
+                              passwordController.text,
+                            );
+                            print(signupResult);
 
-                          var isNewUser = signupResult['userCredential']
-                              .additionalUserInfo
-                              .isNewUser;
+                            var isNewUser = signupResult['userCredential']
+                                .additionalUserInfo
+                                .isNewUser;
 
-                          var email = signupResult['userCredential'].user.email;
-                          var isEmailVerified =
-                              signupResult['userCredential'].user.emailVerified;
+                            var email =
+                                signupResult['userCredential'].user.email;
+                            var isEmailVerified = signupResult['userCredential']
+                                .user
+                                .emailVerified;
 
-                          var creationTime = signupResult['userCredential']
-                              .user
-                              .metadata
-                              .creationTime;
-                          var uniqueUserId =
-                              signupResult['userCredential'].user.uid;
+                            var creationTime = signupResult['userCredential']
+                                .user
+                                .metadata
+                                .creationTime;
+                            var uniqueUserId =
+                                signupResult['userCredential'].user.uid;
 
-                          user = User(
-                              uniqueUserId: uniqueUserId,
-                              isNewUser: isNewUser,
-                              email: email,
-                              masterPasswordHash: 'coming-soon',
-                              isEmailVerified: isEmailVerified,
-                              creationTime: creationTime);
+                            user = User(
+                                uniqueUserId: uniqueUserId,
+                                isNewUser: isNewUser,
+                                email: email,
+                                masterPasswordHash: 'coming-soon',
+                                isEmailVerified: isEmailVerified,
+                                creationTime: creationTime);
 
-                          // signedUser = {
-                          //   'uniqueUserId': user.uniqueUserId,
-                          //   'isNewUser': user.isNewUser,
-                          //   'email': user.email,
-                          //   'masterPasswordHash': user.masterPasswordHash,
-                          //   'isEmailVerified': user.isEmailVerified,
-                          //   'creationTime': user.creationTime
-                          // };
-                          // print(signedUser);
+                            // signedUser = {
+                            //   'uniqueUserId': user.uniqueUserId,
+                            //   'isNewUser': user.isNewUser,
+                            //   'email': user.email,
+                            //   'masterPasswordHash': user.masterPasswordHash,
+                            //   'isEmailVerified': user.isEmailVerified,
+                            //   'creationTime': user.creationTime
+                            // };
+                            // print(signedUser);
 
-                          // print(signupResult);
-                          // if (signupResult['isUserNew']) {
-                          // print("is the user new??? ->   ${signupResult['isUserNew']}");
-                          // isUserSignedUp = signupResult['isUserNew'];
-                          isUserSignedUp = user.isNewUser;
-                          if (isUserSignedUp) {
-                            setState(() {
-                              isUserSignedUp = true;
-                            });
-                          }
+                            // print(signupResult);
+                            // if (signupResult['isUserNew']) {
+                            // print("is the user new??? ->   ${signupResult['isUserNew']}");
+                            // isUserSignedUp = signupResult['isUserNew'];
+                            isUserSignedUp = user.isNewUser;
+                            if (isUserSignedUp) {
+                              setState(() {
+                                isUserSignedUp = true;
+                              });
+                            }
 
-                          print(isUserSignedUp);
-                          // }
+                            print(isUserSignedUp);
+                            // }
 
-                          // if (signupResult == 'signup-success') {
-                          //   Navigator.pushNamed(
-                          //     context,
-                          //     '/appMainPage',
-                          //   );
-                          // }
-                        },
-                        child: Text('Signup'),
+                            // if (signupResult == 'signup-success') {
+                            //   Navigator.pushNamed(
+                            //     context,
+                            //     '/appMainPage',
+                            //   );
+                            // }
+                          },
+                          child: Text(
+                            'Signup',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                   ],
                 ),
