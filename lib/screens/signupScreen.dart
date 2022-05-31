@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
 import 'package:pssswd/functions/userSignup.dart';
@@ -31,8 +32,29 @@ class _SignupScreenState extends State<SignupScreen> {
   // var signedUser;
   var user;
 
+  final GlobalKey<FormState> _signupFormValidationKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _masterPasswordFormValidationKey =
+      GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: Color.fromARGB(255, 42, 49, 56)),
+      borderRadius: BorderRadius.circular(8),
+    );
+
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
@@ -75,92 +97,124 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Text(
                                         'Success!!! Now lets create your master password',
                                         style: TextStyle(fontSize: 15)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, right: 15),
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                            labelText:
-                                                '5 digit Master password'),
-                                        controller: masterPasswordController,
+                                    Form(
+                                      key: _masterPasswordFormValidationKey,
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15, right: 15),
+                                              // child: TextFormField(
+                                              //   decoration: InputDecoration(
+                                              //       labelText:
+                                              //           '5 digit Master password'),
+                                              //   controller: masterPasswordController,
+                                              // ),
+                                              child: Pinput(
+                                                length: 5,
+                                                defaultPinTheme:
+                                                    defaultPinTheme,
+                                                focusedPinTheme:
+                                                    focusedPinTheme,
+                                                controller:
+                                                    masterPasswordController,
+                                                onCompleted: (pin) =>
+                                                    print(pin),
+                                                validator: (val) {
+                                                  if (val == '') {
+                                                    return "Please provide your master password.";
+                                                  }
+                                                  return null;
+                                                },
+                                              )),
+                                          if (_userAckForMasterPassword ==
+                                              false)
+                                            ButtonTheme(
+                                              minWidth:
+                                                  mediaQuery.size.width * 0.8,
+                                              child: RaisedButton(
+                                                onPressed: () async {
+                                                  if (_masterPasswordFormValidationKey
+                                                      .currentState!
+                                                      .validate()) {}
+                                                  print(
+                                                    'master password ${masterPasswordController.text}',
+                                                  );
+                                                  if (masterPasswordController
+                                                          .text.length !=
+                                                      5) {
+                                                    print("Must be 5 chars");
+                                                    return;
+                                                  }
+                                                  final secureStorage =
+                                                      new FlutterSecureStorage();
+                                                  // await secureStorage.write(
+                                                  //   key: 'masterPassword',
+                                                  //   value: masterPasswordController.text,
+                                                  // );
+                                                  // secureStorage
+                                                  //     .read(key: 'masterPassword')
+                                                  //     .then((value) => print('master chief -> ${value}'));
+
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title: Text(
+                                                        'Master Password Acknowledgement',
+                                                        style: TextStyle(
+                                                            fontSize: 15),
+                                                      ),
+                                                      content: Text(
+                                                        'You should not forget this master password. Without the master password one cant recover the passwords.',
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              _userAckForMasterPassword =
+                                                                  true;
+                                                              _userGaveMasterPassword =
+                                                                  true;
+                                                            });
+                                                            print(
+                                                                "state of _userGaveMasterPassword  '${_userGaveMasterPassword}' ");
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                              'I acknowledge'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              _userAckForMasterPassword =
+                                                                  false;
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              Text('Go Back'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                shape: StadiumBorder(),
+                                                child: Text(
+                                                  'Submit',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     ),
-                                    if (_userAckForMasterPassword == false)
-                                      ButtonTheme(
-                                        minWidth: mediaQuery.size.width * 0.8,
-                                        child: RaisedButton(
-                                          onPressed: () async {
-                                            print(
-                                              'master password ${masterPasswordController.text}',
-                                            );
-                                            if (masterPasswordController
-                                                    .text.length !=
-                                                5) {
-                                              print("Must be 5 chars");
-                                              return;
-                                            }
-                                            final secureStorage =
-                                                new FlutterSecureStorage();
-                                            // await secureStorage.write(
-                                            //   key: 'masterPassword',
-                                            //   value: masterPasswordController.text,
-                                            // );
-                                            // secureStorage
-                                            //     .read(key: 'masterPassword')
-                                            //     .then((value) => print('master chief -> ${value}'));
-
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: Text(
-                                                  'Master Password Acknowledgement',
-                                                  style:
-                                                      TextStyle(fontSize: 15),
-                                                ),
-                                                content: Text(
-                                                  'You should not forget this master password. Without the master password one cant recover the passwords.',
-                                                  style:
-                                                      TextStyle(fontSize: 13),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _userAckForMasterPassword =
-                                                            true;
-                                                        _userGaveMasterPassword =
-                                                            true;
-                                                      });
-                                                      print(
-                                                          "state of _userGaveMasterPassword  '${_userGaveMasterPassword}' ");
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child:
-                                                        Text('I acknowledge'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        _userAckForMasterPassword =
-                                                            false;
-                                                      });
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('Go Back'),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                          shape: StadiumBorder(),
-                                          child: Text(
-                                            'Submit',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                   ],
                                 ),
                               if (_userGaveMasterPassword)
@@ -319,99 +373,129 @@ class _SignupScreenState extends State<SignupScreen> {
                           )
                         : Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: emailController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Email'),
-                                ),
-                                TextFormField(
-                                  controller: passwordController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Password'),
-                                ),
-                              ],
+                            child: Form(
+                              key: _signupFormValidationKey,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: emailController,
+                                    decoration:
+                                        InputDecoration(labelText: 'Email'),
+                                    validator: (val) {
+                                      if (!(val!.contains('@') &&
+                                              val.contains('.')) ||
+                                          val.isEmpty) {
+                                        return "Please enter an valid email id";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  TextFormField(
+                                    controller: passwordController,
+                                    decoration:
+                                        InputDecoration(labelText: 'Password'),
+                                    validator: (value) {
+                                      if (value!.length < 6) {
+                                        return "Password length must be greater than or equal to 6 chars.";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  if (isUserSignedUp == false)
+                                    ButtonTheme(
+                                      minWidth: mediaQuery.size.width * 0.8,
+                                      shape: StadiumBorder(),
+                                      child: RaisedButton(
+                                        onPressed: () async {
+                                          if (_signupFormValidationKey
+                                              .currentState!
+                                              .validate()) {
+                                            // Text('bad');
+                                          }
+                                          var signupObject = UserSignup();
+                                          var signupResult =
+                                              await signupObject.performSignup(
+                                            emailController.text,
+                                            passwordController.text,
+                                          );
+                                          print(signupResult);
+
+                                          var isNewUser =
+                                              signupResult['userCredential']
+                                                  .additionalUserInfo
+                                                  .isNewUser;
+
+                                          var email =
+                                              signupResult['userCredential']
+                                                  .user
+                                                  .email;
+                                          var isEmailVerified =
+                                              signupResult['userCredential']
+                                                  .user
+                                                  .emailVerified;
+
+                                          var creationTime =
+                                              signupResult['userCredential']
+                                                  .user
+                                                  .metadata
+                                                  .creationTime;
+                                          var uniqueUserId =
+                                              signupResult['userCredential']
+                                                  .user
+                                                  .uid;
+
+                                          user = User(
+                                              uniqueUserId: uniqueUserId,
+                                              isNewUser: isNewUser,
+                                              email: email,
+                                              masterPasswordHash: 'coming-soon',
+                                              isEmailVerified: isEmailVerified,
+                                              creationTime: creationTime);
+
+                                          // signedUser = {
+                                          //   'uniqueUserId': user.uniqueUserId,
+                                          //   'isNewUser': user.isNewUser,
+                                          //   'email': user.email,
+                                          //   'masterPasswordHash': user.masterPasswordHash,
+                                          //   'isEmailVerified': user.isEmailVerified,
+                                          //   'creationTime': user.creationTime
+                                          // };
+                                          // print(signedUser);
+
+                                          // print(signupResult);
+                                          // if (signupResult['isUserNew']) {
+                                          // print("is the user new??? ->   ${signupResult['isUserNew']}");
+                                          // isUserSignedUp = signupResult['isUserNew'];
+                                          isUserSignedUp = user.isNewUser;
+                                          if (isUserSignedUp) {
+                                            setState(() {
+                                              isUserSignedUp = true;
+                                            });
+                                          }
+
+                                          print(isUserSignedUp);
+                                          // }
+
+                                          // if (signupResult == 'signup-success') {
+                                          //   Navigator.pushNamed(
+                                          //     context,
+                                          //     '/appMainPage',
+                                          //   );
+                                          // }
+                                        },
+                                        child: Text(
+                                          'Signup',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
-                    if (isUserSignedUp == false)
-                      ButtonTheme(
-                        minWidth: mediaQuery.size.width * 0.8,
-                        shape: StadiumBorder(),
-                        child: RaisedButton(
-                          onPressed: () async {
-                            var signupObject = UserSignup();
-                            var signupResult = await signupObject.performSignup(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                            print(signupResult);
-
-                            var isNewUser = signupResult['userCredential']
-                                .additionalUserInfo
-                                .isNewUser;
-
-                            var email =
-                                signupResult['userCredential'].user.email;
-                            var isEmailVerified = signupResult['userCredential']
-                                .user
-                                .emailVerified;
-
-                            var creationTime = signupResult['userCredential']
-                                .user
-                                .metadata
-                                .creationTime;
-                            var uniqueUserId =
-                                signupResult['userCredential'].user.uid;
-
-                            user = User(
-                                uniqueUserId: uniqueUserId,
-                                isNewUser: isNewUser,
-                                email: email,
-                                masterPasswordHash: 'coming-soon',
-                                isEmailVerified: isEmailVerified,
-                                creationTime: creationTime);
-
-                            // signedUser = {
-                            //   'uniqueUserId': user.uniqueUserId,
-                            //   'isNewUser': user.isNewUser,
-                            //   'email': user.email,
-                            //   'masterPasswordHash': user.masterPasswordHash,
-                            //   'isEmailVerified': user.isEmailVerified,
-                            //   'creationTime': user.creationTime
-                            // };
-                            // print(signedUser);
-
-                            // print(signupResult);
-                            // if (signupResult['isUserNew']) {
-                            // print("is the user new??? ->   ${signupResult['isUserNew']}");
-                            // isUserSignedUp = signupResult['isUserNew'];
-                            isUserSignedUp = user.isNewUser;
-                            if (isUserSignedUp) {
-                              setState(() {
-                                isUserSignedUp = true;
-                              });
-                            }
-
-                            print(isUserSignedUp);
-                            // }
-
-                            // if (signupResult == 'signup-success') {
-                            //   Navigator.pushNamed(
-                            //     context,
-                            //     '/appMainPage',
-                            //   );
-                            // }
-                          },
-                          child: Text(
-                            'Signup',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ],

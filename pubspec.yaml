@@ -49,6 +49,7 @@ dependencies:
   hexcolor: ^2.0.7
   vibration: ^1.7.4-nullsafety
   slider_button: ^2.0.0
+  pinput: ^2.2.10
   
 
 dev_dependencies:
