@@ -139,19 +139,36 @@ class _EditPasswordState extends State<EditPassword> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: 'Enter new Password'),
-                controller: newPasswordController,
-                onChanged: (text) {
-                  setState(() {
-                    newPasswordValue = text;
-                  });
-                },
+            Form(
+              child: Column(
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: TextFormField(
+                  //     decoration:
+                  //         InputDecoration(labelText: 'Enter new Password'),
+                  //     controller: newPasswordController,
+                  //     validator: (val) {
+                  //       if (val == '') {
+                  //         return "Field cannot be empty";
+                  //       }
+                  //       return null;
+                  //     },
+                  //     onChanged: (text) {
+                  //       setState(() {
+                  //         newPasswordValue = text;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  ChangePassword(
+                    widget.entry_id,
+                    // widget.domain,
+                    newPasswordValue,
+                  ),
+                ],
               ),
             ),
-            ChangePassword(widget.entry_id, widget.domain, newPasswordValue),
             DeletePasswordEntry(widget.entry_id),
           ]),
         ));

@@ -134,18 +134,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   mediaQuery.size.width * 0.8,
                                               child: RaisedButton(
                                                 onPressed: () async {
-                                                  if (_masterPasswordFormValidationKey
+                                                  if (!_masterPasswordFormValidationKey
                                                       .currentState!
-                                                      .validate()) {}
+                                                      .validate()) {
+                                                    print(
+                                                        'Master Password must be 5 chars');
+                                                    return;
+                                                  }
                                                   print(
                                                     'master password ${masterPasswordController.text}',
                                                   );
-                                                  if (masterPasswordController
-                                                          .text.length !=
-                                                      5) {
-                                                    print("Must be 5 chars");
-                                                    return;
-                                                  }
+                                                  // if (masterPasswordController
+                                                  //         .text.length !=
+                                                  //     5) {
+                                                  //   print("Must be 5 chars");
+                                                  //   return;
+                                                  // }
                                                   final secureStorage =
                                                       new FlutterSecureStorage();
                                                   // await secureStorage.write(

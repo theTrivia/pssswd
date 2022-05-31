@@ -7,56 +7,111 @@ import 'package:pssswd/functions/passwordEncrypter.dart';
 
 import '../providers/user_entries.dart';
 
-class ChangePassword extends StatelessWidget {
+class ChangePassword extends StatefulWidget {
   var entry_id;
   var domain;
   var newPassword;
+
+  ChangePassword(
+    this.entry_id,
+    this.newPassword,
+  );
+
+  @override
+  State<ChangePassword> createState() => _ChangePasswordState();
+}
+
+class _ChangePasswordState extends State<ChangePassword> {
+  var newPasswordValue;
+
+  final newPasswordController = TextEditingController();
+
   final secureStorage = FlutterSecureStorage();
-  ChangePassword(this.entry_id, this.domain, this.newPassword);
+
+  final GlobalKey<FormState> _newPasswordFormValidationKey =
+      GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     var _uid = secureStorage.read(key: 'loggedInUserId');
 
-    return ButtonTheme(
-      minWidth: mediaQuery.size.width * 0.8,
-      shape: StadiumBorder(),
-      child: RaisedButton(
-        onPressed: () async {
-          var db = FirebaseFirestore.instance;
-          // print('----------------');
-          // print(newPassword);
-          // print(entry_id);
-          // print(domain);
-          // print(newPassword);
-
-          //need t0 change the encrypted password after changing the password
-          // store it to the database
-
-          var _masterPassword = await secureStorage.read(key: 'masterPassword');
-
-          final ep = PasswordEnrypter();
-          final encryptedPasswordMap =
-              await ep.encryptPassword(newPassword, _masterPassword);
-
-          await db.collection('password_entries').doc(entry_id).update({
-            "password": encryptedPasswordMap['encryptedPassword'],
-            "randForKeyToStore": encryptedPasswordMap['randForKeyToStore'],
-            "randForIV": encryptedPasswordMap['randForIV'],
-          }).then((value) => print('doc edited'));
-
-          await Provider.of<UserEntries>(context, listen: false).fetchEntries();
-          Fluttertoast.showToast(
-              msg: 'Your password for entry ${domain} has been changed');
-          Navigator.pop(context);
-        },
-        child: Text(
-          'Change Password',
-          style: TextStyle(
-            color: Colors.white,
+    return Form(
+      key: _newPasswordFormValidationKey,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              decoration: InputDecoration(labelText: 'Enter new Password'),
+              controller: newPasswordController,
+              validator: (val) {
+                if (val == '') {
+                  return "Field cannot be empty";
+                }
+                return null;
+              },
+              onChanged: (text) {
+                setState(() {
+                  newPasswordValue = text;
+                });
+              },
+            ),
           ),
-        ),
+          ButtonTheme(
+            minWidth: mediaQuery.size.width * 0.8,
+            shape: StadiumBorder(),
+            child: RaisedButton(
+              onPressed: () async {
+                if (!_newPasswordFormValidationKey.currentState!.validate()) {
+                  print('Field cannot be empty');
+                  return;
+                }
+
+                var db = FirebaseFirestore.instance;
+                // print('----------------');
+                // print(newPassword);
+                // print(entry_id);
+                // print(domain);
+                // print(newPassword);
+
+                //need t0 change the encrypted password after changing the password
+                // store it to the database
+
+                var _masterPassword =
+                    await secureStorage.read(key: 'masterPassword');
+
+                final ep = PasswordEnrypter();
+                final encryptedPasswordMap =
+                    await ep.encryptPassword(newPasswordValue, _masterPassword);
+                print(encryptedPasswordMap);
+
+                await db
+                    .collection('password_entries')
+                    .doc(widget.entry_id)
+                    .update({
+                  "password": encryptedPasswordMap['encryptedPassword'],
+                  "randForKeyToStore":
+                      encryptedPasswordMap['randForKeyToStore'],
+                  "randForIV": encryptedPasswordMap['randForIV'],
+                }).then((value) => print('doc edited'));
+
+                await Provider.of<UserEntries>(context, listen: false)
+                    .fetchEntries();
+                Fluttertoast.showToast(
+                    msg:
+                        'Your password for entry ${widget.domain} has been changed');
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Change Password',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

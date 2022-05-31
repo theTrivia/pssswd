@@ -21,6 +21,8 @@ class _AddPasswdState extends State<AddPasswd> {
 
   final enteredPasswd = TextEditingController();
   var _uid;
+  final GlobalKey<FormState> _addPasswordFormValidationKey =
+      GlobalKey<FormState>();
   // randomFunction() async {
   //   Provider.of<UserDetails>(context, listen: false).getUserDetails();
   // }
@@ -45,6 +47,7 @@ class _AddPasswdState extends State<AddPasswd> {
           title: Text('Add Passwd'),
         ),
         body: Form(
+          key: _addPasswordFormValidationKey,
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: Column(
@@ -61,15 +64,29 @@ class _AddPasswdState extends State<AddPasswd> {
                     labelText: 'Enter the domain',
                   ),
                   controller: enteredDomain,
+                  validator: (val) {
+                    if (val == '') {
+                      return "Field cannot be empty";
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Enter the passwd'),
                   controller: enteredPasswd,
+                  validator: (val) {
+                    if (val == '') {
+                      return "Field cannot be empty";
+                    }
+                    return null;
+                  },
                 ),
                 ButtonTheme(
                   minWidth: mediaQuery.size.width * 0.8,
                   child: RaisedButton(
                     onPressed: () async {
+                      if (_addPasswordFormValidationKey.currentState!
+                          .validate()) {}
                       if (enteredDomain.text == '' ||
                           enteredPasswd.text == '') {
                         print('Entered Domain/Password cannot be null');
