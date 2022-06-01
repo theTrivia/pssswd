@@ -51,6 +51,7 @@ dependencies:
   slider_button: ^2.0.0
   pinput: ^2.2.10
   flutter_spinkit: ^5.1.0
+  flutter_dotenv: ^5.0.2
   
 
 dev_dependencies:
