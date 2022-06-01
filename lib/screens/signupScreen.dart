@@ -69,7 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           mediaQuery.padding.bottom) *
                       0.4,
                   child: Image.asset(
-                    'assets/images/lastpass.png',
+                    'assets/images/pssswd.jpeg',
                   ),
                 ),
                 Column(
@@ -90,12 +90,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                           Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 15, right: 15),
-                                              // child: TextFormField(
-                                              //   decoration: InputDecoration(
-                                              //       labelText:
-                                              //           '5 digit Master password'),
-                                              //   controller: masterPasswordController,
-                                              // ),
                                               child: Pinput(
                                                 length: 5,
                                                 defaultPinTheme: PinInputTheme
@@ -134,31 +128,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   print(
                                                     'master password ${masterPasswordController.text}',
                                                   );
-                                                  // if (masterPasswordController
-                                                  //         .text.length !=
-                                                  //     5) {
-                                                  //   print("Must be 5 chars");
-                                                  //   return;
-                                                  // }
+
                                                   final secureStorage =
                                                       new FlutterSecureStorage();
-                                                  // await secureStorage.write(
-                                                  //   key: 'masterPassword',
-                                                  //   value: masterPasswordController.text,
-                                                  // );
-                                                  // secureStorage
-                                                  //     .read(key: 'masterPassword')
-                                                  //     .then((value) => print('master chief -> ${value}'));
 
                                                   showDialog(
                                                     context: context,
                                                     builder: (context) =>
                                                         AlertDialog(
-                                                      // title: Text(
-                                                      //   'Master Password Acknowledgement',
-                                                      // style: TextStyle(
-                                                      //     fontSize: 15),
-                                                      // ),
                                                       content: Text(
                                                         'Keep this password safe. You won\'t be able to recover your passwords without this.',
                                                         style: TextStyle(
@@ -304,7 +281,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                               'isUserLoggedInUsingEmailPassword',
                                           value: 'true');
 
-                                      //Password Hasing logic
                                       var hp = MasterPasswordHash();
                                       var hashedPassword =
                                           hp.hashMasterPassword(
@@ -345,8 +321,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                       print(
                                           'Hashed password from signup screen------------->${hashedPassword}');
-
-                                      // final prefs = await SharedPreferences.getInstance();
 
                                       Navigator.pushNamed(
                                         context,
@@ -460,20 +434,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                               isEmailVerified: isEmailVerified,
                                               creationTime: creationTime);
 
-                                          // signedUser = {
-                                          //   'uniqueUserId': user.uniqueUserId,
-                                          //   'isNewUser': user.isNewUser,
-                                          //   'email': user.email,
-                                          //   'masterPasswordHash': user.masterPasswordHash,
-                                          //   'isEmailVerified': user.isEmailVerified,
-                                          //   'creationTime': user.creationTime
-                                          // };
-                                          // print(signedUser);
-
-                                          // print(signupResult);
-                                          // if (signupResult['isUserNew']) {
-                                          // print("is the user new??? ->   ${signupResult['isUserNew']}");
-                                          // isUserSignedUp = signupResult['isUserNew'];
                                           isUserSignedUp = user.isNewUser;
                                           if (isUserSignedUp) {
                                             setState(() {
@@ -482,14 +442,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                           }
 
                                           print(isUserSignedUp);
-                                          // }
-
-                                          // if (signupResult == 'signup-success') {
-                                          //   Navigator.pushNamed(
-                                          //     context,
-                                          //     '/appMainPage',
-                                          //   );
-                                          // }
                                         },
                                         child: (_didUserPressedSignup == 'true')
                                             ? SizedBox(

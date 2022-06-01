@@ -54,18 +54,7 @@ class _PasswdCardState extends State<PasswdCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 8.0),
-              //   child: Container(
-              //     color: Colors.pink,
-              //     width: mediaQuery.size.width * 0.05,
-              //     child: Card(
-              //       child: Text(' '),
-              //     ),
-              //   ),
-              // ),
               Container(
-                // color: Colors.amber,
                 width: mediaQuery.size.width * 0.65,
                 child: Text(
                   (widget.domain.length > 15
@@ -76,7 +65,6 @@ class _PasswdCardState extends State<PasswdCard> {
                   ),
                 ),
               ),
-
               IconButton(
                 onPressed: () async {
                   final secureStorage = new FlutterSecureStorage();

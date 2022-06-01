@@ -74,7 +74,6 @@ class DeletePasswordEntry extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
-                              // style: ElevatedButton.styleFrom(primary: Colors.red),
                             ),
                           ),
                         ),
@@ -85,8 +84,6 @@ class DeletePasswordEntry extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              // Navigator.of(context)
-                              //     .popUntil((route) => route.isFirst);
                             },
                             child: Text(
                               'Go Back',

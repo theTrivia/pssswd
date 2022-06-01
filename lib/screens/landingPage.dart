@@ -38,7 +38,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     fetchisUserLoggedInUsingEmailPassword();
@@ -61,7 +60,7 @@ class _LandingPageState extends State<LandingPage> {
                         mediaQuery.padding.bottom) *
                     0.5,
                 child: Image.asset(
-                  'assets/images/lastpass.png',
+                  'assets/images/pssswd.jpeg',
                 ),
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
@@ -88,12 +87,6 @@ class _LandingPageState extends State<LandingPage> {
                               return null;
                             },
                           ),
-                          // child: TextFormField(
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Master Password',
-                          //   ),
-                          //   controller: masterPasswordController,
-                          // ),
                         ),
                         ButtonTheme(
                           shape: StadiumBorder(),
@@ -128,7 +121,6 @@ class _LandingPageState extends State<LandingPage> {
                                     builder: (context) => AppMainPage(),
                                   ),
                                 );
-                                // }
                               } else {
                                 print('you are an idiot!!!');
 

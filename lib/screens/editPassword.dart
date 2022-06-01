@@ -26,8 +26,6 @@ class _EditPasswordState extends State<EditPassword> {
   @override
   final newPasswordController = TextEditingController();
 
-  // final secureStorage = new FlutterSecureStorage();
-
   var _isPasswordVisible = false;
 
   TextEditingController get newDomainContrEditollerc =>
@@ -80,7 +78,6 @@ class _EditPasswordState extends State<EditPassword> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Text(
-                      // 'Current Password: ${widget.password}',
                       'Current Password',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -144,25 +141,6 @@ class _EditPasswordState extends State<EditPassword> {
               Form(
                 child: Column(
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: TextFormField(
-                    //     decoration:
-                    //         InputDecoration(labelText: 'Enter new Password'),
-                    //     controller: newPasswordController,
-                    //     validator: (val) {
-                    //       if (val == '') {
-                    //         return "Field cannot be empty";
-                    //       }
-                    //       return null;
-                    //     },
-                    //     onChanged: (text) {
-                    //       setState(() {
-                    //         newPasswordValue = text;
-                    //       });
-                    //     },
-                    //   ),
-                    // ),
                     ChangePassword(
                       widget.entry_id,
                       widget.domain,

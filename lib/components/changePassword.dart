@@ -71,14 +71,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                 }
 
                 var db = FirebaseFirestore.instance;
-                // print('----------------');
-                // print(newPassword);
-                // print(entry_id);
-                // print(domain);
-                // print(newPassword);
-
-                //need t0 change the encrypted password after changing the password
-                // store it to the database
 
                 var _masterPassword =
                     await secureStorage.read(key: 'masterPassword');

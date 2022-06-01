@@ -34,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _masterPasswordFormValidationKey =
       GlobalKey<FormState>();
   var _didUserPressedLogin;
-  // final _loginFormValidationKey<FormState> = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -93,12 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           mediaQuery.padding.bottom) *
                       0.4,
                   child: Image.asset(
-                    'assets/images/lastpass.png',
+                    'assets/images/pssswd.jpeg',
                   ),
                 ),
-                // SizedBox(
-                //   height: mediaQuery.size.height * 0.05,
-                // ),
                 (_isMasterPasswordPresent == null && _userDidLogin == true)
                     ? Form(
                         key: _masterPasswordFormValidationKey,
@@ -107,11 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              // child: TextFormField(
-                              //   decoration: InputDecoration(
-                              //       hintText: 'Enter your master password'),
-                              //   controller: masterPasswordController,
-                              // ),
                               child: Pinput(
                                 length: 5,
                                 defaultPinTheme: PinInputTheme.defaultPinTheme,
@@ -336,14 +327,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           )),
                         ],
                       ),
-
                 if (_userDidLogin == false) LoginFailure(),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     Navigator.pop(context);
-                //   },
-                //   child: Text('Go Back'),
-                // ),
               ],
             ),
           ],

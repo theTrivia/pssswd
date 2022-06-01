@@ -37,15 +37,6 @@ class _AppMainPageState extends State<AppMainPage> {
             Padding(
               padding: EdgeInsets.only(right: 20),
               child: GestureDetector(
-                // onTap: () async {
-                //   await FirebaseAuth.instance.signOut();
-
-                //   await secureStorage.deleteAll();
-                //   await Provider.of<UserEntries>(context, listen: false)
-                //       .setEntriesToNull();
-
-                //   Navigator.pushNamed(context, '/');
-                // },
                 onTap: () {
                   showDialog(
                       context: context,
@@ -91,7 +82,6 @@ class _AppMainPageState extends State<AppMainPage> {
                             ],
                           ));
                 },
-
                 child: Icon(Icons.logout),
               ),
             ),
@@ -104,7 +94,6 @@ class _AppMainPageState extends State<AppMainPage> {
   }
 
   Future<bool> onWillPop() {
-    // SystemNavigator.pop();
     return Future.value(false);
   }
 }

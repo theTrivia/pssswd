@@ -22,8 +22,6 @@ class _PasswdListState extends State<PasswdList> {
 
   @override
   Widget build(BuildContext context) {
-    // var _uid = context.watch<UserDetails>().getUserDetails['uniqueUserId'];
-    // var userUniqueIdentity = context.watch<UserDetails>().getUserDetails;
     final mediaQuery = MediaQuery.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
@@ -49,10 +47,6 @@ class _PasswdListState extends State<PasswdList> {
                   child: ListView.builder(
                     itemCount: context.watch<UserEntries>().entries.length,
                     itemBuilder: (ctx, index) {
-                      // print(context.watch<UserEntries>().entries.length);
-
-                      // final decryptedPassword =
-                      //     pss.getDecryptedPassword(newEntry.password);
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
