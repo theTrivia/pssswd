@@ -8,6 +8,7 @@ import 'package:pssswd/functions/userSignup.dart';
 import 'package:slider_button/slider_button.dart';
 
 import '../components/loadingWidgetForButton.dart';
+import '../components/pinInputTheme.dart';
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
 
@@ -40,23 +41,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      textStyle: TextStyle(
-          fontSize: 20,
-          color: Color.fromRGBO(30, 60, 87, 1),
-          fontWeight: FontWeight.w600),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
-    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromARGB(255, 42, 49, 56)),
-      borderRadius: BorderRadius.circular(8),
-    );
-
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
@@ -114,10 +98,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                               // ),
                                               child: Pinput(
                                                 length: 5,
-                                                defaultPinTheme:
-                                                    defaultPinTheme,
-                                                focusedPinTheme:
-                                                    focusedPinTheme,
+                                                defaultPinTheme: PinInputTheme
+                                                    .defaultPinTheme,
+                                                focusedPinTheme: PinInputTheme
+                                                    .defaultPinTheme,
+                                                submittedPinTheme: PinInputTheme
+                                                    .submittedPinTheme,
                                                 controller:
                                                     masterPasswordController,
                                                 onCompleted: (pin) =>

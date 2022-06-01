@@ -13,6 +13,7 @@ import 'package:pssswd/models/User.dart';
 import 'package:pssswd/screens/appMainPage.dart';
 
 import '../components/loginFailure.dart';
+import '../components/pinInputTheme.dart';
 import '../providers/user_entries.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -113,8 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               // ),
                               child: Pinput(
                                 length: 5,
-                                defaultPinTheme: defaultPinTheme,
-                                focusedPinTheme: focusedPinTheme,
+                                defaultPinTheme: PinInputTheme.defaultPinTheme,
+                                focusedPinTheme: PinInputTheme.defaultPinTheme,
+                                submittedPinTheme:
+                                    PinInputTheme.submittedPinTheme,
                                 controller: masterPasswordController,
                                 onCompleted: (pin) => print(pin),
                                 validator: (val) {
