@@ -26,7 +26,7 @@
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-**/generated_plugin_registrant.dart
+# **/generated_plugin_registrant.dart
 .packages
 .pub-cache/
 .pub/
@@ -127,3 +127,10 @@ app.*.map.json
 /packages/flutter/coverage/
 version
 analysis_benchmark.json
+
+
+#windows
+windows/
+
+#web
+web/
