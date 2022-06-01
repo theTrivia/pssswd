@@ -78,6 +78,7 @@ class _LandingPageState extends State<LandingPage> {
                       ButtonTheme(
                         shape: StadiumBorder(),
                         minWidth: mediaQuery.size.width * 0.8,
+                        height: mediaQuery.size.height * 0.05,
                         child: RaisedButton(
                           onPressed: () async {
                             var masterPasswordHash = await secureStorage.read(
@@ -137,7 +138,8 @@ class _LandingPageState extends State<LandingPage> {
                       if (isUserLoggedInUsingEmailPassword == "false" ||
                           isUserLoggedInUsingEmailPassword == null)
                         ButtonTheme(
-                          minWidth: mediaQuery.size.width * 0.7,
+                          minWidth: mediaQuery.size.width * 0.8,
+                          height: mediaQuery.size.height * 0.05,
                           child: RaisedButton(
                             shape: StadiumBorder(),
                             onPressed: () async {

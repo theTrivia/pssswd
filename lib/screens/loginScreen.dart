@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pssswd/components/loadingWidgetForButton.dart';
 import 'package:pssswd/components/masterPasswordAck.dart';
 
 import 'package:pssswd/functions/masterPasswordHash.dart';
@@ -31,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final secureStorage = FlutterSecureStorage();
   final GlobalKey<FormState> _masterPasswordFormValidationKey =
       GlobalKey<FormState>();
+  var _didUserPressedLogin;
   // final _loginFormValidationKey<FormState> = GlobalKey<FormState>();
 
   @override
@@ -125,63 +127,68 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             ButtonTheme(
                               minWidth: mediaQuery.size.width * 0.8,
-                              child: RaisedButton(
-                                onPressed: () async {
-                                  if (_masterPasswordFormValidationKey
-                                      .currentState!
-                                      .validate()) {}
-                                  var masterPasswordHash =
-                                      loggedInUser['masterPasswordHash'];
+                              height: mediaQuery.size.height * 0.05,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                  onPressed: () async {
+                                    if (_masterPasswordFormValidationKey
+                                        .currentState!
+                                        .validate()) {}
+                                    var masterPasswordHash =
+                                        loggedInUser['masterPasswordHash'];
 
-                                  final mph = MasterPasswordHash();
-                                  var res = mph.checkIfMasterPasswordValid(
-                                      masterPasswordController.text,
-                                      masterPasswordHash);
-                                  print(res);
+                                    final mph = MasterPasswordHash();
+                                    var res = mph.checkIfMasterPasswordValid(
+                                        masterPasswordController.text,
+                                        masterPasswordHash);
+                                    print(res);
 
-                                  if (res == true) {
-                                    final secureStorage =
-                                        new FlutterSecureStorage();
-                                    var masterPassword =
+                                    if (res == true) {
+                                      final secureStorage =
+                                          new FlutterSecureStorage();
+                                      var masterPassword =
+                                          await secureStorage.write(
+                                              key: 'masterPassword',
+                                              value: masterPasswordController
+                                                  .text);
+                                      _isMasterPasswordPresent =
+                                          await secureStorage.read(
+                                              key: 'masterPassword');
+                                      print(_isMasterPasswordPresent);
+
+                                      if (_isMasterPasswordPresent != null) {
                                         await secureStorage.write(
-                                            key: 'masterPassword',
+                                            key: 'loggedInUserId',
                                             value:
-                                                masterPasswordController.text);
-                                    _isMasterPasswordPresent =
-                                        await secureStorage.read(
-                                            key: 'masterPassword');
-                                    print(_isMasterPasswordPresent);
+                                                loggedInUser['uniqueUserId']);
+                                        await secureStorage.write(
+                                            key: 'email',
+                                            value: loggedInUser['email']);
+                                        await secureStorage.write(
+                                            key: 'masterPasswordHash',
+                                            value: masterPasswordHash);
 
-                                    if (_isMasterPasswordPresent != null) {
-                                      await secureStorage.write(
-                                          key: 'loggedInUserId',
-                                          value: loggedInUser['uniqueUserId']);
-                                      await secureStorage.write(
-                                          key: 'email',
-                                          value: loggedInUser['email']);
-                                      await secureStorage.write(
-                                          key: 'masterPasswordHash',
-                                          value: masterPasswordHash);
-
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AppMainPage(),
-                                        ),
-                                      );
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AppMainPage(),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      print('you are an idiot!!!');
+                                      return;
                                     }
-                                  } else {
-                                    print('you are an idiot!!!');
-                                    return;
-                                  }
-                                },
-                                child: Text(
-                                  'Submit',
-                                  style: TextStyle(
-                                    color: Colors.white,
+                                  },
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                  shape: StadiumBorder(),
                                 ),
-                                shape: StadiumBorder(),
                               ),
                             ),
                           ],
@@ -210,91 +217,115 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                               ),
-                              ButtonTheme(
-                                minWidth: mediaQuery.size.width * 0.8,
-                                child: RaisedButton(
-                                  onPressed: () async {
-                                    var loginObject = UserLogin();
-                                    var loginResult =
-                                        await loginObject.performLogin(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                                    print(
-                                        'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
-
-                                    if (loginResult['loginStatus'] !=
-                                        'login-success') {
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ButtonTheme(
+                                  minWidth: mediaQuery.size.width * 0.8,
+                                  height: mediaQuery.size.height * 0.05,
+                                  child: RaisedButton(
+                                    onPressed: () async {
                                       setState(() {
-                                        _userDidLogin = false;
+                                        _didUserPressedLogin = 'true';
                                       });
-                                    } else {
-                                      setState(() {
-                                        _userDidLogin = true;
-                                      });
-                                    }
+                                      var loginObject = UserLogin();
+                                      var loginResult =
+                                          await loginObject.performLogin(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
+                                      print(
+                                          'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
 
-                                    var isNewUser =
-                                        loginResult['userCredential']
-                                            ['isNewUser'];
-
-                                    var email =
-                                        loginResult['userCredential']['email'];
-                                    var isEmailVerified =
-                                        loginResult['userCredential']
-                                            ['emailVerified'];
-
-                                    var creationTime =
-                                        loginResult['userCredential']
-                                            ['creationTime'];
-                                    var uniqueUserId =
-                                        loginResult['userCredential']
-                                            ['uniqueUserId'];
-                                    var masterPasswordHash =
-                                        loginResult['userCredential']
-                                            ['masterPasswordHash'];
-
-                                    final user = User(
-                                        uniqueUserId: uniqueUserId,
-                                        isNewUser: isNewUser,
-                                        email: email,
-                                        masterPasswordHash: masterPasswordHash,
-                                        isEmailVerified: isEmailVerified,
-                                        creationTime: creationTime);
-
-                                    loggedInUser = {
-                                      'uniqueUserId': user.uniqueUserId,
-                                      'isNewUser': user.isNewUser,
-                                      'email': user.email,
-                                      'masterPasswordHash':
-                                          user.masterPasswordHash,
-                                      'isEmailVerified': user.isEmailVerified,
-                                      'creationTime': user.creationTime
-                                    };
-
-                                    if (_userDidLogin == true) {
-                                      await secureStorage.write(
-                                          key:
-                                              'isUserLoggedInUsingEmailPassword',
-                                          value: 'true');
-
-                                      if (_isMasterPasswordPresent != null) {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AppMainPage(),
-                                          ),
-                                        );
+                                      if (loginResult['loginStatus'] !=
+                                          'login-success') {
+                                        setState(() {
+                                          _userDidLogin = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _userDidLogin = true;
+                                        });
                                       }
-                                    }
-                                  },
-                                  shape: StadiumBorder(),
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+
+                                      var isNewUser =
+                                          loginResult['userCredential']
+                                              ['isNewUser'];
+
+                                      var email = loginResult['userCredential']
+                                          ['email'];
+                                      var isEmailVerified =
+                                          loginResult['userCredential']
+                                              ['emailVerified'];
+
+                                      var creationTime =
+                                          loginResult['userCredential']
+                                              ['creationTime'];
+                                      var uniqueUserId =
+                                          loginResult['userCredential']
+                                              ['uniqueUserId'];
+                                      var masterPasswordHash =
+                                          loginResult['userCredential']
+                                              ['masterPasswordHash'];
+
+                                      final user = User(
+                                          uniqueUserId: uniqueUserId,
+                                          isNewUser: isNewUser,
+                                          email: email,
+                                          masterPasswordHash:
+                                              masterPasswordHash,
+                                          isEmailVerified: isEmailVerified,
+                                          creationTime: creationTime);
+
+                                      loggedInUser = {
+                                        'uniqueUserId': user.uniqueUserId,
+                                        'isNewUser': user.isNewUser,
+                                        'email': user.email,
+                                        'masterPasswordHash':
+                                            user.masterPasswordHash,
+                                        'isEmailVerified': user.isEmailVerified,
+                                        'creationTime': user.creationTime
+                                      };
+
+                                      setState(() {
+                                        _didUserPressedLogin = 'false';
+                                      });
+
+                                      if (_userDidLogin == true) {
+                                        await secureStorage.write(
+                                            key:
+                                                'isUserLoggedInUsingEmailPassword',
+                                            value: 'true');
+
+                                        if (_isMasterPasswordPresent != null) {
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AppMainPage(),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    shape: const StadiumBorder(),
+                                    child: (_didUserPressedLogin == 'true')
+                                        ? SizedBox(
+                                            child: Container(
+                                              height:
+                                                  mediaQuery.size.height * 0.03,
+                                              width:
+                                                  mediaQuery.size.width * 0.5,
+                                              child: LoadingWidgetForButton
+                                                  .spinkit,
+                                            ),
+                                          )
+                                        : const Text(
+                                            'Login',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                 ),
                               ),

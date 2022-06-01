@@ -14,6 +14,7 @@ class ChangePassword extends StatefulWidget {
 
   ChangePassword(
     this.entry_id,
+    this.domain,
     this.newPassword,
   );
 
@@ -60,6 +61,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           ButtonTheme(
             minWidth: mediaQuery.size.width * 0.8,
+            height: mediaQuery.size.height * 0.05,
             shape: StadiumBorder(),
             child: RaisedButton(
               onPressed: () async {

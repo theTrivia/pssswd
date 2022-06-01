@@ -7,6 +7,7 @@ import 'package:pssswd/components/masterPasswordAck.dart';
 import 'package:pssswd/functions/userSignup.dart';
 import 'package:slider_button/slider_button.dart';
 
+import '../components/loadingWidgetForButton.dart';
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
 
@@ -35,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _signupFormValidationKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _masterPasswordFormValidationKey =
       GlobalKey<FormState>();
+  var _didUserPressedSignup;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                             ButtonTheme(
                                               minWidth:
                                                   mediaQuery.size.width * 0.8,
+                                              height:
+                                                  mediaQuery.size.height * 0.05,
                                               child: RaisedButton(
                                                 onPressed: () async {
                                                   if (!_masterPasswordFormValidationKey
@@ -408,6 +412,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (isUserSignedUp == false)
                                     ButtonTheme(
                                       minWidth: mediaQuery.size.width * 0.8,
+                                      height: mediaQuery.size.height * 0.05,
                                       shape: StadiumBorder(),
                                       child: RaisedButton(
                                         onPressed: () async {
@@ -416,6 +421,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                               .validate()) {
                                             // Text('bad');
                                           }
+                                          setState(() {
+                                            _didUserPressedSignup = 'true';
+                                          });
                                           var signupObject = UserSignup();
                                           var signupResult =
                                               await signupObject.performSignup(
@@ -423,6 +431,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                             passwordController.text,
                                           );
                                           print(signupResult);
+                                          setState(() {
+                                            _didUserPressedSignup = 'false';
+                                          });
 
                                           var isNewUser =
                                               signupResult['userCredential']
@@ -487,13 +498,25 @@ class _SignupScreenState extends State<SignupScreen> {
                                           //   );
                                           // }
                                         },
-                                        child: Text(
-                                          'Signup',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                        child: (_didUserPressedSignup == 'true')
+                                            ? SizedBox(
+                                                child: Container(
+                                                  height:
+                                                      mediaQuery.size.height *
+                                                          0.03,
+                                                  width: mediaQuery.size.width *
+                                                      0.5,
+                                                  child: LoadingWidgetForButton
+                                                      .spinkit,
+                                                ),
+                                              )
+                                            : Text(
+                                                'Signup',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                       ),
                                     ),
                                 ],

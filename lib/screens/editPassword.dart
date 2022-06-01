@@ -163,7 +163,7 @@ class _EditPasswordState extends State<EditPassword> {
                   // ),
                   ChangePassword(
                     widget.entry_id,
-                    // widget.domain,
+                    widget.domain,
                     newPasswordValue,
                   ),
                 ],

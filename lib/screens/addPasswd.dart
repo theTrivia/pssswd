@@ -83,88 +83,92 @@ class _AddPasswdState extends State<AddPasswd> {
                 ),
                 ButtonTheme(
                   minWidth: mediaQuery.size.width * 0.8,
-                  child: RaisedButton(
-                    onPressed: () async {
-                      if (_addPasswordFormValidationKey.currentState!
-                          .validate()) {}
-                      if (enteredDomain.text == '' ||
-                          enteredPasswd.text == '') {
-                        print('Entered Domain/Password cannot be null');
-                        return;
-                      }
-                      _uid = await secureStorage.read(key: 'loggedInUserId');
-                      // var user_id = await context
-                      //     .watch<UserDetails>()
-                      //     .getUserDetails
-                      //     .toString();
-                      // print(user_id);
-                      Random random = new Random();
-                      final newEntry = Passwd(
-                        user_id: _uid,
-                        domain: enteredDomain.text,
-                        password: enteredPasswd.text,
-                        timestamp: Timestamp.now(),
-                      );
+                  height: mediaQuery.size.height * 0.05,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      onPressed: () async {
+                        if (_addPasswordFormValidationKey.currentState!
+                            .validate()) {}
+                        if (enteredDomain.text == '' ||
+                            enteredPasswd.text == '') {
+                          print('Entered Domain/Password cannot be null');
+                          return;
+                        }
+                        _uid = await secureStorage.read(key: 'loggedInUserId');
+                        // var user_id = await context
+                        //     .watch<UserDetails>()
+                        //     .getUserDetails
+                        //     .toString();
+                        // print(user_id);
+                        Random random = new Random();
+                        final newEntry = Passwd(
+                          user_id: _uid,
+                          domain: enteredDomain.text,
+                          password: enteredPasswd.text,
+                          timestamp: Timestamp.now(),
+                        );
 
-                      // final secureStorage = new FlutterSecureStorage();
+                        // final secureStorage = new FlutterSecureStorage();
 
-                      var masterPassword =
-                          await secureStorage.read(key: 'masterPassword');
+                        var masterPassword =
+                            await secureStorage.read(key: 'masterPassword');
 
-                      print(
-                          'master password from add password screen!! -??????????????        ${masterPassword}');
+                        print(
+                            'master password from add password screen!! -??????????????        ${masterPassword}');
 
-                      var pss = PasswordEnrypter();
-                      final encryptedPasswordMap = await pss.encryptPassword(
-                          newEntry.password, masterPassword);
+                        var pss = PasswordEnrypter();
+                        final encryptedPasswordMap = await pss.encryptPassword(
+                            newEntry.password, masterPassword);
 
-                      // final encryptedPasswordMap =
-                      //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
+                        // final encryptedPasswordMap =
+                        //     await pss.aesCbcEncrypt("fdsugfdsfusdvfusdf","fsdfsduifuisbd",newEntry.password);
 
-                      // print(
-                      //     'Encrypted Pssword data ------------ ${encryptedPasswordMap['key']}');
+                        // print(
+                        //     'Encrypted Pssword data ------------ ${encryptedPasswordMap['key']}');
 
-                      // var decryptedPasswordpp =
-                      // await pss.getDecryptedPassword(
-                      //     encryptedPasswordMap['encryptedPassword'],
-                      //     encryptedPasswordMap['key']);
-                      // print(
-                      //     'decrypted password data -------------- ${decryptedPasswordpp}');
+                        // var decryptedPasswordpp =
+                        // await pss.getDecryptedPassword(
+                        //     encryptedPasswordMap['encryptedPassword'],
+                        //     encryptedPasswordMap['key']);
+                        // print(
+                        //     'decrypted password data -------------- ${decryptedPasswordpp}');
 
-                      final newEntryPush = {
-                        "user_id": newEntry.user_id,
-                        "domain": newEntry.domain,
-                        "password": encryptedPasswordMap['encryptedPassword'],
-                        "randForKeyToStore":
-                            encryptedPasswordMap['randForKeyToStore'],
-                        "randForIV": encryptedPasswordMap['randForIV'],
-                        "timestamp": newEntry.timestamp,
-                      };
+                        final newEntryPush = {
+                          "user_id": newEntry.user_id,
+                          "domain": newEntry.domain,
+                          "password": encryptedPasswordMap['encryptedPassword'],
+                          "randForKeyToStore":
+                              encryptedPasswordMap['randForKeyToStore'],
+                          "randForIV": encryptedPasswordMap['randForIV'],
+                          "timestamp": newEntry.timestamp,
+                        };
 
-                      if (newEntry.domain.isEmpty ||
-                          newEntry.password.isEmpty) {
-                        return;
-                      }
+                        if (newEntry.domain.isEmpty ||
+                            newEntry.password.isEmpty) {
+                          return;
+                        }
 
-                      var db = FirebaseFirestore.instance;
-                      await db
-                          .collection('password_entries')
-                          .add(newEntryPush)
-                          .then(
-                        (value) {
-                          print('submitted: ${value.id}');
-                        },
-                      );
+                        var db = FirebaseFirestore.instance;
+                        await db
+                            .collection('password_entries')
+                            .add(newEntryPush)
+                            .then(
+                          (value) {
+                            print('submitted: ${value.id}');
+                          },
+                        );
 
-                      await Provider.of<UserEntries>(context, listen: false)
-                          .fetchEntries();
-                      Navigator.pop(context);
-                    },
-                    shape: StadiumBorder(),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        color: Colors.white,
+                        await Provider.of<UserEntries>(context, listen: false)
+                            .fetchEntries();
+                        Navigator.pushNamed(context, '/appMainPage');
+                      },
+                      shape: StadiumBorder(),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

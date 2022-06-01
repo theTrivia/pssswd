@@ -18,88 +18,97 @@ class DeletePasswordEntry extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     return ButtonTheme(
       minWidth: mediaQuery.size.width * 0.8,
+      height: mediaQuery.size.height * 0.05,
       buttonColor: Colors.red,
       shape: StadiumBorder(),
-      child: RaisedButton(
-        onPressed: () async {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Container(
-                height: 200,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Are you sure about deleting the entry?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      ButtonTheme(
-                        minWidth: mediaQuery.size.width * 0.8,
-                        shape: StadiumBorder(),
-                        buttonColor: Colors.red,
-                        child: RaisedButton(
-                          onPressed: () async {
-                            var db = FirebaseFirestore.instance;
-
-                            await db
-                                .collection("password_entries")
-                                .doc(entry_id)
-                                .delete()
-                                .then(
-                                  (doc) => print("Document deleted"),
-                                  onError: (e) =>
-                                      print("Error updating document $e"),
-                                );
-                            await Provider.of<UserEntries>(context,
-                                    listen: false)
-                                .fetchEntries();
-                            Fluttertoast.showToast(
-                              msg: "Password has been deleted",
-                            );
-                            Navigator.pushNamed(context, '/appMainPage');
-                          },
-                          child: Text(
-                            'Delete',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: RaisedButton(
+          onPressed: () async {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container(
+                  height: 200,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Are you sure about deleting the entry?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
-                          // style: ElevatedButton.styleFrom(primary: Colors.red),
                         ),
-                      ),
-                      ButtonTheme(
-                        minWidth: mediaQuery.size.width * 0.8,
-                        shape: StadiumBorder(),
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // Navigator.of(context)
-                            //     .popUntil((route) => route.isFirst);
-                          },
-                          child: Text(
-                            'Go Back',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                        ButtonTheme(
+                          minWidth: mediaQuery.size.width * 0.8,
+                          height: mediaQuery.size.height * 0.05,
+                          shape: StadiumBorder(),
+                          buttonColor: Color.fromRGBO(244, 67, 54, 1),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: RaisedButton(
+                              onPressed: () async {
+                                var db = FirebaseFirestore.instance;
+
+                                await db
+                                    .collection("password_entries")
+                                    .doc(entry_id)
+                                    .delete()
+                                    .then(
+                                      (doc) => print("Document deleted"),
+                                      onError: (e) =>
+                                          print("Error updating document $e"),
+                                    );
+                                await Provider.of<UserEntries>(context,
+                                        listen: false)
+                                    .fetchEntries();
+                                Fluttertoast.showToast(
+                                  msg: "Password has been deleted",
+                                );
+                                Navigator.pushNamed(context, '/appMainPage');
+                              },
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              // style: ElevatedButton.styleFrom(primary: Colors.red),
                             ),
                           ),
                         ),
-                      )
-                    ],
+                        ButtonTheme(
+                          minWidth: mediaQuery.size.width * 0.8,
+                          height: mediaQuery.size.height * 0.05,
+                          shape: StadiumBorder(),
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // Navigator.of(context)
+                              //     .popUntil((route) => route.isFirst);
+                            },
+                            child: Text(
+                              'Go Back',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-        child: Text(
-          'Delete pssswd entry',
-          style: TextStyle(
-            color: Colors.white,
+                );
+              },
+            );
+          },
+          child: Text(
+            'Delete pssswd entry',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ),
