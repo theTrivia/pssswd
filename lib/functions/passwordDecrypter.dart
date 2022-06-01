@@ -3,21 +3,6 @@ import 'package:encrypt/encrypt.dart';
 // import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 
 class PasswordDecrypter {
-  // getDecryptedPassword(String encryptedPassword, String salt) async {
-  //   late PlatformStringCryptor cryptor;
-
-  //   String decryptedS = 'null';
-  //   try {
-  //     cryptor = new PlatformStringCryptor();
-
-  //     String decryptedS = await cryptor.decrypt(encryptedPassword, salt);
-  //     // print(decryptedS);
-  //     return decryptedS;
-  //   } on MacMismatchException {
-  //     print('Some Error Occured');
-  //   }
-  // }
-
   getDecryptedPassword(encpss, randForKeyToStore, randForIV, masterPasword) {
     final iv = IV.fromUtf8(randForIV);
     final randForKey = randForKeyToStore + masterPasword;

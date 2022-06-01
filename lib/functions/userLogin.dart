@@ -8,13 +8,10 @@ class UserLogin {
     try {
       final loginCred = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      // print(loginCred.user!.uid);
-      // print('Credentials   ->>>>>>> ${credential}');
 
       var db = FirebaseFirestore.instance;
       final credential =
           await db.collection("users").doc(loginCred.user!.uid).get();
-      // print('Credentials   ->>>>>>> ${credential.data()}');
 
       return {
         'loginStatus': 'login-success',
