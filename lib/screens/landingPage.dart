@@ -154,6 +154,7 @@ class _LandingPageState extends State<LandingPage> {
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
                       0.45,
+                  width: mediaQuery.size.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

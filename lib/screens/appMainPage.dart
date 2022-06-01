@@ -97,45 +97,7 @@ class _AppMainPageState extends State<AppMainPage> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            PasswdList(),
-            // Container(
-            //   // color: Colors.amber,
-            //   height: (mediaQuery.size.height - AppBar().preferredSize.height) *
-            //       0.10,
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       // if (context.watch<UserEntries>().entries != null)
-            //       ButtonTheme(
-            //         height: mediaQuery.size.height * 0.05,
-            //         minWidth: mediaQuery.size.width * 0.8,
-            //         // height: mediaQuery.size.height * 0.05,
-            //         child: RaisedButton(
-            //           onPressed: () async {
-            //             await Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                 builder: (context) => AddPasswd(),
-            //               ),
-            //             );
-            //           },
-            //           child: const Text(
-            //             'Add pssswd',
-            //             style: TextStyle(
-            //               color: Colors.white,
-            //               fontWeight: FontWeight.bold,
-            //             ),
-            //           ),
-            //           shape: StadiumBorder(),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-          ],
-        ),
+        body: PasswdList(),
       ),
       onWillPop: onWillPop,
     );
@@ -146,20 +108,3 @@ class _AppMainPageState extends State<AppMainPage> {
     return Future.value(false);
   }
 }
-
-
-
-// ButtonTheme(
-//               height: mediaQuery.size.height * 0.05,
-//               child: ElevatedButton(
-//                 onPressed: () async {
-//                   await Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => AddPasswd(),
-//                     ),
-//                   );
-//                 },
-//                 child: Text('Add pssswd'),
-//               ),
-//             ),
