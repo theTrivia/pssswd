@@ -98,3 +98,6 @@ ios/
 
 #android
 android/
+
+#macos
+macos/
