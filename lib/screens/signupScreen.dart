@@ -154,17 +154,29 @@ class _SignupScreenState extends State<SignupScreen> {
                                                     context: context,
                                                     builder: (context) =>
                                                         AlertDialog(
-                                                      title: Text(
-                                                        'Master Password Acknowledgement',
-                                                        style: TextStyle(
-                                                            fontSize: 15),
-                                                      ),
+                                                      // title: Text(
+                                                      //   'Master Password Acknowledgement',
+                                                      // style: TextStyle(
+                                                      //     fontSize: 15),
+                                                      // ),
                                                       content: Text(
-                                                        'You should not forget this master password. Without the master password one cant recover the passwords.',
+                                                        'Keep this password safe. You won\'t be able to recover your passwords without this.',
                                                         style: TextStyle(
                                                             fontSize: 13),
                                                       ),
                                                       actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              _userAckForMasterPassword =
+                                                                  false;
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              Text('Go Back'),
+                                                        ),
                                                         TextButton(
                                                           onPressed: () {
                                                             setState(() {
@@ -179,19 +191,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                                                 context);
                                                           },
                                                           child: Text(
-                                                              'I acknowledge'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _userAckForMasterPassword =
-                                                                  false;
-                                                            });
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child:
-                                                              Text('Go Back'),
+                                                            'I acknowledge',
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),

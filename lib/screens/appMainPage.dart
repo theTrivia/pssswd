@@ -50,9 +50,9 @@ class _AppMainPageState extends State<AppMainPage> {
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text('Log Out?'),
+                            // title: Text('Log Out?'),
                             content: Text(
-                              'Are you sure you want to logout?',
+                              'Leave pssswd?',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -80,7 +80,13 @@ class _AppMainPageState extends State<AppMainPage> {
 
                                   Navigator.pushNamed(context, '/');
                                 },
-                                child: Text('Logout'),
+                                child: Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ],
                           ));
