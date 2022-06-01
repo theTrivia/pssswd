@@ -27,7 +27,6 @@ import 'functions/materialColorGenerator.dart';
 import 'screens/appMainPage.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
 
   // await FlutterConfig.loadEnvVariables();
