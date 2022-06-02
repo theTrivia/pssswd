@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:pssswd/functions/passwordEncrypter.dart';
 
-import 'package:pssswd/models/passwd.dart';
+import 'package:pssswd/models/passwordEntry.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
 
@@ -112,7 +112,9 @@ class _AddPasswdState extends State<AddPasswd> {
                         final newEntryPush = {
                           "user_id": newEntry.user_id,
                           "name": newEntry.name,
+                          "username": newEntry.username,
                           "password": encryptedPasswordMap['encryptedPassword'],
+                          "url": newEntry.url,
                           "randForKeyToStore":
                               encryptedPasswordMap['randForKeyToStore'],
                           "randForIV": encryptedPasswordMap['randForIV'],

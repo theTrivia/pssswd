@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:pssswd/models/passwd.dart';
+import 'package:pssswd/models/passwordEntry.dart';
 
 class UserLogin {
   performLogin(emailAddress, password) async {
