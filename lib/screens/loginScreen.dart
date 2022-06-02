@@ -90,9 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: (mediaQuery.size.height -
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
-                      0.4,
+                      0.45,
                   child: Image.asset(
-                    'assets/images/pssswd.jpeg',
+                    'assets/images/pssswd_trial.png',
                   ),
                 ),
                 (_isMasterPasswordPresent == null && _userDidLogin == true)

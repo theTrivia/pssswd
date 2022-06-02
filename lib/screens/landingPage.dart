@@ -58,9 +58,11 @@ class _LandingPageState extends State<LandingPage> {
                 height: (mediaQuery.size.height -
                         mediaQuery.padding.top -
                         mediaQuery.padding.bottom) *
-                    0.5,
+                    0.55,
+                // wi
+                // color: Colors.amber,
                 child: Image.asset(
-                  'assets/images/pssswd.jpeg',
+                  'assets/images/pssswd_trial.png',
                 ),
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
@@ -87,6 +89,9 @@ class _LandingPageState extends State<LandingPage> {
                               return null;
                             },
                           ),
+                        ),
+                        SizedBox(
+                          height: mediaQuery.size.height * 0.02,
                         ),
                         ButtonTheme(
                           shape: StadiumBorder(),
@@ -145,7 +150,7 @@ class _LandingPageState extends State<LandingPage> {
                   height: (mediaQuery.size.height -
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
-                      0.45,
+                      0.40,
                   width: mediaQuery.size.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

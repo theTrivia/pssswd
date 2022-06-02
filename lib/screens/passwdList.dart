@@ -43,7 +43,7 @@ class _PasswdListState extends State<PasswdList> {
                 Container(
                   height:
                       (mediaQuery.size.height - AppBar().preferredSize.height) *
-                          0.85,
+                          0.82,
                   child: ListView.builder(
                     itemCount: context.watch<UserEntries>().entries.length,
                     itemBuilder: (ctx, index) {
@@ -71,7 +71,7 @@ class _PasswdListState extends State<PasswdList> {
                   // color: Colors.amber,
                   height:
                       (mediaQuery.size.height - AppBar().preferredSize.height) *
-                          0.10,
+                          0.08,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

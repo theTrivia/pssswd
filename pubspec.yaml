@@ -52,12 +52,21 @@ dependencies:
   pinput: ^2.2.10
   flutter_spinkit: ^5.1.0
   flutter_dotenv: ^5.0.2
+  logger: ^1.1.0
+  flutter_launcher_icons: ^0.9.2
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_config: ^2.0.0
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/images/pssswd-logos_white-trial.png"
+  image_path_android: "assets/images/pssswd-logos_white-trial.png"
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -81,6 +90,8 @@ flutter:
   assets:
     - assets/images/pssswd.jpeg
     - assets/images/lastpass.png
+    - assets/images/pssswd_trial.png
+    - assets/images/pssswd-logos_white-trial.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
