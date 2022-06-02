@@ -54,20 +54,16 @@ class _LandingPageState extends State<LandingPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                // color: Colors.amber,
                 height: (mediaQuery.size.height -
                         mediaQuery.padding.top -
                         mediaQuery.padding.bottom) *
                     0.55,
-                // wi
-                // color: Colors.amber,
                 child: Image.asset(
                   'assets/images/pssswd_trial.png',
                 ),
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
                 Container(
-                  // color: Colors.blue,
                   height: mediaQuery.size.height * 0.3,
                   child: Form(
                     key: _masterPasswordFormValidationKey,

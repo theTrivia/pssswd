@@ -64,8 +64,10 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "assets/images/pssswd-logos_white-trial.png"
-  image_path_android: "assets/images/pssswd-logos_white-trial.png"
+  image_path_ios: "assets/images/pssswd_trial.png"
+  image_path_android: "assets/images/pssswd_trial.png"
+  adaptive_icon_background: "assets/images/pssswd_launcher_background.png"
+  adaptive_icon_foreground: "assets/images/pssswd_launcher_background.png"
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

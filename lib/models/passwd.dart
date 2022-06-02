@@ -1,15 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Passwd {
+class PasswordEntry {
   final String user_id;
   final Timestamp timestamp;
-  final String domain;
+  final String name;
   final String password;
+  final String username;
+  final String url;
 
-  Passwd({
+  PasswordEntry({
     required this.user_id,
-    required this.domain,
+    required this.name,
+    required this.username,
     required this.password,
     required this.timestamp,
+    required this.url,
   });
 }

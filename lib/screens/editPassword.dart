@@ -13,10 +13,10 @@ import '../components/changePassword.dart';
 
 class EditPassword extends StatefulWidget {
   final password;
-  final domain;
+  final name;
   final entry_id;
 
-  EditPassword(this.domain, this.password, this.entry_id);
+  EditPassword(this.name, this.password, this.entry_id);
 
   @override
   State<EditPassword> createState() => _EditPasswordState();
@@ -28,8 +28,8 @@ class _EditPasswordState extends State<EditPassword> {
 
   var _isPasswordVisible = false;
 
-  TextEditingController get newDomainContrEditollerc =>
-      TextEditingController(text: widget.domain);
+  TextEditingController get newNameController =>
+      TextEditingController(text: widget.name);
 
   var newPasswordValue = '';
   @override
@@ -60,9 +60,9 @@ class _EditPasswordState extends State<EditPassword> {
                   height: mediaQuery.size.height * 0.15,
                   child: Center(
                     child: Text(
-                      (widget.domain.length > 10
-                          ? '${widget.domain.substring(0, 7)}...'
-                          : widget.domain),
+                      (widget.name.length > 10
+                          ? '${widget.name.substring(0, 7)}...'
+                          : widget.name),
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class _EditPasswordState extends State<EditPassword> {
                   children: [
                     ChangePassword(
                       widget.entry_id,
-                      widget.domain,
+                      widget.name,
                       newPasswordValue,
                     ),
                   ],

@@ -17,9 +17,11 @@ class AddPasswd extends StatefulWidget {
 
 class _AddPasswdState extends State<AddPasswd> {
   final secureStorage = new FlutterSecureStorage();
-  final enteredDomain = TextEditingController();
+  final enteredName = TextEditingController();
 
-  final enteredPasswd = TextEditingController();
+  final enteredPassword = TextEditingController();
+  final enteredUsername = TextEditingController();
+  final enteredUrl = TextEditingController();
   var _uid;
   final GlobalKey<FormState> _addPasswordFormValidationKey =
       GlobalKey<FormState>();
@@ -40,25 +42,39 @@ class _AddPasswdState extends State<AddPasswd> {
               children: [
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Enter the domain',
+                    labelText: 'Enter the name',
                   ),
-                  controller: enteredDomain,
+                  controller: enteredName,
                   validator: (val) {
                     if (val == '') {
-                      return "Field cannot be empty";
+                      return "Name cannot be empty";
                     }
                     return null;
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Enter the passwd'),
-                  controller: enteredPasswd,
+                  decoration: InputDecoration(labelText: 'Enter your username'),
+                  controller: enteredUsername,
                   validator: (val) {
                     if (val == '') {
-                      return "Field cannot be empty";
+                      return "Username cannot be empty";
                     }
                     return null;
                   },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Enter your password'),
+                  controller: enteredPassword,
+                  validator: (val) {
+                    if (val == '') {
+                      return "Password cannot be empty";
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Enter the URL'),
+                  controller: enteredUrl,
                 ),
                 ButtonTheme(
                   minWidth: mediaQuery.size.width * 0.8,
@@ -69,19 +85,21 @@ class _AddPasswdState extends State<AddPasswd> {
                       onPressed: () async {
                         if (_addPasswordFormValidationKey.currentState!
                             .validate()) {}
-                        if (enteredDomain.text == '' ||
-                            enteredPasswd.text == '') {
-                          print('Entered Domain/Password cannot be null');
+                        if (enteredName.text == '' ||
+                            enteredPassword.text == '') {
+                          print('Entered Name/Password cannot be null');
                           return;
                         }
                         _uid = await secureStorage.read(key: 'loggedInUserId');
 
                         Random random = new Random();
-                        final newEntry = Passwd(
+                        final newEntry = PasswordEntry(
                           user_id: _uid,
-                          domain: enteredDomain.text,
-                          password: enteredPasswd.text,
+                          name: enteredName.text,
+                          username: enteredUsername.text,
+                          password: enteredPassword.text,
                           timestamp: Timestamp.now(),
+                          url: enteredUrl.text,
                         );
 
                         var masterPassword =
@@ -93,7 +111,7 @@ class _AddPasswdState extends State<AddPasswd> {
 
                         final newEntryPush = {
                           "user_id": newEntry.user_id,
-                          "domain": newEntry.domain,
+                          "name": newEntry.name,
                           "password": encryptedPasswordMap['encryptedPassword'],
                           "randForKeyToStore":
                               encryptedPasswordMap['randForKeyToStore'],
@@ -101,7 +119,7 @@ class _AddPasswdState extends State<AddPasswd> {
                           "timestamp": newEntry.timestamp,
                         };
 
-                        if (newEntry.domain.isEmpty ||
+                        if (newEntry.name.isEmpty ||
                             newEntry.password.isEmpty) {
                           return;
                         }

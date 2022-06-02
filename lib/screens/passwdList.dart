@@ -52,7 +52,7 @@ class _PasswdListState extends State<PasswdList> {
                         children: [
                           PasswdCard(
                             context.watch<UserEntries>().entries[index]['data']
-                                ['domain'],
+                                ['name'],
                             context.watch<UserEntries>().entries[index]['data']
                                 ['password'],
                             context.watch<UserEntries>().entries[index]['data']
@@ -68,18 +68,15 @@ class _PasswdListState extends State<PasswdList> {
                   ),
                 ),
                 Container(
-                  // color: Colors.amber,
                   height:
                       (mediaQuery.size.height - AppBar().preferredSize.height) *
                           0.08,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // if (context.watch<UserEntries>().entries != null)
                       ButtonTheme(
                         height: mediaQuery.size.height * 0.05,
                         minWidth: mediaQuery.size.width * 0.8,
-                        // height: mediaQuery.size.height * 0.05,
                         child: RaisedButton(
                           onPressed: () async {
                             await Navigator.push(

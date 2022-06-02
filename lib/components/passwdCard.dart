@@ -13,7 +13,7 @@ import '../screens/addPasswd.dart';
 import '../functions/passwordDecrypter.dart';
 
 class PasswdCard extends StatefulWidget {
-  var domain;
+  var name;
   var password_key;
   var password;
   var entry_id;
@@ -22,7 +22,7 @@ class PasswdCard extends StatefulWidget {
   var randForKeyToStore;
 
   PasswdCard(
-    this.domain,
+    this.name,
     this.password,
     this.randForKeyToStore,
     this.randForIV,
@@ -57,9 +57,9 @@ class _PasswdCardState extends State<PasswdCard> {
               Container(
                 width: mediaQuery.size.width * 0.65,
                 child: Text(
-                  (widget.domain.length > 15
-                      ? '${widget.domain.substring(0, 15)}...'
-                      : widget.domain),
+                  (widget.name.length > 15
+                      ? '${widget.name.substring(0, 15)}...'
+                      : widget.name),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -104,13 +104,13 @@ class _PasswdCardState extends State<PasswdCard> {
                     widget.randForIV,
                     masterPassword);
                 print(decryptedPassword);
-                print(widget.domain);
+                print(widget.name);
                 print(widget.entry_id);
                 var res = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditPassword(
-                        widget.domain, decryptedPassword, widget.entry_id),
+                        widget.name, decryptedPassword, widget.entry_id),
                   ),
                 );
               },

@@ -9,12 +9,12 @@ import '../providers/user_entries.dart';
 
 class ChangePassword extends StatefulWidget {
   var entry_id;
-  var domain;
+  var name;
   var newPassword;
 
   ChangePassword(
     this.entry_id,
-    this.domain,
+    this.name,
     this.newPassword,
   );
 
@@ -94,7 +94,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     .fetchEntries();
                 Fluttertoast.showToast(
                     msg:
-                        'Your password for entry ${widget.domain} has been changed');
+                        'Your password for entry ${widget.name} has been changed');
                 Navigator.pop(context);
               },
               child: Text(
