@@ -69,7 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           mediaQuery.padding.bottom) *
                       0.4,
                   child: Image.asset(
-                    'assets/images/pssswd.jpeg',
+                    'assets/images/pssswd_trial.png',
                   ),
                 ),
                 Column(
@@ -83,6 +83,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Text(
                                         'Success!!! Now lets create your master password',
                                         style: TextStyle(fontSize: 15)),
+                                    SizedBox(
+                                        height: mediaQuery.size.height * 0.02),
                                     Form(
                                       key: _masterPasswordFormValidationKey,
                                       child: Column(
@@ -268,80 +270,95 @@ class _SignupScreenState extends State<SignupScreen> {
                                 //   ),
                                 // ),
 
-                                Center(
-                                  child: SliderButton(
-                                    height:
-                                        null ?? mediaQuery.size.height * 0.07,
-                                    buttonSize:
-                                        null ?? mediaQuery.size.height * 0.07,
-                                    width: null ?? mediaQuery.size.width * 0.6,
-                                    action: () async {
-                                      await secureStorage.write(
-                                          key:
-                                              'isUserLoggedInUsingEmailPassword',
-                                          value: 'true');
+                                Container(
+                                  height: mediaQuery.size.height * 0.5,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Center(
+                                        child: SliderButton(
+                                          height: null ??
+                                              mediaQuery.size.height * 0.07,
+                                          buttonSize: null ??
+                                              mediaQuery.size.height * 0.07,
+                                          width: null ??
+                                              mediaQuery.size.width * 0.6,
+                                          action: () async {
+                                            await secureStorage.write(
+                                                key:
+                                                    'isUserLoggedInUsingEmailPassword',
+                                                value: 'true');
 
-                                      var hp = MasterPasswordHash();
-                                      var hashedPassword =
-                                          hp.hashMasterPassword(
-                                              masterPasswordController.text);
-                                      print(
-                                          'hashed password from signup screen ->>>>> ${hashedPassword}');
+                                            var hp = MasterPasswordHash();
+                                            var hashedPassword =
+                                                hp.hashMasterPassword(
+                                                    masterPasswordController
+                                                        .text);
+                                            print(
+                                                'hashed password from signup screen ->>>>> ${hashedPassword}');
 
-                                      var db = FirebaseFirestore.instance;
-                                      final signedUser = {
-                                        'uniqueUserId': user.uniqueUserId,
-                                        'isNewUser': user.isNewUser,
-                                        'email': user.email,
-                                        'masterPasswordHash': hashedPassword,
-                                        'isEmailVerified': user.isEmailVerified,
-                                        'creationTime': user.creationTime
-                                      };
+                                            var db = FirebaseFirestore.instance;
+                                            final signedUser = {
+                                              'uniqueUserId': user.uniqueUserId,
+                                              'isNewUser': user.isNewUser,
+                                              'email': user.email,
+                                              'masterPasswordHash':
+                                                  hashedPassword,
+                                              'isEmailVerified':
+                                                  user.isEmailVerified,
+                                              'creationTime': user.creationTime
+                                            };
 
-                                      await db
-                                          .collection('users')
-                                          .doc(signedUser['uniqueUserId'])
-                                          .set(signedUser)
-                                          .then((value) => print('value set'));
+                                            await db
+                                                .collection('users')
+                                                .doc(signedUser['uniqueUserId'])
+                                                .set(signedUser)
+                                                .then((value) =>
+                                                    print('value set'));
 
-                                      await secureStorage.write(
-                                          key: 'loggedInUserId',
-                                          value: signedUser['uniqueUserId']);
-                                      await secureStorage.write(
-                                          key: 'email',
-                                          value: signedUser['email']);
-                                      await secureStorage.write(
-                                          key: 'masterPasswordHash',
-                                          value: hashedPassword);
-                                      var masterPassword =
-                                          await secureStorage.write(
-                                              key: 'masterPassword',
-                                              value: masterPasswordController
-                                                  .text);
+                                            await secureStorage.write(
+                                                key: 'loggedInUserId',
+                                                value:
+                                                    signedUser['uniqueUserId']);
+                                            await secureStorage.write(
+                                                key: 'email',
+                                                value: signedUser['email']);
+                                            await secureStorage.write(
+                                                key: 'masterPasswordHash',
+                                                value: hashedPassword);
+                                            var masterPassword =
+                                                await secureStorage.write(
+                                                    key: 'masterPassword',
+                                                    value:
+                                                        masterPasswordController
+                                                            .text);
 
-                                      print(
-                                          'Hashed password from signup screen------------->${hashedPassword}');
+                                            print(
+                                                'Hashed password from signup screen------------->${hashedPassword}');
 
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/appMainPage',
-                                      );
-                                    },
-                                    label: Text(
-                                      'Lets save pssswd',
-                                      style: TextStyle(
-                                          color: Color(0xff4a4a4a),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17),
-                                    ),
-                                    icon: Text(
-                                      'X',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 35,
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/appMainPage',
+                                            );
+                                          },
+                                          label: Text(
+                                            'Lets save pssswd',
+                                            style: TextStyle(
+                                                color: Color(0xff4a4a4a),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17),
+                                          ),
+                                          icon: Text(
+                                            'X',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 35,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 )
                             ],

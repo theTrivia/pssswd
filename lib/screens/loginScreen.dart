@@ -34,6 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _masterPasswordFormValidationKey =
       GlobalKey<FormState>();
   var _didUserPressedLogin;
+  var _errorMessage;
+  var isMasterPasswordCorrect;
 
   @override
   void initState() {
@@ -90,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: (mediaQuery.size.height -
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
-                      0.4,
+                      0.45,
                   child: Image.asset(
-                    'assets/images/pssswd.jpeg',
+                    'assets/images/pssswd_trial.png',
                   ),
                 ),
                 (_isMasterPasswordPresent == null && _userDidLogin == true)
@@ -133,12 +135,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                         loggedInUser['masterPasswordHash'];
 
                                     final mph = MasterPasswordHash();
-                                    var res = mph.checkIfMasterPasswordValid(
-                                        masterPasswordController.text,
-                                        masterPasswordHash);
-                                    print(res);
+                                    isMasterPasswordCorrect =
+                                        mph.checkIfMasterPasswordValid(
+                                            masterPasswordController.text,
+                                            masterPasswordHash);
+                                    print(isMasterPasswordCorrect);
 
-                                    if (res == true) {
+                                    if (isMasterPasswordCorrect == true) {
                                       final secureStorage =
                                           new FlutterSecureStorage();
                                       var masterPassword =
@@ -171,8 +174,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         );
                                       }
                                     } else {
+                                      setState(() {
+                                        isMasterPasswordCorrect = false;
+                                      });
                                       print('you are an idiot!!!');
-                                      return;
                                     }
                                   },
                                   child: Text(
@@ -185,6 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
+                            if (isMasterPasswordCorrect == false)
+                              UserAuthFailureMessage.showErrorMessage(
+                                  'master-password-invalid'),
                           ],
                         ),
                       )
@@ -233,6 +241,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (loginResult['loginStatus'] !=
                                           'login-success') {
                                         setState(() {
+                                          _errorMessage =
+                                              loginResult['loginStatus'];
                                           _userDidLogin = false;
                                         });
                                       } else {
@@ -327,7 +337,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           )),
                         ],
                       ),
-                if (_userDidLogin == false) LoginFailure(),
+                if (_userDidLogin == false)
+                  UserAuthFailureMessage.showErrorMessage(_errorMessage),
               ],
             ),
           ],

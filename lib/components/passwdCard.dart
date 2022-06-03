@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/screens/editPassword.dart';
+import 'package:pssswd/screens/editEntryPage.dart';
 import 'package:pssswd/screens/passwdList.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
@@ -13,17 +13,21 @@ import '../screens/addPasswd.dart';
 import '../functions/passwordDecrypter.dart';
 
 class PasswdCard extends StatefulWidget {
-  var domain;
-  var password_key;
-  var password;
-  var entry_id;
-  var randForIV;
-  // var masterPasword;
-  var randForKeyToStore;
+  final String name;
+  // final String password_key;
+  final String username;
+  final String password;
+  final String entry_id;
+  final String randForIV;
+  final String url;
+
+  final String randForKeyToStore;
 
   PasswdCard(
-    this.domain,
+    this.name,
+    this.username,
     this.password,
+    this.url,
     this.randForKeyToStore,
     this.randForIV,
     this.entry_id,
@@ -57,9 +61,9 @@ class _PasswdCardState extends State<PasswdCard> {
               Container(
                 width: mediaQuery.size.width * 0.65,
                 child: Text(
-                  (widget.domain.length > 15
-                      ? '${widget.domain.substring(0, 15)}...'
-                      : widget.domain),
+                  (widget.name.length > 15
+                      ? '${widget.name.substring(0, 15)}...'
+                      : widget.name),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -104,13 +108,18 @@ class _PasswdCardState extends State<PasswdCard> {
                     widget.randForIV,
                     masterPassword);
                 print(decryptedPassword);
-                print(widget.domain);
+                print(widget.name);
                 print(widget.entry_id);
                 var res = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditPassword(
-                        widget.domain, decryptedPassword, widget.entry_id),
+                    builder: (context) => EditEntryPage(
+                      widget.name,
+                      widget.username,
+                      decryptedPassword,
+                      widget.url,
+                      widget.entry_id,
+                    ),
                   ),
                 );
               },
