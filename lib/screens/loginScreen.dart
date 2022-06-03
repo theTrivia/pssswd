@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final secureStorage = FlutterSecureStorage();
   final GlobalKey<FormState> _masterPasswordFormValidationKey =
       GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginFormValidationKey = GlobalKey<FormState>();
   var _didUserPressedLogin;
   var _errorMessage;
   var isMasterPasswordCorrect;
@@ -196,146 +197,182 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                       )
-                    : Column(
-                        children: [
-                          Form(
-                              child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 15),
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: emailController,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Email'),
-                                    ),
-                                    TextFormField(
-                                      controller: passwordController,
-                                      decoration: InputDecoration(
-                                          labelText: 'Password'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ButtonTheme(
-                                  minWidth: mediaQuery.size.width * 0.8,
-                                  height: mediaQuery.size.height * 0.05,
-                                  child: RaisedButton(
-                                    onPressed: () async {
-                                      setState(() {
-                                        _didUserPressedLogin = 'true';
-                                      });
-                                      var loginObject = UserLogin();
-                                      var loginResult =
-                                          await loginObject.performLogin(
-                                        emailController.text,
-                                        passwordController.text,
-                                      );
-                                      print(
-                                          'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
-
-                                      if (loginResult['loginStatus'] !=
-                                          'login-success') {
-                                        setState(() {
-                                          _errorMessage =
-                                              loginResult['loginStatus'];
-                                          _userDidLogin = false;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          _userDidLogin = true;
-                                        });
-                                      }
-
-                                      var isNewUser =
-                                          loginResult['userCredential']
-                                              ['isNewUser'];
-
-                                      var email = loginResult['userCredential']
-                                          ['email'];
-                                      var isEmailVerified =
-                                          loginResult['userCredential']
-                                              ['emailVerified'];
-
-                                      var creationTime =
-                                          loginResult['userCredential']
-                                              ['creationTime'];
-                                      var uniqueUserId =
-                                          loginResult['userCredential']
-                                              ['uniqueUserId'];
-                                      var masterPasswordHash =
-                                          loginResult['userCredential']
-                                              ['masterPasswordHash'];
-
-                                      final user = User(
-                                          uniqueUserId: uniqueUserId,
-                                          isNewUser: isNewUser,
-                                          email: email,
-                                          masterPasswordHash:
-                                              masterPasswordHash,
-                                          isEmailVerified: isEmailVerified,
-                                          creationTime: creationTime);
-
-                                      loggedInUser = {
-                                        'uniqueUserId': user.uniqueUserId,
-                                        'isNewUser': user.isNewUser,
-                                        'email': user.email,
-                                        'masterPasswordHash':
-                                            user.masterPasswordHash,
-                                        'isEmailVerified': user.isEmailVerified,
-                                        'creationTime': user.creationTime
-                                      };
-
-                                      setState(() {
-                                        _didUserPressedLogin = 'false';
-                                      });
-
-                                      if (_userDidLogin == true) {
-                                        await secureStorage.write(
-                                            key:
-                                                'isUserLoggedInUsingEmailPassword',
-                                            value: 'true');
-
-                                        if (_isMasterPasswordPresent != null) {
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AppMainPage(),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                    shape: const StadiumBorder(),
-                                    child: (_didUserPressedLogin == 'true')
-                                        ? SizedBox(
-                                            child: Container(
-                                              height:
-                                                  mediaQuery.size.height * 0.03,
-                                              width:
-                                                  mediaQuery.size.width * 0.5,
-                                              child: LoadingWidgetForButton
-                                                  .spinkit,
-                                            ),
-                                          )
-                                        : const Text(
-                                            'Login',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                    : Form(
+                        key: _loginFormValidationKey,
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
+                                  child: Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: emailController,
+                                        decoration: const InputDecoration(
+                                            labelText: 'Email'),
+                                        validator: (val) {
+                                          if (val!.length == 0) {
+                                            return "Field can\'t be blank";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      TextFormField(
+                                        controller: passwordController,
+                                        decoration: InputDecoration(
+                                            labelText: 'Password'),
+                                        validator: (val) {
+                                          if (val!.length == 0) {
+                                            return "Field can\'t be blank";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                        ],
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ButtonTheme(
+                                    minWidth: mediaQuery.size.width * 0.8,
+                                    height: mediaQuery.size.height * 0.05,
+                                    child: RaisedButton(
+                                      onPressed: () async {
+                                        if (emailController.text == '' ||
+                                            passwordController.text == '') {
+                                          setState(() {
+                                            _errorMessage = 'unknown-error';
+                                            _userDidLogin = false;
+                                          });
+                                          return;
+                                        }
+                                        // if (_loginFormValidationKey
+                                        //     .currentState!
+                                        //     .validate()) {
+                                        //   print('hello');
+                                        // }
+                                        print(
+                                            '77777777777777777777    ${emailController.text.length}');
+                                        print(
+                                            '77777777777777777777    ${passwordController.text.length}');
+
+                                        setState(() {
+                                          _didUserPressedLogin = 'true';
+                                        });
+
+                                        var loginObject = UserLogin();
+                                        var loginResult =
+                                            await loginObject.performLogin(
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
+                                        print(
+                                            'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
+
+                                        if (loginResult['loginStatus'] !=
+                                            'login-success') {
+                                          setState(() {
+                                            _errorMessage =
+                                                loginResult['loginStatus'];
+                                            _userDidLogin = false;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            _userDidLogin = true;
+                                          });
+                                        }
+
+                                        var isNewUser =
+                                            loginResult['userCredential']
+                                                ['isNewUser'];
+
+                                        var email =
+                                            loginResult['userCredential']
+                                                ['email'];
+                                        var isEmailVerified =
+                                            loginResult['userCredential']
+                                                ['emailVerified'];
+
+                                        var creationTime =
+                                            loginResult['userCredential']
+                                                ['creationTime'];
+                                        var uniqueUserId =
+                                            loginResult['userCredential']
+                                                ['uniqueUserId'];
+                                        var masterPasswordHash =
+                                            loginResult['userCredential']
+                                                ['masterPasswordHash'];
+
+                                        final user = User(
+                                            uniqueUserId: uniqueUserId,
+                                            isNewUser: isNewUser,
+                                            email: email,
+                                            masterPasswordHash:
+                                                masterPasswordHash,
+                                            isEmailVerified: isEmailVerified,
+                                            creationTime: creationTime);
+
+                                        loggedInUser = {
+                                          'uniqueUserId': user.uniqueUserId,
+                                          'isNewUser': user.isNewUser,
+                                          'email': user.email,
+                                          'masterPasswordHash':
+                                              user.masterPasswordHash,
+                                          'isEmailVerified':
+                                              user.isEmailVerified,
+                                          'creationTime': user.creationTime
+                                        };
+
+                                        setState(() {
+                                          _didUserPressedLogin = 'false';
+                                        });
+
+                                        if (_userDidLogin == true) {
+                                          await secureStorage.write(
+                                              key:
+                                                  'isUserLoggedInUsingEmailPassword',
+                                              value: 'true');
+
+                                          if (_isMasterPasswordPresent !=
+                                              null) {
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AppMainPage(),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      shape: const StadiumBorder(),
+                                      child: (_didUserPressedLogin == 'true')
+                                          ? SizedBox(
+                                              child: Container(
+                                                height: mediaQuery.size.height *
+                                                    0.03,
+                                                width:
+                                                    mediaQuery.size.width * 0.5,
+                                                child: LoadingWidgetForButton
+                                                    .spinkit,
+                                              ),
+                                            )
+                                          : const Text(
+                                              'Login',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                 if (_userDidLogin == false)
                   UserAuthFailureMessage.showErrorMessage(_errorMessage),
