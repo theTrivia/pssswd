@@ -54,6 +54,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   logger: ^1.1.0
   flutter_launcher_icons: ^0.9.2
+  random_string: ^2.3.1
   
 
 dev_dependencies:

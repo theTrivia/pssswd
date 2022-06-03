@@ -4,6 +4,9 @@ import 'package:encrypt/encrypt.dart';
 
 class PasswordEnrypter {
   encryptPassword(rawPd, masterPassword) async {
+    // print('rawpdssss     ${rawPd}');
+    // print('masterPassword     ${masterPassword}');
+
     const _chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();

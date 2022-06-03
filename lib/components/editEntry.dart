@@ -13,7 +13,6 @@ class EditEntry extends StatefulWidget {
   final String username;
   final String url;
   final String password;
-  var newPassword;
 
   EditEntry(
     this.entry_id,
@@ -39,6 +38,8 @@ class _EditEntryState extends State<EditEntry> {
   var newName;
   var newUsername;
   var newUrl;
+  var pswd;
+  var newPassword;
 
   final newPasswordController = TextEditingController();
 
@@ -65,14 +66,18 @@ class _EditEntryState extends State<EditEntry> {
                     initialValue: widget.name,
                     autocorrect: false,
                     onChanged: (text) {
-                      newName = text;
+                      setState(() {
+                        newName = text;
+                      });
                     }),
                 TextFormField(
                     decoration: InputDecoration(labelText: 'Username'),
                     initialValue: widget.username,
                     autocorrect: false,
                     onChanged: (text) {
-                      newUsername = text;
+                      setState(() {
+                        newUsername = text;
+                      });
                     }),
                 Stack(
                   alignment: Alignment.centerRight,
@@ -118,7 +123,9 @@ class _EditEntryState extends State<EditEntry> {
                     initialValue: widget.url,
                     autocorrect: false,
                     onChanged: (text) {
-                      newUrl = text;
+                      setState(() {
+                        newUrl = text;
+                      });
                     })
               ],
             ),
@@ -140,6 +147,21 @@ class _EditEntryState extends State<EditEntry> {
                     await secureStorage.read(key: 'masterPassword');
 
                 final ep = PasswordEnrypter();
+
+                //setting default value if user didn't edit the entry
+                if (newPasswordValue == null) {
+                  newPasswordValue = widget.password;
+                }
+                if (newName == null) {
+                  newName = widget.name;
+                }
+                if (newUsername == null) {
+                  newUsername = widget.username;
+                }
+                if (newUrl == null) {
+                  newUrl = widget.url;
+                }
+
                 final encryptedPasswordMap =
                     await ep.encryptPassword(newPasswordValue, _masterPassword);
                 print(encryptedPasswordMap);

@@ -19,7 +19,6 @@ class _AddPasswdState extends State<AddPasswd> {
   var _isVisibilityIconClicked;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isVisibilityIconClicked = false;
   }
@@ -40,7 +39,7 @@ class _AddPasswdState extends State<AddPasswd> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add Passwd'),
+          title: Text('Add Password'),
         ),
         body: Form(
           key: _addPasswordFormValidationKey,
