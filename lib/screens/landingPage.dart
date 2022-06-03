@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pssswd/components/loginFailure.dart';
 import 'package:pssswd/components/pinInputTheme.dart';
 
 import '../functions/masterPasswordHash.dart';
@@ -26,6 +27,7 @@ class _LandingPageState extends State<LandingPage> {
       GlobalKey<FormState>();
 
   var isUserLoggedInUsingEmailPassword;
+  var isMasterPasswordCorrect;
 
   fetchisUserLoggedInUsingEmailPassword() async {
     var isUserLoggedInUsingEmailPasswordFromDisk =
@@ -101,12 +103,13 @@ class _LandingPageState extends State<LandingPage> {
                               print('-----------${masterPasswordHash}');
 
                               final mph = MasterPasswordHash();
-                              var res = mph.checkIfMasterPasswordValid(
-                                  masterPasswordController.text,
-                                  masterPasswordHash);
-                              print(res);
+                              isMasterPasswordCorrect =
+                                  mph.checkIfMasterPasswordValid(
+                                      masterPasswordController.text,
+                                      masterPasswordHash);
+                              print(isMasterPasswordCorrect);
 
-                              if (res == true) {
+                              if (isMasterPasswordCorrect == true) {
                                 final secureStorage =
                                     new FlutterSecureStorage();
                                 var masterPassword = await secureStorage.write(
@@ -123,6 +126,9 @@ class _LandingPageState extends State<LandingPage> {
                                   ),
                                 );
                               } else {
+                                setState(() {
+                                  isMasterPasswordCorrect = false;
+                                });
                                 print('you are an idiot!!!');
 
                                 return;
@@ -137,6 +143,10 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                           ),
                         ),
+                        if (isMasterPasswordCorrect == false)
+                          UserAuthFailureMessage.showErrorMessage(
+                            'master-password-invalid',
+                          ),
                       ],
                     ),
                   ),
