@@ -7,6 +7,7 @@ import 'package:pssswd/components/passwdCard.dart';
 import 'package:pssswd/providers/user_entries.dart';
 
 import '../components/loadingWidgetForPage.dart';
+import '../components/noPasswordFound.dart';
 import 'addPasswd.dart';
 
 // import '../providers/userDetails.dart';
@@ -19,6 +20,7 @@ class PasswdList extends StatefulWidget {
 class _PasswdListState extends State<PasswdList> {
   var fetchedEntriesInApp;
   var _isPasswordListBeingFetched;
+  var _isListBeingLoaded;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class _PasswdListState extends State<PasswdList> {
           builder: (context, snapshot) {
             if (context.watch<UserEntries>().entries == null) {
               return Container(
+                color: Colors.amber,
                 height: mediaQuery.size.height * 0.8,
                 child: Center(
                   child: LoadingWidgetForPage.spinkit,
@@ -40,10 +43,15 @@ class _PasswdListState extends State<PasswdList> {
 
             return Column(
               children: [
+                if (context.watch<UserEntries>().entries.length == 0)
+                  NoPasswordFound(),
                 Container(
-                  height:
-                      (mediaQuery.size.height - AppBar().preferredSize.height) *
-                          0.82,
+                  height: (context.watch<UserEntries>().entries.length != 0)
+                      ? (mediaQuery.size.height -
+                              AppBar().preferredSize.height -
+                              mediaQuery.padding.bottom) *
+                          0.85
+                      : 0.7,
                   child: ListView.builder(
                     itemCount: context.watch<UserEntries>().entries.length,
                     itemBuilder: (ctx, index) {
@@ -76,7 +84,7 @@ class _PasswdListState extends State<PasswdList> {
                       (mediaQuery.size.height - AppBar().preferredSize.height) *
                           0.08,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ButtonTheme(
                         height: mediaQuery.size.height * 0.05,
