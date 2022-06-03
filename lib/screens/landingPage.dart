@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pssswd/components/loginFailure.dart';
 import 'package:pssswd/components/pinInputTheme.dart';
 
 import '../functions/masterPasswordHash.dart';
@@ -26,6 +27,7 @@ class _LandingPageState extends State<LandingPage> {
       GlobalKey<FormState>();
 
   var isUserLoggedInUsingEmailPassword;
+  var isMasterPasswordCorrect;
 
   fetchisUserLoggedInUsingEmailPassword() async {
     var isUserLoggedInUsingEmailPasswordFromDisk =
@@ -54,18 +56,16 @@ class _LandingPageState extends State<LandingPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                // color: Colors.amber,
                 height: (mediaQuery.size.height -
                         mediaQuery.padding.top -
                         mediaQuery.padding.bottom) *
-                    0.5,
+                    0.55,
                 child: Image.asset(
-                  'assets/images/pssswd.jpeg',
+                  'assets/images/pssswd_trial.png',
                 ),
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
                 Container(
-                  // color: Colors.blue,
                   height: mediaQuery.size.height * 0.3,
                   child: Form(
                     key: _masterPasswordFormValidationKey,
@@ -88,6 +88,9 @@ class _LandingPageState extends State<LandingPage> {
                             },
                           ),
                         ),
+                        SizedBox(
+                          height: mediaQuery.size.height * 0.02,
+                        ),
                         ButtonTheme(
                           shape: StadiumBorder(),
                           minWidth: mediaQuery.size.width * 0.8,
@@ -100,12 +103,13 @@ class _LandingPageState extends State<LandingPage> {
                               print('-----------${masterPasswordHash}');
 
                               final mph = MasterPasswordHash();
-                              var res = mph.checkIfMasterPasswordValid(
-                                  masterPasswordController.text,
-                                  masterPasswordHash);
-                              print(res);
+                              isMasterPasswordCorrect =
+                                  mph.checkIfMasterPasswordValid(
+                                      masterPasswordController.text,
+                                      masterPasswordHash);
+                              print(isMasterPasswordCorrect);
 
-                              if (res == true) {
+                              if (isMasterPasswordCorrect == true) {
                                 final secureStorage =
                                     new FlutterSecureStorage();
                                 var masterPassword = await secureStorage.write(
@@ -122,6 +126,9 @@ class _LandingPageState extends State<LandingPage> {
                                   ),
                                 );
                               } else {
+                                setState(() {
+                                  isMasterPasswordCorrect = false;
+                                });
                                 print('you are an idiot!!!');
 
                                 return;
@@ -136,6 +143,10 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                           ),
                         ),
+                        if (isMasterPasswordCorrect == false)
+                          UserAuthFailureMessage.showErrorMessage(
+                            'master-password-invalid',
+                          ),
                       ],
                     ),
                   ),
@@ -145,7 +156,7 @@ class _LandingPageState extends State<LandingPage> {
                   height: (mediaQuery.size.height -
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
-                      0.45,
+                      0.40,
                   width: mediaQuery.size.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -31,7 +31,16 @@ class _AppMainPageState extends State<AppMainPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('pssswd'),
+          // title: Text('pssswd'),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 11),
+            child: Image.asset(
+              'assets/images/pssswd-logos_white-trial.png',
+              height: mediaQuery.size.height * 0.16,
+              // fit: BoxFit.contain,
+            ),
+          ),
+
           automaticallyImplyLeading: false,
           actions: [
             Padding(
