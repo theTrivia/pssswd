@@ -2,7 +2,19 @@ import 'package:flutter/material.dart';
 
 class UserAuthFailureMessage {
   static showErrorMessage(String err) {
+    print('err ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${err}');
     if (err == 'wrong-password') {
+      return Container(
+        child: Text(
+          'User Credential is invalid',
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+    if (err == 'unknown-error') {
       return Container(
         child: Text(
           'User Credential is invalid',

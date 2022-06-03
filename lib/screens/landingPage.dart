@@ -55,18 +55,22 @@ class _LandingPageState extends State<LandingPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                height: (mediaQuery.size.height -
-                        mediaQuery.padding.top -
-                        mediaQuery.padding.bottom) *
-                    0.55,
-                child: Image.asset(
-                  'assets/images/pssswd_trial.png',
+              Center(
+                child: Container(
+                  height: (isUserLoggedInUsingEmailPassword == 'true')
+                      ? mediaQuery.size.height * 0.50
+                      : (mediaQuery.size.height -
+                              mediaQuery.padding.top -
+                              mediaQuery.padding.bottom) *
+                          0.55,
+                  child: Image.asset(
+                    'assets/images/pssswd_trial.png',
+                  ),
                 ),
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
                 Container(
-                  height: mediaQuery.size.height * 0.3,
+                  height: mediaQuery.size.height * 0.4,
                   child: Form(
                     key: _masterPasswordFormValidationKey,
                     child: Column(
@@ -79,24 +83,7 @@ class _LandingPageState extends State<LandingPage> {
                             focusedPinTheme: PinInputTheme.defaultPinTheme,
                             submittedPinTheme: PinInputTheme.submittedPinTheme,
                             controller: masterPasswordController,
-                            onCompleted: (pin) => print(pin),
-                            validator: (val) {
-                              if (val == '') {
-                                return "Please provide your master password.";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: mediaQuery.size.height * 0.02,
-                        ),
-                        ButtonTheme(
-                          shape: StadiumBorder(),
-                          minWidth: mediaQuery.size.width * 0.8,
-                          height: mediaQuery.size.height * 0.05,
-                          child: RaisedButton(
-                            onPressed: () async {
+                            onCompleted: (pin) async {
                               var masterPasswordHash = await secureStorage.read(
                                   key: 'masterPasswordHash');
 
@@ -134,15 +121,69 @@ class _LandingPageState extends State<LandingPage> {
                                 return;
                               }
                             },
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            validator: (val) {
+                              if (val == '') {
+                                return "Please provide your master password.";
+                              }
+                              return null;
+                            },
                           ),
                         ),
+                        // SizedBox(
+                        //   height: mediaQuery.size.height * 0.005,
+                        // ),
+                        // ButtonTheme(
+                        //   shape: StadiumBorder(),
+                        //   minWidth: mediaQuery.size.width * 0.8,
+                        //   height: mediaQuery.size.height * 0.05,
+                        //   child: RaisedButton(
+                        //     onPressed: () async {
+                        //       var masterPasswordHash = await secureStorage.read(
+                        //           key: 'masterPasswordHash');
+
+                        //       print('-----------${masterPasswordHash}');
+
+                        //       final mph = MasterPasswordHash();
+                        //       isMasterPasswordCorrect =
+                        //           mph.checkIfMasterPasswordValid(
+                        //               masterPasswordController.text,
+                        //               masterPasswordHash);
+                        //       print(isMasterPasswordCorrect);
+
+                        //       if (isMasterPasswordCorrect == true) {
+                        //         final secureStorage =
+                        //             new FlutterSecureStorage();
+                        //         var masterPassword = await secureStorage.write(
+                        //             key: 'masterPassword',
+                        //             value: masterPasswordController.text);
+
+                        //         var userId = await secureStorage.read(
+                        //             key: 'loggedInUserId');
+
+                        //         await Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => AppMainPage(),
+                        //           ),
+                        //         );
+                        //       } else {
+                        //         setState(() {
+                        //           isMasterPasswordCorrect = false;
+                        //         });
+                        //         print('you are an idiot!!!');
+
+                        //         return;
+                        //       }
+                        //     },
+                        //     child: Text(
+                        //       'Login',
+                        //       style: TextStyle(
+                        //         color: Colors.white,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         if (isMasterPasswordCorrect == false)
                           UserAuthFailureMessage.showErrorMessage(
                             'master-password-invalid',
