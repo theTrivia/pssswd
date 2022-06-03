@@ -28,6 +28,13 @@ class EditEntry extends StatefulWidget {
 }
 
 class _EditEntryState extends State<EditEntry> {
+  var _isVisibilityIconClicked;
+  @override
+  void initState() {
+    super.initState();
+    _isVisibilityIconClicked = false;
+  }
+
   var newPasswordValue;
   var newName;
   var newUsername;
@@ -39,7 +46,6 @@ class _EditEntryState extends State<EditEntry> {
 
   final GlobalKey<FormState> _newPasswordFormValidationKey =
       GlobalKey<FormState>();
-  var _isRedEyeIconClicked = 'false';
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +81,12 @@ class _EditEntryState extends State<EditEntry> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                       ),
-                      // controller: newPasswordController,
                       initialValue: widget.password,
-                      obscureText:
-                          (_isRedEyeIconClicked == 'false') ? false : true,
+                      obscureText: !_isVisibilityIconClicked,
                       autocorrect: false,
-
                       validator: (val) {
                         if (val == '') {
-                          print(_isRedEyeIconClicked);
+                          print(_isVisibilityIconClicked);
                           return "Field cannot be empty";
                         }
                         return null;
@@ -97,14 +100,16 @@ class _EditEntryState extends State<EditEntry> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          if (_isRedEyeIconClicked == 'true') {
-                            _isRedEyeIconClicked = 'false';
-                          } else if (_isRedEyeIconClicked == 'false') {
-                            _isRedEyeIconClicked = 'true';
+                          if (_isVisibilityIconClicked == true) {
+                            _isVisibilityIconClicked = false;
+                          } else {
+                            _isVisibilityIconClicked = true;
                           }
                         });
                       },
-                      icon: Icon(Icons.remove_red_eye),
+                      icon: Icon((_isVisibilityIconClicked)
+                          ? Icons.visibility_off
+                          : Icons.visibility),
                     ),
                   ],
                 ),

@@ -16,6 +16,14 @@ class AddPasswd extends StatefulWidget {
 }
 
 class _AddPasswdState extends State<AddPasswd> {
+  var _isVisibilityIconClicked;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isVisibilityIconClicked = false;
+  }
+
   final secureStorage = new FlutterSecureStorage();
   final enteredName = TextEditingController();
 
@@ -62,15 +70,36 @@ class _AddPasswdState extends State<AddPasswd> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Enter your password'),
-                  controller: enteredPassword,
-                  validator: (val) {
-                    if (val == '') {
-                      return "Password cannot be empty";
-                    }
-                    return null;
-                  },
+                Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    TextFormField(
+                      decoration:
+                          InputDecoration(labelText: 'Enter your password'),
+                      controller: enteredPassword,
+                      obscureText: !_isVisibilityIconClicked,
+                      validator: (val) {
+                        if (val == '') {
+                          return "Password cannot be empty";
+                        }
+                        return null;
+                      },
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (_isVisibilityIconClicked == true) {
+                            _isVisibilityIconClicked = false;
+                          } else {
+                            _isVisibilityIconClicked = true;
+                          }
+                        });
+                      },
+                      icon: Icon((_isVisibilityIconClicked)
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Enter the URL'),

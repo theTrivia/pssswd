@@ -33,7 +33,6 @@ class _PasswdListState extends State<PasswdList> {
           builder: (context, snapshot) {
             if (context.watch<UserEntries>().entries == null) {
               return Container(
-                color: Colors.amber,
                 height: mediaQuery.size.height * 0.8,
                 child: Center(
                   child: LoadingWidgetForPage.spinkit,

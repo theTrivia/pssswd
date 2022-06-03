@@ -52,34 +52,34 @@ class _EditEntryPageState extends State<EditEntryPage> {
         children: [
           Form(
             child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 20, right: 10, left: 10, bottom: 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    border: Border.all(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  // color: Colors.grey,
-                  width: double.infinity,
-                  height: mediaQuery.size.height * 0.15,
-                  child: Center(
-                    child: Text(
-                      (widget.name.length > 10
-                          ? '${widget.name.substring(0, 7)}...'
-                          : widget.name),
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //       top: 20, right: 10, left: 10, bottom: 20),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.grey,
+              //       border: Border.all(
+              //         color: Colors.grey,
+              //       ),
+              //       borderRadius: BorderRadius.all(Radius.circular(20)),
+              //     ),
+              //     // color: Colors.grey,
+              //     width: double.infinity,
+              //     height: mediaQuery.size.height * 0.07,
+              //     child: Center(
+              //       child: Text(
+              //         (widget.name.length > 10
+              //             ? '${widget.name.substring(0, 7)}...'
+              //             : widget.name),
+              //         style: TextStyle(
+              //           fontSize: 30,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //         textAlign: TextAlign.center,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
