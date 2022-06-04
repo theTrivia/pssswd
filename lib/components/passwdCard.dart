@@ -55,20 +55,19 @@ class _PasswdCardState extends State<PasswdCard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: mediaQuery.size.width * 0.65,
-                child: Text(
-                  (widget.name.length > 15
-                      ? '${widget.name.substring(0, 15)}...'
-                      : widget.name),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          Container(
+            width: mediaQuery.size.width * 0.65,
+            child: Text(
+              (widget.name.length > 15
+                  ? '${widget.name.substring(0, 15)}...'
+                  : widget.name),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
               ),
+            ),
+          ),
+          Row(
+            children: [
               IconButton(
                 onPressed: () async {
                   final secureStorage = new FlutterSecureStorage();
@@ -93,37 +92,38 @@ class _PasswdCardState extends State<PasswdCard> {
                 },
                 icon: Icon(Icons.copy),
               ),
-            ],
-          ),
-          IconButton(
-              onPressed: () async {
-                var pss = PasswordDecrypter();
-                // final decryptedPassword = await pss.getDecryptedPassword(
-                //     widget.password, widget.password_key);
-                var masterPassword =
-                    await secureStorage.read(key: 'masterPassword');
-                final decryptedPassword = await pss.getDecryptedPassword(
-                    widget.password,
-                    widget.randForKeyToStore,
-                    widget.randForIV,
-                    masterPassword);
-                print(decryptedPassword);
-                print(widget.name);
-                print(widget.entry_id);
-                var res = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditEntryPage(
-                      widget.name,
-                      widget.username,
-                      decryptedPassword,
-                      widget.url,
-                      widget.entry_id,
+              IconButton(
+                onPressed: () async {
+                  var pss = PasswordDecrypter();
+                  // final decryptedPassword = await pss.getDecryptedPassword(
+                  //     widget.password, widget.password_key);
+                  var masterPassword =
+                      await secureStorage.read(key: 'masterPassword');
+                  final decryptedPassword = await pss.getDecryptedPassword(
+                      widget.password,
+                      widget.randForKeyToStore,
+                      widget.randForIV,
+                      masterPassword);
+                  print(decryptedPassword);
+                  print(widget.name);
+                  print(widget.entry_id);
+                  var res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditEntryPage(
+                        widget.name,
+                        widget.username,
+                        decryptedPassword,
+                        widget.url,
+                        widget.entry_id,
+                      ),
                     ),
-                  ),
-                );
-              },
-              icon: Icon(Icons.edit)),
+                  );
+                },
+                icon: Icon(Icons.edit),
+              ),
+            ],
+          )
         ],
       ),
     );
