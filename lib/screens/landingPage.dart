@@ -230,7 +230,10 @@ class _LandingPageState extends State<LandingPage> {
                             onPressed: () {
                               Navigator.pushNamed(context, '/signup');
                             },
-                            child: Text('New To pssswd? Lets Sign Up'),
+                            child: Text(
+                              'New To pssswd? Lets Sign Up',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         )
                     ],
