@@ -69,7 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           mediaQuery.padding.bottom) *
                       0.4,
                   child: Image.asset(
-                    'assets/images/pssswd_trial.png',
+                    'assets/images/pssswd-logo.png',
                   ),
                 ),
                 Column(
