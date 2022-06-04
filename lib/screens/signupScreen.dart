@@ -384,6 +384,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                   TextFormField(
                                     controller: passwordController,
+                                    obscureText: true,
                                     decoration:
                                         InputDecoration(labelText: 'Password'),
                                     validator: (value) {
