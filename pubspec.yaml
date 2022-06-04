@@ -66,8 +66,8 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "assets/images/pssswd_trial.png"
-  image_path_android: "assets/images/pssswd_trial.png"
+  image_path_ios: "assets/images/pssswd-logo.png"
+  image_path_android: "assets/images/pssswd-logo.png"
 
 
 
@@ -95,6 +95,8 @@ flutter:
     - assets/images/pssswd_trial.png
     - assets/images/pssswd-logos_white-trial.png
     - assets/images/pssswd_launcher_background_dark.png
+    - assets/images/pssswd-logo.png
+    - assets/images/pssswd-grey-scale-logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

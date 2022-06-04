@@ -64,7 +64,7 @@ class _LandingPageState extends State<LandingPage> {
                               mediaQuery.padding.bottom) *
                           0.55,
                   child: Image.asset(
-                    'assets/images/pssswd_trial.png',
+                    'assets/images/pssswd-logo.png',
                   ),
                 ),
               ),
