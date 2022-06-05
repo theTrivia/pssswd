@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
+import '../components/navigationDrawer.dart';
 import 'addPasswd.dart';
 import 'passwdList.dart';
 import '../providers/user_entries.dart';
@@ -38,7 +39,7 @@ class _AppMainPageState extends State<AppMainPage> {
               height: mediaQuery.size.height * 0.10,
             ),
           ),
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20),
@@ -71,6 +72,8 @@ class _AppMainPageState extends State<AppMainPage> {
                                   await FirebaseAuth.instance.signOut();
 
                                   await secureStorage.deleteAll();
+                                  await secureStorage.delete(
+                                      key: 'masterPassword');
                                   await Provider.of<UserEntries>(context,
                                           listen: false)
                                       .setEntriesToNull();
@@ -94,6 +97,7 @@ class _AppMainPageState extends State<AppMainPage> {
           ],
         ),
         body: PasswdList(),
+        drawer: NavigationDrawer(),
       ),
       onWillPop: onWillPop,
     );

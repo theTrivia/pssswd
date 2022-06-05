@@ -16,6 +16,8 @@ import 'package:pssswd/functions/userLogin.dart';
 import 'package:pssswd/functions/userSignup.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
+import 'package:pssswd/screens/appSettings.dart';
+import 'package:pssswd/screens/donate.dart';
 import 'package:pssswd/screens/landingPage.dart';
 import 'package:pssswd/screens/loginScreen.dart';
 import 'package:pssswd/screens/signupScreen.dart';
@@ -25,6 +27,7 @@ import 'package:pssswd/screens/addPasswd.dart';
 import 'package:pssswd/screens/passwdList.dart';
 
 import 'functions/materialColorGenerator.dart';
+import 'screens/aboutUs.dart';
 import 'screens/appMainPage.dart';
 
 void main() async {
@@ -68,6 +71,10 @@ class _MyAppState extends State<MyApp> {
         "/login": (context) => LoginScreen(),
         "/signup": (context) => SignupScreen(),
         "/appMainPage": (context) => AppMainPage(),
+        "/addPassword": (context) => AddPasswd(),
+        "/settings": (context) => AppSettings(),
+        "/donate": (context) => Donate(),
+        "/aboutUs": (context) => AboutUs(),
       },
     );
   }
