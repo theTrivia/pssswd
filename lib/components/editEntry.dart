@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/passwordEncrypter.dart';
 
+import '../functions/passwordEncrypter.dart';
 import '../providers/user_entries.dart';
 
 class EditEntry extends StatefulWidget {

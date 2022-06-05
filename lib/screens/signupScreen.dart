@@ -2,17 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/masterPasswordAck.dart';
-import 'package:pssswd/functions/userSignup.dart';
 import 'package:slider_button/slider_button.dart';
 
+import '../functions/userSignup.dart';
 import '../components/loadingWidgetForButton.dart';
 import '../components/pinInputTheme.dart';
 import '../functions/masterPasswordHash.dart';
 import '../models/User.dart';
-
-import '../providers/user_entries.dart';
 
 class SignupScreen extends StatefulWidget {
   @override

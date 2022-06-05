@@ -1,14 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/deletePasswordEntry.dart';
-import 'package:pssswd/main.dart';
 
-import 'package:pssswd/providers/user_entries.dart';
-
+import '../components/deletePasswordEntry.dart';
 import '../components/editEntry.dart';
 
 class EditEntryPage extends StatefulWidget {

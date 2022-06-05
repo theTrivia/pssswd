@@ -1,15 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:pssswd/screens/editEntryPage.dart';
-import 'package:pssswd/screens/passwdList.dart';
 
-import 'package:pssswd/providers/user_entries.dart';
-
-import '../screens/addPasswd.dart';
+import '../screens/editEntryPage.dart';
 import '../functions/passwordDecrypter.dart';
 
 class PasswdCard extends StatefulWidget {

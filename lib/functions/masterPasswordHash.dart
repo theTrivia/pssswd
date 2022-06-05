@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:crypt/crypt.dart';
 import 'package:crypto/crypto.dart';
 
 class MasterPasswordHash {

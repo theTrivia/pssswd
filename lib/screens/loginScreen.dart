@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/loadingWidgetForButton.dart';
-import 'package:pssswd/components/masterPasswordAck.dart';
-
-import 'package:pssswd/functions/masterPasswordHash.dart';
-import 'package:pssswd/functions/userLogin.dart';
-import 'package:pssswd/models/User.dart';
-
-import 'package:pssswd/screens/appMainPage.dart';
-
+import '../components/loadingWidgetForButton.dart';
+import '../functions/masterPasswordHash.dart';
+import '../functions/userLogin.dart';
+import '../models/User.dart';
+import '../screens/appMainPage.dart';
 import '../components/loginFailure.dart';
 import '../components/pinInputTheme.dart';
-import '../providers/user_entries.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

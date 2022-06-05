@@ -1,14 +1,12 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/passwordEncrypter.dart';
 
-import 'package:pssswd/models/passwordEntry.dart';
-
-import 'package:pssswd/providers/user_entries.dart';
+import '../functions/passwordEncrypter.dart';
+import '../models/passwordEntry.dart';
+import '../providers/user_entries.dart';
 
 class AddPasswd extends StatefulWidget {
   @override

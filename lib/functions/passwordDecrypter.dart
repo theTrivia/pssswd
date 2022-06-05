@@ -1,6 +1,4 @@
 import 'package:encrypt/encrypt.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 
 class PasswordDecrypter {
   getDecryptedPassword(encpss, randForKeyToStore, randForIV, masterPasword) {

@@ -1,16 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/passwordDecrypter.dart';
-import 'package:pssswd/functions/passwordEncrypter.dart';
-import 'package:pssswd/components/passwdCard.dart';
-import 'package:pssswd/providers/user_entries.dart';
 
+import '../components/passwdCard.dart';
+import '../providers/user_entries.dart';
 import '../components/loadingWidgetForPage.dart';
 import '../components/noPasswordFound.dart';
-import 'addPasswd.dart';
-
-// import '../providers/userDetails.dart';
+import './addPasswd.dart';
 
 class PasswdList extends StatefulWidget {
   @override

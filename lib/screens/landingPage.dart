@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/loginFailure.dart';
-import 'package:pssswd/components/pinInputTheme.dart';
-
+import '../components/loginFailure.dart';
+import '../components/pinInputTheme.dart';
 import '../functions/masterPasswordHash.dart';
-
 import '../functions/materialColorGenerator.dart';
-import '../providers/user_entries.dart';
-import 'appMainPage.dart';
+import './appMainPage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
