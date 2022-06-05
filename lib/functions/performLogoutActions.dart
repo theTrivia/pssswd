@@ -11,7 +11,6 @@ class PerformLogoutActions {
     await FirebaseAuth.instance.signOut();
 
     await secureStorage.deleteAll();
-    await secureStorage.delete(key: 'masterPassword');
     await Provider.of<UserEntries>(context, listen: false).setEntriesToNull();
   }
 
