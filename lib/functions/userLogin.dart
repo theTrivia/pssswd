@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../functions/app_logger.dart';
+
 class UserLogin {
   performLogin(emailAddress, password) async {
     try {
@@ -17,9 +19,9 @@ class UserLogin {
       };
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        AppLogger.printErrorLog('user not found');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        AppLogger.printErrorLog('wrong password');
       }
       return {'loginStatus': e.code, 'userCredential': {}};
     }

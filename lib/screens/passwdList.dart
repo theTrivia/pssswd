@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pssswd/functions/app_logger.dart';
 
 import '../components/passwdCard.dart';
 import '../providers/user_entries.dart';
@@ -14,8 +15,6 @@ class PasswdList extends StatefulWidget {
 
 class _PasswdListState extends State<PasswdList> {
   var fetchedEntriesInApp;
-  var _isPasswordListBeingFetched;
-  var _isListBeingLoaded;
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +84,17 @@ class _PasswdListState extends State<PasswdList> {
                         minWidth: mediaQuery.size.width * 0.8,
                         child: RaisedButton(
                           onPressed: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddPasswd(),
-                              ),
-                            );
+                            try {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddPasswd(),
+                                ),
+                              );
+                            } catch (e) {
+                              AppLogger.printErrorLog('Some error occured',
+                                  error: e);
+                            }
                           },
                           child: const Text(
                             'Add pssswd',

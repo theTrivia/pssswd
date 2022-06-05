@@ -1,37 +1,45 @@
 import 'dart:math';
 
 import 'package:encrypt/encrypt.dart';
+import '../functions/app_logger.dart';
 
 class PasswordEnrypter {
   encryptPassword(rawPd, masterPassword) async {
-    const _chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    Random _rnd = Random();
-    String getRandomString(int length) =>
-        String.fromCharCodes(Iterable.generate(
-            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    try {
+      const _chars =
+          'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+      Random _rnd = Random();
+      String getRandomString(int length) =>
+          String.fromCharCodes(Iterable.generate(
+              length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
-    final randForKeyToStore =
-        getRandomString(27).toString(); //to Store along with password
+      final randForKeyToStore =
+          getRandomString(27).toString(); //to Store along with password
 
-    var encpss;
+      var encpss;
 
-    final randForKey = randForKeyToStore + masterPassword;
+      final randForKey = randForKeyToStore + masterPassword;
 
-    final key = Key.fromUtf8(randForKey);
+      final key = Key.fromUtf8(randForKey);
 
-    final randForIV = getRandomString(16); //to Store along with password
-    final iv = IV.fromUtf8(randForIV);
+      final randForIV = getRandomString(16); //to Store along with password
+      final iv = IV.fromUtf8(randForIV);
 
-    final e = Encrypter(AES(key, mode: AESMode.cbc));
-    final encrypted_data = e.encrypt(rawPd, iv: iv);
+      final e = Encrypter(AES(key, mode: AESMode.cbc));
+      final encrypted_data = e.encrypt(rawPd, iv: iv);
 
-    encpss = encrypted_data.base64;
+      encpss = encrypted_data.base64;
 
-    return {
-      'encryptedPassword': encpss,
-      'randForKeyToStore': randForKeyToStore,
-      'randForIV': randForIV,
-    };
+      return {
+        'encryptedPassword': encpss,
+        'randForKeyToStore': randForKeyToStore,
+        'randForIV': randForIV,
+      };
+    } catch (e) {
+      AppLogger.printErrorLog(
+        'some error occured while encrypting the password',
+        error: e,
+      );
+    }
   }
 }
