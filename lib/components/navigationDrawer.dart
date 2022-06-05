@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../functions/performLogoutActions.dart';
+
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
 
@@ -79,8 +81,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Log Out'),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
+              PerformLogoutActions.onTapLogout(context);
             },
           ),
         ],
