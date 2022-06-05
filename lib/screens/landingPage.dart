@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/loginFailure.dart';
-import 'package:pssswd/components/pinInputTheme.dart';
-
+import '../components/loginFailure.dart';
+import '../components/pinInputTheme.dart';
+import '../functions/app_logger.dart';
 import '../functions/masterPasswordHash.dart';
-
 import '../functions/materialColorGenerator.dart';
-import '../providers/user_entries.dart';
-import 'appMainPage.dart';
+import './appMainPage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -30,12 +26,16 @@ class _LandingPageState extends State<LandingPage> {
   var isMasterPasswordCorrect;
 
   fetchisUserLoggedInUsingEmailPassword() async {
-    var isUserLoggedInUsingEmailPasswordFromDisk =
-        await secureStorage.read(key: 'isUserLoggedInUsingEmailPassword');
-    setState(() {
-      isUserLoggedInUsingEmailPassword =
-          isUserLoggedInUsingEmailPasswordFromDisk;
-    });
+    try {
+      var isUserLoggedInUsingEmailPasswordFromDisk =
+          await secureStorage.read(key: 'isUserLoggedInUsingEmailPassword');
+      setState(() {
+        isUserLoggedInUsingEmailPassword =
+            isUserLoggedInUsingEmailPasswordFromDisk;
+      });
+    } catch (e) {
+      AppLogger.printErrorLog('Some error occured', error: e);
+    }
   }
 
   @override
@@ -70,7 +70,6 @@ class _LandingPageState extends State<LandingPage> {
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
                 Container(
-                  height: mediaQuery.size.height * 0.4,
                   child: Form(
                     key: _masterPasswordFormValidationKey,
                     child: Column(
@@ -87,14 +86,11 @@ class _LandingPageState extends State<LandingPage> {
                               var masterPasswordHash = await secureStorage.read(
                                   key: 'masterPasswordHash');
 
-                              print('-----------${masterPasswordHash}');
-
                               final mph = MasterPasswordHash();
                               isMasterPasswordCorrect =
                                   mph.checkIfMasterPasswordValid(
                                       masterPasswordController.text,
                                       masterPasswordHash);
-                              print(isMasterPasswordCorrect);
 
                               if (isMasterPasswordCorrect == true) {
                                 final secureStorage =
@@ -116,7 +112,8 @@ class _LandingPageState extends State<LandingPage> {
                                 setState(() {
                                   isMasterPasswordCorrect = false;
                                 });
-                                print('you are an idiot!!!');
+                                AppLogger.printInfoLog(
+                                    'Incorrect master password provided');
 
                                 return;
                               }
@@ -129,61 +126,6 @@ class _LandingPageState extends State<LandingPage> {
                             },
                           ),
                         ),
-                        // SizedBox(
-                        //   height: mediaQuery.size.height * 0.005,
-                        // ),
-                        // ButtonTheme(
-                        //   shape: StadiumBorder(),
-                        //   minWidth: mediaQuery.size.width * 0.8,
-                        //   height: mediaQuery.size.height * 0.05,
-                        //   child: RaisedButton(
-                        //     onPressed: () async {
-                        //       var masterPasswordHash = await secureStorage.read(
-                        //           key: 'masterPasswordHash');
-
-                        //       print('-----------${masterPasswordHash}');
-
-                        //       final mph = MasterPasswordHash();
-                        //       isMasterPasswordCorrect =
-                        //           mph.checkIfMasterPasswordValid(
-                        //               masterPasswordController.text,
-                        //               masterPasswordHash);
-                        //       print(isMasterPasswordCorrect);
-
-                        //       if (isMasterPasswordCorrect == true) {
-                        //         final secureStorage =
-                        //             new FlutterSecureStorage();
-                        //         var masterPassword = await secureStorage.write(
-                        //             key: 'masterPassword',
-                        //             value: masterPasswordController.text);
-
-                        //         var userId = await secureStorage.read(
-                        //             key: 'loggedInUserId');
-
-                        //         await Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (context) => AppMainPage(),
-                        //           ),
-                        //         );
-                        //       } else {
-                        //         setState(() {
-                        //           isMasterPasswordCorrect = false;
-                        //         });
-                        //         print('you are an idiot!!!');
-
-                        //         return;
-                        //       }
-                        //     },
-                        //     child: Text(
-                        //       'Login',
-                        //       style: TextStyle(
-                        //         color: Colors.white,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         if (isMasterPasswordCorrect == false)
                           UserAuthFailureMessage.showErrorMessage(
                             'master-password-invalid',
@@ -228,9 +170,17 @@ class _LandingPageState extends State<LandingPage> {
                         ButtonTheme(
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/signup');
+                              try {
+                                Navigator.pushNamed(context, '/signup');
+                              } catch (e) {
+                                AppLogger.printErrorLog('Some error occured',
+                                    error: e);
+                              }
                             },
-                            child: Text('New To pssswd? Lets Sign Up'),
+                            child: Text(
+                              'New To pssswd? Lets Sign Up',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         )
                     ],

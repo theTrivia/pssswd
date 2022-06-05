@@ -1,14 +1,13 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/passwordEncrypter.dart';
 
-import 'package:pssswd/models/passwordEntry.dart';
-
-import 'package:pssswd/providers/user_entries.dart';
+import '../functions/app_logger.dart';
+import '../functions/passwordEncrypter.dart';
+import '../models/passwordEntry.dart';
+import '../providers/user_entries.dart';
 
 class AddPasswd extends StatefulWidget {
   @override
@@ -86,13 +85,18 @@ class _AddPasswdState extends State<AddPasswd> {
                     ),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          if (_isVisibilityIconClicked == true) {
-                            _isVisibilityIconClicked = false;
-                          } else {
-                            _isVisibilityIconClicked = true;
-                          }
-                        });
+                        try {
+                          setState(() {
+                            if (_isVisibilityIconClicked == true) {
+                              _isVisibilityIconClicked = false;
+                            } else {
+                              _isVisibilityIconClicked = true;
+                            }
+                          });
+                        } catch (e) {
+                          AppLogger.printErrorLog('Some error occured',
+                              error: e);
+                        }
                       },
                       icon: Icon((_isVisibilityIconClicked)
                           ? Icons.visibility_off
@@ -111,62 +115,70 @@ class _AddPasswdState extends State<AddPasswd> {
                     padding: const EdgeInsets.all(8.0),
                     child: RaisedButton(
                       onPressed: () async {
-                        if (_addPasswordFormValidationKey.currentState!
-                            .validate()) {}
-                        if (enteredName.text == '' ||
-                            enteredPassword.text == '') {
-                          print('Entered Name/Password cannot be null');
-                          return;
+                        try {
+                          if (_addPasswordFormValidationKey.currentState!
+                              .validate()) {}
+                          if (enteredName.text == '' ||
+                              enteredPassword.text == '') {
+                            return;
+                          }
+                          _uid =
+                              await secureStorage.read(key: 'loggedInUserId');
+
+                          Random random = new Random();
+                          final newEntry = PasswordEntry(
+                            user_id: _uid,
+                            name: enteredName.text,
+                            username: enteredUsername.text,
+                            password: enteredPassword.text,
+                            timestamp: Timestamp.now(),
+                            url: enteredUrl.text,
+                          );
+
+                          var masterPassword =
+                              await secureStorage.read(key: 'masterPassword');
+
+                          var pss = PasswordEnrypter();
+                          final encryptedPasswordMap =
+                              await pss.encryptPassword(
+                                  newEntry.password, masterPassword);
+
+                          final newEntryPush = {
+                            "user_id": newEntry.user_id,
+                            "name": newEntry.name,
+                            "username": newEntry.username,
+                            "password":
+                                encryptedPasswordMap['encryptedPassword'],
+                            "url": newEntry.url,
+                            "randForKeyToStore":
+                                encryptedPasswordMap['randForKeyToStore'],
+                            "randForIV": encryptedPasswordMap['randForIV'],
+                            "timestamp": newEntry.timestamp,
+                          };
+
+                          if (newEntry.name.isEmpty ||
+                              newEntry.password.isEmpty) {
+                            return;
+                          }
+
+                          var db = FirebaseFirestore.instance;
+                          await db
+                              .collection('password_entries')
+                              .add(newEntryPush)
+                              .then(
+                            (value) {
+                              AppLogger.printInfoLog(
+                                  'Password Entry submitted successfully.');
+                            },
+                          );
+
+                          await Provider.of<UserEntries>(context, listen: false)
+                              .fetchEntries();
+                          Navigator.pushNamed(context, '/appMainPage');
+                        } catch (e) {
+                          AppLogger.printErrorLog('Some error occured',
+                              error: e);
                         }
-                        _uid = await secureStorage.read(key: 'loggedInUserId');
-
-                        Random random = new Random();
-                        final newEntry = PasswordEntry(
-                          user_id: _uid,
-                          name: enteredName.text,
-                          username: enteredUsername.text,
-                          password: enteredPassword.text,
-                          timestamp: Timestamp.now(),
-                          url: enteredUrl.text,
-                        );
-
-                        var masterPassword =
-                            await secureStorage.read(key: 'masterPassword');
-
-                        var pss = PasswordEnrypter();
-                        final encryptedPasswordMap = await pss.encryptPassword(
-                            newEntry.password, masterPassword);
-
-                        final newEntryPush = {
-                          "user_id": newEntry.user_id,
-                          "name": newEntry.name,
-                          "username": newEntry.username,
-                          "password": encryptedPasswordMap['encryptedPassword'],
-                          "url": newEntry.url,
-                          "randForKeyToStore":
-                              encryptedPasswordMap['randForKeyToStore'],
-                          "randForIV": encryptedPasswordMap['randForIV'],
-                          "timestamp": newEntry.timestamp,
-                        };
-
-                        if (newEntry.name.isEmpty ||
-                            newEntry.password.isEmpty) {
-                          return;
-                        }
-
-                        var db = FirebaseFirestore.instance;
-                        await db
-                            .collection('password_entries')
-                            .add(newEntryPush)
-                            .then(
-                          (value) {
-                            print('submitted: ${value.id}');
-                          },
-                        );
-
-                        await Provider.of<UserEntries>(context, listen: false)
-                            .fetchEntries();
-                        Navigator.pushNamed(context, '/appMainPage');
                       },
                       shape: StadiumBorder(),
                       child: Text(
