@@ -70,7 +70,6 @@ class _LandingPageState extends State<LandingPage> {
               ),
               if (isUserLoggedInUsingEmailPassword == 'true')
                 Container(
-                  height: mediaQuery.size.height * 0.4,
                   child: Form(
                     key: _masterPasswordFormValidationKey,
                     child: Column(
