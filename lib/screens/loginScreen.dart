@@ -75,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  // color: Colors.blue,
                   height: mediaQuery.size.height * 0.1,
                   child: IconButton(
                     onPressed: () {
@@ -110,10 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 length: 5,
                                 defaultPinTheme: PinInputTheme.defaultPinTheme,
                                 focusedPinTheme: PinInputTheme.defaultPinTheme,
+                                obscureText: true,
                                 submittedPinTheme:
                                     PinInputTheme.submittedPinTheme,
                                 controller: masterPasswordController,
-                                onCompleted: (pin) => print(pin),
                                 validator: (val) {
                                   if (val == '') {
                                     return "Please provide your master password.";

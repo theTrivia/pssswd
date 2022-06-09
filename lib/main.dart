@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:url_strategy/url_strategy.dart';
+import 'package:desktop_window/desktop_window.dart';
 
 import './providers/user_entries.dart';
 import './screens/landingPage.dart';
@@ -12,11 +17,18 @@ import './screens/appMainPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await DesktopWindow.setMaxWindowSize(Size(800, 800));
+    await DesktopWindow.setMinWindowSize(Size(500, 800));
+  }
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  setPathUrlStrategy();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
