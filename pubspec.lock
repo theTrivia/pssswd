@@ -113,13 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-  cupertino_icons:
+  desktop_window:
     dependency: "direct main"
     description:
-      name: cupertino_icons
+      name: desktop_window
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "0.4.0"
   encrypt:
     dependency: "direct main"
     description:

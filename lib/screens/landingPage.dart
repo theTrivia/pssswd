@@ -81,6 +81,7 @@ class _LandingPageState extends State<LandingPage> {
                             defaultPinTheme: PinInputTheme.defaultPinTheme,
                             focusedPinTheme: PinInputTheme.defaultPinTheme,
                             submittedPinTheme: PinInputTheme.submittedPinTheme,
+                            obscureText: true,
                             controller: masterPasswordController,
                             onCompleted: (pin) async {
                               var masterPasswordHash = await secureStorage.read(
