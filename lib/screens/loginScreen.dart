@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 length: 5,
                                 defaultPinTheme: PinInputTheme.defaultPinTheme,
                                 focusedPinTheme: PinInputTheme.defaultPinTheme,
+                                obscureText: true,
                                 submittedPinTheme:
                                     PinInputTheme.submittedPinTheme,
                                 controller: masterPasswordController,
