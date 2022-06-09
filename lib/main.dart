@@ -21,6 +21,9 @@ void main() async {
     await DesktopWindow.setMaxWindowSize(Size(800, 800));
     await DesktopWindow.setMinWindowSize(Size(500, 800));
   }
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -44,10 +47,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
