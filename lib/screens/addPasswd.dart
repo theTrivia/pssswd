@@ -118,22 +118,21 @@ class _AddPasswdState extends State<AddPasswd> {
                               : Icons.visibility),
                         ),
                         IconButton(
-                            onPressed: () {
-                              try {
-                                var randPass = RandomPasswordGenerator
-                                    .generateRandomPassword();
-                                setState(() {
-                                  _generatedRandomPassword = randPass;
-                                  enteredPassword = _generatedRandomPassword;
-                                });
-                                AppLogger.printInfoLog(
-                                    _generatedRandomPassword);
-                              } catch (e) {
-                                AppLogger.printErrorLog('Some error occured',
-                                    error: e);
-                              }
-                            },
-                            icon: FaIcon(FontAwesomeIcons.random)),
+                          onPressed: () {
+                            try {
+                              var randPass = RandomPasswordGenerator
+                                  .generateRandomPassword();
+                              setState(() {
+                                _generatedRandomPassword = randPass;
+                                enteredPassword = _generatedRandomPassword;
+                              });
+                            } catch (e) {
+                              AppLogger.printErrorLog('Some error occured',
+                                  error: e);
+                            }
+                          },
+                          icon: FaIcon(FontAwesomeIcons.random),
+                        ),
                       ],
                     ),
                   ],
