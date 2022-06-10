@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pssswd/screens/editMasterPassword.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:desktop_window/desktop_window.dart';
 
@@ -59,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         "/login": (context) => LoginScreen(),
         "/signup": (context) => SignupScreen(),
         "/appMainPage": (context) => AppMainPage(),
+        "/editMasterPassword": (context) => EditMasterPassword(),
       },
     );
   }

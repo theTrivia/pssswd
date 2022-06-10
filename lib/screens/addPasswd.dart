@@ -154,8 +154,7 @@ class _AddPasswdState extends State<AddPasswd> {
                           if (enteredName == '' || enteredPassword == '') {
                             return;
                           }
-                          _uid =
-                              await secureStorage.read(key: 'loggedInUserId');
+                          _uid = await secureStorage.read(key: 'uniqueUserId');
 
                           Random random = new Random();
                           final newEntry = PasswordEntry(

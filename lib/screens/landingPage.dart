@@ -101,7 +101,7 @@ class _LandingPageState extends State<LandingPage> {
                                     value: masterPasswordController.text);
 
                                 var userId = await secureStorage.read(
-                                    key: 'loggedInUserId');
+                                    key: 'uniqueUserId');
 
                                 await Navigator.push(
                                   context,

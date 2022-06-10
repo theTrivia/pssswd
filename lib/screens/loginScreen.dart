@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                         if (_isMasterPasswordPresent != null) {
                                           await secureStorage.write(
-                                              key: 'loggedInUserId',
+                                              key: 'uniqueUserId',
                                               value:
                                                   loggedInUser['uniqueUserId']);
                                           await secureStorage.write(
@@ -333,6 +333,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                             if (_isMasterPasswordPresent !=
                                                 null) {
+                                              await secureStorage.write(
+                                                  key: 'masterPassword',
+                                                  value:
+                                                      masterPasswordController
+                                                          .text);
+                                              await secureStorage.write(
+                                                  key: 'uniqueUserId',
+                                                  value: loggedInUser[
+                                                      'uniqueUserId']);
+                                              await secureStorage.write(
+                                                  key: 'email',
+                                                  value: loggedInUser['email']);
+                                              await secureStorage.write(
+                                                  key: 'masterPasswordHash',
+                                                  value: masterPasswordHash);
+
                                               await Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
