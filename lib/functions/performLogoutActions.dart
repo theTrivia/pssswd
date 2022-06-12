@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/user_entries.dart';
 
 class PerformLogoutActions {
-  static performActions(context) async {
+  static performLogoutChores(context) async {
     final secureStorage = FlutterSecureStorage();
     await FirebaseAuth.instance.signOut();
 
@@ -38,7 +38,7 @@ class PerformLogoutActions {
                 ),
                 TextButton(
                   onPressed: () async {
-                    PerformLogoutActions.performActions(context);
+                    PerformLogoutActions.performLogoutChores(context);
 
                     Navigator.pushNamed(context, '/');
                   },

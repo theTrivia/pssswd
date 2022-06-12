@@ -46,80 +46,80 @@ class _AppMainPageState extends State<AppMainPage> {
             ),
           ),
           // automaticallyImplyLeading: false,
-          actions: [
-            ExportUserEntries(),
-            Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: GestureDetector(
-                onTap: () {
+          // actions: [
+          //   ExportUserEntries(),
+          //   Padding(
+          //     padding: EdgeInsets.only(right: 20),
+          //     child: GestureDetector(
+          //       onTap: () {
 
-                  PerformLogoutActions.onTapLogout(context);
+          //         PerformLogoutActions.onTapLogout(context);
 
-                  try {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              // title: Text('Log Out?'),
-                              content: Text(
-                                'Leave pssswd?',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    try {
-                                      Navigator.pop(context);
-                                    } catch (e) {
-                                      AppLogger.printErrorLog(
-                                          'Some error occured',
-                                          error: e);
-                                    }
-                                  },
-                                  child: Text(
-                                    'Go Back',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    try {
-                                      await FirebaseAuth.instance.signOut();
+          //         try {
+          //           showDialog(
+          //               context: context,
+          //               builder: (context) => AlertDialog(
+          //                     // title: Text('Log Out?'),
+          //                     content: Text(
+          //                       'Leave pssswd?',
+          //                       style: TextStyle(
+          //                         fontWeight: FontWeight.bold,
+          //                       ),
+          //                     ),
+          //                     actions: [
+          //                       TextButton(
+          //                         onPressed: () {
+          //                           try {
+          //                             Navigator.pop(context);
+          //                           } catch (e) {
+          //                             AppLogger.printErrorLog(
+          //                                 'Some error occured',
+          //                                 error: e);
+          //                           }
+          //                         },
+          //                         child: Text(
+          //                           'Go Back',
+          //                           style: TextStyle(
+          //                             fontWeight: FontWeight.bold,
+          //                           ),
+          //                         ),
+          //                       ),
+          //                       TextButton(
+          //                         onPressed: () async {
+          //                           try {
+          //                             await FirebaseAuth.instance.signOut();
 
-                                      await secureStorage.deleteAll();
-                                      await Provider.of<UserEntries>(context,
-                                              listen: false)
-                                          .setEntriesToNull();
+          //                             await secureStorage.deleteAll();
+          //                             await Provider.of<UserEntries>(context,
+          //                                     listen: false)
+          //                                 .setEntriesToNull();
 
-                                      Navigator.pushNamed(context, '/');
-                                    } catch (e) {
-                                      AppLogger.printErrorLog(
-                                          'Some error occured',
-                                          error: e);
-                                    }
-                                  },
-                                  child: Text(
-                                    'Logout',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ));
-                  } catch (e) {
-                    AppLogger.printErrorLog('Some error occured', error: e);
-                  }
+          //                             Navigator.pushNamed(context, '/');
+          //                           } catch (e) {
+          //                             AppLogger.printErrorLog(
+          //                                 'Some error occured',
+          //                                 error: e);
+          //                           }
+          //                         },
+          //                         child: Text(
+          //                           'Logout',
+          //                           style: TextStyle(
+          //                             color: Colors.red,
+          //                             fontWeight: FontWeight.bold,
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ));
+          //         } catch (e) {
+          //           AppLogger.printErrorLog('Some error occured', error: e);
+          //         }
 
-                },
-                child: Icon(Icons.logout),
-              ),
-            ),
-          ],
+          //       },
+          //       child: Icon(Icons.logout),
+          //     ),
+          //   ),
+          // ],
         ),
         body: PasswdList(),
         drawer: NavigationDrawer(),

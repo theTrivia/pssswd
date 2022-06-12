@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
@@ -8,6 +7,7 @@ import '../functions/app_logger.dart';
 import '../components/pinInputTheme.dart';
 import '../functions/changeMasterPassword.dart';
 import '../providers/user_entries.dart';
+import '../functions/performLogoutActions.dart';
 
 class EditMasterPassword extends StatefulWidget {
   const EditMasterPassword({Key? key}) : super(key: key);
@@ -138,11 +138,13 @@ class _EditMasterPasswordState extends State<EditMasterPassword> {
                           _entries,
                           _newMasterPasswordController.text,
                         );
-                        await FirebaseAuth.instance.signOut();
+                        // await FirebaseAuth.instance.signOut();
 
-                        await _secureStorage.deleteAll();
-                        await Provider.of<UserEntries>(context, listen: false)
-                            .setEntriesToNull();
+                        // await _secureStorage.deleteAll();
+                        // await Provider.of<UserEntries>(context, listen: false)
+                        //     .setEntriesToNull();
+
+                        await PerformLogoutActions.performLogoutChores(context);
 
                         Navigator.pushNamed(context, '/');
                       },

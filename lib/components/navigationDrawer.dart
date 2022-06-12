@@ -54,12 +54,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/addPassword');
             },
           ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text('Settings'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.pushNamed(context, '/settings');
+          //   },
+          // ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
+            leading: Icon(Icons.edit),
+            title: Text('Edit Master Password'),
+            onTap: () async {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushNamed(context, '/editMasterPassword');
             },
           ),
           ListTile(
@@ -70,14 +78,15 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/aboutUs');
             },
           ),
-          ListTile(
-            leading: Icon(Icons.currency_rupee),
-            title: Text('Donate'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/donate');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.currency_rupee),
+          //   title: Text('Donate'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.pushNamed(context, '/donate');
+          //   },
+          // ),
+
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Log Out'),
