@@ -177,11 +177,10 @@ class _EditEntryState extends State<EditEntry> {
                   }
 
                   var db = FirebaseFirestore.instance;
+                  final ep = PasswordEnrypter();
 
                   var _masterPassword =
                       await secureStorage.read(key: 'masterPassword');
-
-                  final ep = PasswordEnrypter();
 
                   //setting default value if user didn't edit the entry
                   if (newPasswordValue == null) {
