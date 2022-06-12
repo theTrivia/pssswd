@@ -2,9 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+
+import 'package:pssswd/functions/performLogoutActions.dart';
+
+import '../components/navigationDrawer.dart';
+import 'addPasswd.dart';
+import 'passwdList.dart';
+
 import 'package:pssswd/functions/app_logger.dart';
 
 import './passwdList.dart';
+
 import '../providers/user_entries.dart';
 
 class AppMainPage extends StatefulWidget {
@@ -36,12 +44,15 @@ class _AppMainPageState extends State<AppMainPage> {
               height: mediaQuery.size.height * 0.10,
             ),
           ),
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20),
               child: GestureDetector(
                 onTap: () {
+
+                  PerformLogoutActions.onTapLogout(context);
+
                   try {
                     showDialog(
                         context: context,
@@ -101,6 +112,7 @@ class _AppMainPageState extends State<AppMainPage> {
                   } catch (e) {
                     AppLogger.printErrorLog('Some error occured', error: e);
                   }
+
                 },
                 child: Icon(Icons.logout),
               ),
@@ -108,6 +120,7 @@ class _AppMainPageState extends State<AppMainPage> {
           ],
         ),
         body: PasswdList(),
+        drawer: NavigationDrawer(),
       ),
       onWillPop: onWillPop,
     );
