@@ -5,12 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:flutter_config/flutter_config.dart';
-
-import 'package:pssswd/functions/passwordEncrypter.dart';
-import 'package:pssswd/functions/userLogin.dart';
-import 'package:pssswd/functions/userSignup.dart';
-
 import 'package:pssswd/providers/user_entries.dart';
 import 'package:pssswd/screens/appSettings.dart';
 import 'package:pssswd/screens/donate.dart';
@@ -20,7 +14,6 @@ import 'package:pssswd/screens/signupScreen.dart';
 import 'firebase_options.dart';
 
 import 'package:pssswd/screens/addPasswd.dart';
-import 'package:pssswd/screens/passwdList.dart';
 
 import 'functions/materialColorGenerator.dart';
 import 'screens/aboutUs.dart';
