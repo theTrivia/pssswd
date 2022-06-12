@@ -11,6 +11,7 @@ import 'passwdList.dart';
 
 import 'package:pssswd/functions/app_logger.dart';
 
+import '../components/exportUserEntries.dart';
 import './passwdList.dart';
 
 import '../providers/user_entries.dart';
@@ -46,6 +47,7 @@ class _AppMainPageState extends State<AppMainPage> {
           ),
           // automaticallyImplyLeading: false,
           actions: [
+            ExportUserEntries(),
             Padding(
               padding: EdgeInsets.only(right: 20),
               child: GestureDetector(

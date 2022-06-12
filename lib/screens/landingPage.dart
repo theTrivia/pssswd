@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 import '../components/loginFailure.dart';
 import '../components/pinInputTheme.dart';
@@ -41,7 +42,6 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-
     fetchisUserLoggedInUsingEmailPassword();
   }
 

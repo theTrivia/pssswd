@@ -26,6 +26,8 @@ import 'functions/materialColorGenerator.dart';
 import 'screens/aboutUs.dart';
 import 'screens/appMainPage.dart';
 
+import 'package:pssswd/components/exportUserEntries.dart';
+
 import 'package:pssswd/screens/editMasterPassword.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:desktop_window/desktop_window.dart';
@@ -37,7 +39,6 @@ import './screens/signupScreen.dart';
 import './firebase_options.dart';
 import './functions/materialColorGenerator.dart';
 import './screens/appMainPage.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,6 +89,7 @@ class _MyAppState extends State<MyApp> {
         "/donate": (context) => Donate(),
         "/aboutUs": (context) => AboutUs(),
         "/editMasterPassword": (context) => EditMasterPassword(),
+        "/exportUserEntries": (context) => ExportUserEntries(),
       },
     );
   }
