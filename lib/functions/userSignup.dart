@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import '../functions/app_logger.dart';
 
 class UserSignup {
   Future performSignup(emailAddress, password) async {
@@ -15,9 +16,9 @@ class UserSignup {
       };
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        AppLogger.printErrorLog('weak password');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        AppLogger.printErrorLog('email already in use');
       }
       return e.code;
     } catch (e) {

@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/passwordEncrypter.dart';
+import 'package:pssswd/functions/app_logger.dart';
 
+import '../functions/passwordEncrypter.dart';
+import '../functions/randomPasswordGenerator.dart';
 import '../providers/user_entries.dart';
 
 class EditEntry extends StatefulWidget {
@@ -40,6 +43,8 @@ class _EditEntryState extends State<EditEntry> {
   var newUrl;
   var pswd;
   var newPassword;
+  var _generatedRandomPassword;
+  var enteredPassword;
 
   final newPasswordController = TextEditingController();
 
@@ -51,7 +56,6 @@ class _EditEntryState extends State<EditEntry> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    var _uid = secureStorage.read(key: 'loggedInUserId');
 
     return Form(
       key: _newPasswordFormValidationKey,
@@ -86,35 +90,65 @@ class _EditEntryState extends State<EditEntry> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                       ),
-                      initialValue: widget.password,
+                      // initialValue: widget.password,
+                      key: Key(_generatedRandomPassword.toString()),
+                      initialValue: (_generatedRandomPassword != null)
+                          ? _generatedRandomPassword
+                          : widget.password,
                       obscureText: !_isVisibilityIconClicked,
                       autocorrect: false,
+                      onChanged: (val) {
+                        setState(() {
+                          enteredPassword = val;
+                        });
+                      },
                       validator: (val) {
                         if (val == '') {
-                          print(_isVisibilityIconClicked);
                           return "Field cannot be empty";
                         }
                         return null;
                       },
-                      onChanged: (text) {
-                        setState(() {
-                          newPasswordValue = text;
-                        });
-                      },
                     ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (_isVisibilityIconClicked == true) {
-                            _isVisibilityIconClicked = false;
-                          } else {
-                            _isVisibilityIconClicked = true;
-                          }
-                        });
-                      },
-                      icon: Icon((_isVisibilityIconClicked)
-                          ? Icons.visibility_off
-                          : Icons.visibility),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            try {
+                              setState(() {
+                                if (_isVisibilityIconClicked == true) {
+                                  _isVisibilityIconClicked = false;
+                                } else {
+                                  _isVisibilityIconClicked = true;
+                                }
+                              });
+                            } catch (e) {
+                              AppLogger.printErrorLog('Some error occured',
+                                  error: e);
+                            }
+                          },
+                          icon: Icon((_isVisibilityIconClicked)
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            try {
+                              var randPass = RandomPasswordGenerator
+                                  .generateRandomPassword();
+                              setState(() {
+                                _generatedRandomPassword = randPass;
+                                enteredPassword = _generatedRandomPassword;
+                                newPasswordValue = _generatedRandomPassword;
+                              });
+                            } catch (e) {
+                              AppLogger.printErrorLog('Some error occured',
+                                  error: e);
+                            }
+                          },
+                          icon: FaIcon(FontAwesomeIcons.random),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -136,55 +170,65 @@ class _EditEntryState extends State<EditEntry> {
             shape: StadiumBorder(),
             child: RaisedButton(
               onPressed: () async {
-                if (!_newPasswordFormValidationKey.currentState!.validate()) {
-                  print('Field cannot be empty');
-                  return;
+                try {
+                  if (!_newPasswordFormValidationKey.currentState!.validate()) {
+                    AppLogger.printInfoLog('Field cannot be empty');
+                    return;
+                  }
+
+                  var db = FirebaseFirestore.instance;
+
+                  var _masterPassword =
+                      await secureStorage.read(key: 'masterPassword');
+
+                  final ep = PasswordEnrypter();
+
+                  //setting default value if user didn't edit the entry
+                  if (newPasswordValue == null) {
+                    if (enteredPassword == null) {
+                      newPasswordValue = widget.password;
+                    } else {
+                      newPasswordValue = enteredPassword;
+                    }
+                  }
+                  if (newName == null) {
+                    newName = widget.name;
+                  }
+                  if (newUsername == null) {
+                    newUsername = widget.username;
+                  }
+                  if (newUrl == null) {
+                    newUrl = widget.url;
+                  }
+
+                  final encryptedPasswordMap = await ep.encryptPassword(
+                      newPasswordValue, _masterPassword);
+
+                  await db
+                      .collection('password_entries')
+                      .doc(widget.entry_id)
+                      .update({
+                    "password": encryptedPasswordMap['encryptedPassword'],
+                    "randForKeyToStore":
+                        encryptedPasswordMap['randForKeyToStore'],
+                    "randForIV": encryptedPasswordMap['randForIV'],
+                    "name": newName,
+                    "url": newUrl,
+                    "username": newUsername,
+                  }).then(
+                    (value) =>
+                        AppLogger.printInfoLog('Docuement Edited Successfully'),
+                  );
+
+                  await Provider.of<UserEntries>(context, listen: false)
+                      .fetchEntries();
+                  Fluttertoast.showToast(
+                      msg:
+                          'Your password for entry ${widget.name} has been changed');
+                  Navigator.pop(context);
+                } catch (e) {
+                  AppLogger.printErrorLog('Some error occured', error: e);
                 }
-
-                var db = FirebaseFirestore.instance;
-
-                var _masterPassword =
-                    await secureStorage.read(key: 'masterPassword');
-
-                final ep = PasswordEnrypter();
-
-                //setting default value if user didn't edit the entry
-                if (newPasswordValue == null) {
-                  newPasswordValue = widget.password;
-                }
-                if (newName == null) {
-                  newName = widget.name;
-                }
-                if (newUsername == null) {
-                  newUsername = widget.username;
-                }
-                if (newUrl == null) {
-                  newUrl = widget.url;
-                }
-
-                final encryptedPasswordMap =
-                    await ep.encryptPassword(newPasswordValue, _masterPassword);
-                print(encryptedPasswordMap);
-
-                await db
-                    .collection('password_entries')
-                    .doc(widget.entry_id)
-                    .update({
-                  "password": encryptedPasswordMap['encryptedPassword'],
-                  "randForKeyToStore":
-                      encryptedPasswordMap['randForKeyToStore'],
-                  "randForIV": encryptedPasswordMap['randForIV'],
-                  "name": newName,
-                  "url": newUrl,
-                  "username": newUsername,
-                }).then((value) => print('doc edited'));
-
-                await Provider.of<UserEntries>(context, listen: false)
-                    .fetchEntries();
-                Fluttertoast.showToast(
-                    msg:
-                        'Your password for entry ${widget.name} has been changed');
-                Navigator.pop(context);
               },
               child: Text(
                 'Change Password',

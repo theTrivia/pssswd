@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class UserAuthFailureMessage {
   static showErrorMessage(String err) {
-    print('err ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${err}');
     if (err == 'wrong-password') {
       return Container(
         child: Text(

@@ -1,21 +1,24 @@
 import 'dart:convert';
-
-import 'package:crypt/crypt.dart';
 import 'package:crypto/crypto.dart';
+import 'package:pssswd/functions/app_logger.dart';
 
 class MasterPasswordHash {
   String hashMasterPassword(String masterPassword) {
-    var bytes = utf8.encode(masterPassword);
-    var digest = sha256.convert(bytes);
+    try {
+      var bytes = utf8.encode(masterPassword);
+      var digest = sha256.convert(bytes);
 
-    return digest.toString();
+      return digest.toString();
+    } on Exception {
+      throw AppLogger.printErrorLog('Exception occured');
+    } catch (e) {
+      throw AppLogger.printErrorLog('Error occured', error: e);
+    }
   }
 
   bool checkIfMasterPasswordValid(masterPassword, hashedMasterPassword) {
     var bytes = utf8.encode(masterPassword);
     var digest = sha256.convert(bytes);
-
-    // print(digest);
 
     if (digest.toString() == hashedMasterPassword.toString()) {
       return true;

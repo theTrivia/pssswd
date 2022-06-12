@@ -1,14 +1,10 @@
-import 'dart:async';
+import 'dart:io';
 
-import 'package:async/async.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hexcolor/hexcolor.dart';
-
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter_config/flutter_config.dart';
 
 import 'package:pssswd/functions/passwordEncrypter.dart';
@@ -30,15 +26,33 @@ import 'functions/materialColorGenerator.dart';
 import 'screens/aboutUs.dart';
 import 'screens/appMainPage.dart';
 
+import 'package:pssswd/screens/editMasterPassword.dart';
+import 'package:url_strategy/url_strategy.dart';
+import 'package:desktop_window/desktop_window.dart';
+
+import './providers/user_entries.dart';
+import './screens/landingPage.dart';
+import './screens/loginScreen.dart';
+import './screens/signupScreen.dart';
+import './firebase_options.dart';
+import './functions/materialColorGenerator.dart';
+import './screens/appMainPage.dart';
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // await FlutterConfig.loadEnvVariables();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await DesktopWindow.setMaxWindowSize(Size(800, 800));
+    await DesktopWindow.setMinWindowSize(Size(500, 800));
+  }
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  setPathUrlStrategy();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -57,13 +71,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // final Color color = HexColor.fromHex('#aabbcc');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: MaterialColorGenerator.createMaterialColor(
             Color.fromARGB(247, 14, 14, 14)),
-        // textSelectionColor: createMaterialColor(Color(0xFF636363)),
       ),
       initialRoute: '/',
       routes: {
@@ -75,6 +87,7 @@ class _MyAppState extends State<MyApp> {
         "/settings": (context) => AppSettings(),
         "/donate": (context) => Donate(),
         "/aboutUs": (context) => AboutUs(),
+        "/editMasterPassword": (context) => EditMasterPassword(),
       },
     );
   }

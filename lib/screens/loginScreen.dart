@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
+import 'package:pssswd/functions/app_logger.dart';
 
-import 'package:provider/provider.dart';
-import 'package:pssswd/components/loadingWidgetForButton.dart';
-import 'package:pssswd/components/masterPasswordAck.dart';
-
-import 'package:pssswd/functions/masterPasswordHash.dart';
-import 'package:pssswd/functions/userLogin.dart';
-import 'package:pssswd/models/User.dart';
-
-import 'package:pssswd/screens/appMainPage.dart';
-
+import '../components/loadingWidgetForButton.dart';
+import '../functions/masterPasswordHash.dart';
+import '../functions/userLogin.dart';
+import '../models/User.dart';
+import '../screens/appMainPage.dart';
 import '../components/loginFailure.dart';
 import '../components/pinInputTheme.dart';
-import '../providers/user_entries.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -40,13 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    super.initState();
-    final secureStorage = new FlutterSecureStorage();
-    var masterPasswordHash =
-        secureStorage.read(key: 'masterPasswordHash').then((value) {
-      _isMasterPasswordPresent = value;
-    });
-    print(masterPasswordHash);
+    try {
+      super.initState();
+      final secureStorage = new FlutterSecureStorage();
+      var masterPasswordHash =
+          secureStorage.read(key: 'masterPasswordHash').then((value) {
+        _isMasterPasswordPresent = value;
+      });
+    } catch (e) {
+      AppLogger.printErrorLog('Some error occured', error: e);
+    }
   }
 
   @override
@@ -69,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: ListView(
           children: [
@@ -78,18 +75,20 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  // color: Colors.blue,
                   height: mediaQuery.size.height * 0.1,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      try {
+                        Navigator.pop(context);
+                      } catch (e) {
+                        AppLogger.printErrorLog('Some error occured', error: e);
+                      }
                     },
                     icon: Icon(Icons.arrow_circle_left),
                     iconSize: 50,
                   ),
                 ),
                 Container(
-                  // color: Colors.amber,
                   height: (mediaQuery.size.height -
                           mediaQuery.padding.top -
                           mediaQuery.padding.bottom) *
@@ -110,10 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 length: 5,
                                 defaultPinTheme: PinInputTheme.defaultPinTheme,
                                 focusedPinTheme: PinInputTheme.defaultPinTheme,
+                                obscureText: true,
                                 submittedPinTheme:
                                     PinInputTheme.submittedPinTheme,
                                 controller: masterPasswordController,
-                                onCompleted: (pin) => print(pin),
                                 validator: (val) {
                                   if (val == '') {
                                     return "Please provide your master password.";
@@ -129,56 +128,62 @@ class _LoginScreenState extends State<LoginScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: RaisedButton(
                                   onPressed: () async {
-                                    if (_masterPasswordFormValidationKey
-                                        .currentState!
-                                        .validate()) {}
-                                    var masterPasswordHash =
-                                        loggedInUser['masterPasswordHash'];
+                                    try {
+                                      if (_masterPasswordFormValidationKey
+                                          .currentState!
+                                          .validate()) {}
+                                      var masterPasswordHash =
+                                          loggedInUser['masterPasswordHash'];
 
-                                    final mph = MasterPasswordHash();
-                                    isMasterPasswordCorrect =
-                                        mph.checkIfMasterPasswordValid(
-                                            masterPasswordController.text,
-                                            masterPasswordHash);
-                                    print(isMasterPasswordCorrect);
+                                      final mph = MasterPasswordHash();
+                                      isMasterPasswordCorrect =
+                                          mph.checkIfMasterPasswordValid(
+                                              masterPasswordController.text,
+                                              masterPasswordHash);
 
-                                    if (isMasterPasswordCorrect == true) {
-                                      final secureStorage =
-                                          new FlutterSecureStorage();
-                                      var masterPassword =
+                                      if (isMasterPasswordCorrect == true) {
+                                        final secureStorage =
+                                            new FlutterSecureStorage();
+                                        var masterPassword =
+                                            await secureStorage.write(
+                                                key: 'masterPassword',
+                                                value: masterPasswordController
+                                                    .text);
+                                        _isMasterPasswordPresent =
+                                            await secureStorage.read(
+                                                key: 'masterPassword');
+
+                                        if (_isMasterPasswordPresent != null) {
                                           await secureStorage.write(
-                                              key: 'masterPassword',
-                                              value: masterPasswordController
-                                                  .text);
-                                      _isMasterPasswordPresent =
-                                          await secureStorage.read(
-                                              key: 'masterPassword');
-                                      print(_isMasterPasswordPresent);
+                                              key: 'uniqueUserId',
+                                              value:
+                                                  loggedInUser['uniqueUserId']);
+                                          await secureStorage.write(
+                                              key: 'email',
+                                              value: loggedInUser['email']);
+                                          await secureStorage.write(
+                                              key: 'masterPasswordHash',
+                                              value: masterPasswordHash);
 
-                                      if (_isMasterPasswordPresent != null) {
-                                        await secureStorage.write(
-                                            key: 'loggedInUserId',
-                                            value:
-                                                loggedInUser['uniqueUserId']);
-                                        await secureStorage.write(
-                                            key: 'email',
-                                            value: loggedInUser['email']);
-                                        await secureStorage.write(
-                                            key: 'masterPasswordHash',
-                                            value: masterPasswordHash);
-
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AppMainPage(),
-                                          ),
-                                        );
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AppMainPage(),
+                                            ),
+                                          );
+                                        }
+                                      } else {
+                                        setState(() {
+                                          isMasterPasswordCorrect = false;
+                                        });
+                                        AppLogger.printInfoLog(
+                                            'Incorrect Master Password provided');
                                       }
-                                    } else {
-                                      setState(() {
-                                        isMasterPasswordCorrect = false;
-                                      });
-                                      print('you are an idiot!!!');
+                                    } catch (e) {
+                                      AppLogger.printErrorLog(
+                                          'Some error occured',
+                                          error: e);
                                     }
                                   },
                                   child: Text(
@@ -241,111 +246,122 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: mediaQuery.size.height * 0.05,
                                     child: RaisedButton(
                                       onPressed: () async {
-                                        if (emailController.text == '' ||
-                                            passwordController.text == '') {
-                                          setState(() {
-                                            _errorMessage = 'unknown-error';
-                                            _userDidLogin = false;
-                                          });
-                                          return;
-                                        }
-                                        // if (_loginFormValidationKey
-                                        //     .currentState!
-                                        //     .validate()) {
-                                        //   print('hello');
-                                        // }
-                                        print(
-                                            '77777777777777777777    ${emailController.text.length}');
-                                        print(
-                                            '77777777777777777777    ${passwordController.text.length}');
-
-                                        setState(() {
-                                          _didUserPressedLogin = 'true';
-                                        });
-
-                                        var loginObject = UserLogin();
-                                        var loginResult =
-                                            await loginObject.performLogin(
-                                          emailController.text,
-                                          passwordController.text,
-                                        );
-                                        print(
-                                            'login creds ->>>>>>>>>>>. ${loginResult["userCredential"]}');
-
-                                        if (loginResult['loginStatus'] !=
-                                            'login-success') {
-                                          setState(() {
-                                            _errorMessage =
-                                                loginResult['loginStatus'];
-                                            _userDidLogin = false;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            _userDidLogin = true;
-                                          });
-                                        }
-
-                                        var isNewUser =
-                                            loginResult['userCredential']
-                                                ['isNewUser'];
-
-                                        var email =
-                                            loginResult['userCredential']
-                                                ['email'];
-                                        var isEmailVerified =
-                                            loginResult['userCredential']
-                                                ['emailVerified'];
-
-                                        var creationTime =
-                                            loginResult['userCredential']
-                                                ['creationTime'];
-                                        var uniqueUserId =
-                                            loginResult['userCredential']
-                                                ['uniqueUserId'];
-                                        var masterPasswordHash =
-                                            loginResult['userCredential']
-                                                ['masterPasswordHash'];
-
-                                        final user = User(
-                                            uniqueUserId: uniqueUserId,
-                                            isNewUser: isNewUser,
-                                            email: email,
-                                            masterPasswordHash:
-                                                masterPasswordHash,
-                                            isEmailVerified: isEmailVerified,
-                                            creationTime: creationTime);
-
-                                        loggedInUser = {
-                                          'uniqueUserId': user.uniqueUserId,
-                                          'isNewUser': user.isNewUser,
-                                          'email': user.email,
-                                          'masterPasswordHash':
-                                              user.masterPasswordHash,
-                                          'isEmailVerified':
-                                              user.isEmailVerified,
-                                          'creationTime': user.creationTime
-                                        };
-
-                                        setState(() {
-                                          _didUserPressedLogin = 'false';
-                                        });
-
-                                        if (_userDidLogin == true) {
-                                          await secureStorage.write(
-                                              key:
-                                                  'isUserLoggedInUsingEmailPassword',
-                                              value: 'true');
-
-                                          if (_isMasterPasswordPresent !=
-                                              null) {
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AppMainPage(),
-                                              ),
-                                            );
+                                        try {
+                                          if (emailController.text == '' ||
+                                              passwordController.text == '') {
+                                            setState(() {
+                                              _errorMessage = 'unknown-error';
+                                              _userDidLogin = false;
+                                            });
+                                            return;
                                           }
+
+                                          setState(() {
+                                            _didUserPressedLogin = 'true';
+                                          });
+
+                                          var loginObject = UserLogin();
+                                          var loginResult =
+                                              await loginObject.performLogin(
+                                            emailController.text,
+                                            passwordController.text,
+                                          );
+
+                                          if (loginResult['loginStatus'] !=
+                                              'login-success') {
+                                            setState(() {
+                                              _errorMessage =
+                                                  loginResult['loginStatus'];
+                                              _userDidLogin = false;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              _userDidLogin = true;
+                                            });
+                                          }
+
+                                          var isNewUser =
+                                              loginResult['userCredential']
+                                                  ['isNewUser'];
+
+                                          var email =
+                                              loginResult['userCredential']
+                                                  ['email'];
+                                          var isEmailVerified =
+                                              loginResult['userCredential']
+                                                  ['emailVerified'];
+
+                                          var creationTime =
+                                              loginResult['userCredential']
+                                                  ['creationTime'];
+                                          var uniqueUserId =
+                                              loginResult['userCredential']
+                                                  ['uniqueUserId'];
+                                          var masterPasswordHash =
+                                              loginResult['userCredential']
+                                                  ['masterPasswordHash'];
+
+                                          final user = User(
+                                              uniqueUserId: uniqueUserId,
+                                              isNewUser: isNewUser,
+                                              email: email,
+                                              masterPasswordHash:
+                                                  masterPasswordHash,
+                                              isEmailVerified: isEmailVerified,
+                                              creationTime: creationTime);
+
+                                          loggedInUser = {
+                                            'uniqueUserId': user.uniqueUserId,
+                                            'isNewUser': user.isNewUser,
+                                            'email': user.email,
+                                            'masterPasswordHash':
+                                                user.masterPasswordHash,
+                                            'isEmailVerified':
+                                                user.isEmailVerified,
+                                            'creationTime': user.creationTime
+                                          };
+
+                                          setState(() {
+                                            _didUserPressedLogin = 'false';
+                                          });
+
+                                          if (_userDidLogin == true) {
+                                            await secureStorage.write(
+                                                key:
+                                                    'isUserLoggedInUsingEmailPassword',
+                                                value: 'true');
+
+                                            if (_isMasterPasswordPresent !=
+                                                null) {
+                                              await secureStorage.write(
+                                                  key: 'masterPassword',
+                                                  value:
+                                                      masterPasswordController
+                                                          .text);
+                                              await secureStorage.write(
+                                                  key: 'uniqueUserId',
+                                                  value: loggedInUser[
+                                                      'uniqueUserId']);
+                                              await secureStorage.write(
+                                                  key: 'email',
+                                                  value: loggedInUser['email']);
+                                              await secureStorage.write(
+                                                  key: 'masterPasswordHash',
+                                                  value: masterPasswordHash);
+
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AppMainPage(),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        } catch (e) {
+                                          AppLogger.printErrorLog(
+                                              'Some error occured',
+                                              error: e);
                                         }
                                       },
                                       shape: const StadiumBorder(),
