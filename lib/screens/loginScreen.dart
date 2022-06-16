@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
+import 'package:pssswd/components/forgotLoginPassword.dart';
 import 'package:pssswd/functions/app_logger.dart';
 
 import '../components/loadingWidgetForButton.dart';
@@ -155,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                         if (_isMasterPasswordPresent != null) {
                                           await secureStorage.write(
-                                              key: 'loggedInUserId',
+                                              key: 'uniqueUserId',
                                               value:
                                                   loggedInUser['uniqueUserId']);
                                           await secureStorage.write(
@@ -333,6 +334,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                             if (_isMasterPasswordPresent !=
                                                 null) {
+                                              await secureStorage.write(
+                                                  key: 'masterPassword',
+                                                  value:
+                                                      masterPasswordController
+                                                          .text);
+                                              await secureStorage.write(
+                                                  key: 'uniqueUserId',
+                                                  value: loggedInUser[
+                                                      'uniqueUserId']);
+                                              await secureStorage.write(
+                                                  key: 'email',
+                                                  value: loggedInUser['email']);
+                                              await secureStorage.write(
+                                                  key: 'masterPasswordHash',
+                                                  value: masterPasswordHash);
+
                                               await Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -370,6 +387,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
+                                ForgotLoginPassword(),
                               ],
                             ),
                           ],

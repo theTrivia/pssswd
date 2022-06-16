@@ -250,7 +250,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   .set(signedUser);
 
                                               await secureStorage.write(
-                                                  key: 'loggedInUserId',
+                                                  key: 'uniqueUserId',
                                                   value: signedUser[
                                                       'uniqueUserId']);
                                               await secureStorage.write(

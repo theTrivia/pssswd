@@ -37,7 +37,6 @@ class _PasswdCardState extends State<PasswdCard> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    // final passwd = widget.password;
     var editedVal;
     List editPasswordCallbackFunction(val) {
       editedVal = val;
@@ -45,17 +44,37 @@ class _PasswdCardState extends State<PasswdCard> {
     }
 
     return Card(
+      elevation: 2,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: mediaQuery.size.width * 0.65,
-            child: Text(
-              (widget.name.length > 15
-                  ? '${widget.name.substring(0, 15)}...'
-                  : widget.name),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Container(
+              width: mediaQuery.size.width * 0.65,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    (widget.name.length > 15
+                        ? '${widget.name.substring(0, 15)}...'
+                        : widget.name),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 0.5,
+                    endIndent: 0,
+                    color: Color.fromARGB(88, 91, 91, 91),
+                  ),
+                  Text(
+                    (widget.name.length > 15
+                        ? '${widget.name.substring(0, 25)}...'
+                        : widget.username),
+                  ),
+                ],
               ),
             ),
           ),

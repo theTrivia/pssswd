@@ -4,6 +4,21 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'package:pssswd/providers/user_entries.dart';
+import 'package:pssswd/screens/appSettings.dart';
+import 'package:pssswd/screens/landingPage.dart';
+import 'package:pssswd/screens/loginScreen.dart';
+import 'package:pssswd/screens/signupScreen.dart';
+import 'firebase_options.dart';
+
+import 'package:pssswd/screens/addPasswd.dart';
+
+import 'functions/materialColorGenerator.dart';
+import 'screens/aboutUs.dart';
+import 'screens/appMainPage.dart';
+
+import 'package:pssswd/screens/editMasterPassword.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:desktop_window/desktop_window.dart';
 
@@ -59,6 +74,10 @@ class _MyAppState extends State<MyApp> {
         "/login": (context) => LoginScreen(),
         "/signup": (context) => SignupScreen(),
         "/appMainPage": (context) => AppMainPage(),
+        "/addPassword": (context) => AddPasswd(),
+        "/settings": (context) => AppSettings(),
+        "/aboutUs": (context) => AboutUs(),
+        "/editMasterPassword": (context) => EditMasterPassword(),
       },
     );
   }

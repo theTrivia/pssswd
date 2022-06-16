@@ -20,7 +20,7 @@ class UserEntries extends ChangeNotifier {
   fetchEntries() async {
     try {
       var db = FirebaseFirestore.instance;
-      _uid = await secureStorage.read(key: 'loggedInUserId');
+      _uid = await secureStorage.read(key: 'uniqueUserId');
 
       db
           .collection('password_entries')

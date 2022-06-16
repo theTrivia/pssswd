@@ -3,7 +3,7 @@ description: A cross-platform Password Management Application.
 
 publish_to: 'none' 
 
-version: 1.0.1+2
+version: 1.2.0+3
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -34,8 +34,8 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   url_strategy: ^0.2.0
   desktop_window: ^0.4.0
+  url_launcher: ^6.1.3
 
-  
 
 dev_dependencies:
   flutter_test:
@@ -57,10 +57,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/pssswd.jpeg
-    - assets/images/pssswd_trial.png
-    - assets/images/pssswd-logos_white-trial.png
-    - assets/images/pssswd_launcher_background_dark.png
     - assets/images/pssswd-logo.png
     - assets/images/pssswd-grey-scale-logo.png
+    - assets/images/pssswd-gs-clipped.png
 
