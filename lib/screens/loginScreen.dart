@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
+import 'package:pssswd/components/forgotLoginPassword.dart';
 import 'package:pssswd/functions/app_logger.dart';
 
 import '../components/loadingWidgetForButton.dart';
@@ -386,6 +387,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
+                                ForgotLoginPassword(),
                               ],
                             ),
                           ],
