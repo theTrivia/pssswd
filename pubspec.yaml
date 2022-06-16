@@ -41,6 +41,8 @@ dependencies:
   mailer: ^5.1.1
   syncfusion_flutter_xlsio: ^20.1.59-beta
   protect: ^1.0.0
+  url_launcher: ^6.1.3
+  
 
 
   

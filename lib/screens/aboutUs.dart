@@ -20,10 +20,8 @@ class AboutUs extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Image.asset(
                 'assets/images/pssswd-gs-clipped.png',
-                // height: mediaQuery.size.height * 0.10,
               ),
             ),
-            // padding: EdgeInsets.only(bottom: 15, left: 15),
           ),
           SizedBox(
             height: 10,
