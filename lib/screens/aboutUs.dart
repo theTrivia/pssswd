@@ -27,7 +27,7 @@ class AboutUs extends StatelessWidget {
             height: 10,
           ),
           Text(
-            'Version : 1.0.1',
+            'Version : 1.2.0',
             style: TextStyle(
               fontSize: 18,
             ),

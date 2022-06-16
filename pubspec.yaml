@@ -57,10 +57,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/pssswd.jpeg
-    - assets/images/pssswd_trial.png
-    - assets/images/pssswd-logos_white-trial.png
-    - assets/images/pssswd_launcher_background_dark.png
     - assets/images/pssswd-logo.png
     - assets/images/pssswd-grey-scale-logo.png
     - assets/images/pssswd-gs-clipped.png
