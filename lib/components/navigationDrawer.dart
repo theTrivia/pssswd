@@ -91,7 +91,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             leading: Icon(Icons.logout),
             title: Text('Log Out'),
             onTap: () async {
-              Navigator.pop(context);
               PerformLogoutActions.onTapLogout(context);
             },
           ),

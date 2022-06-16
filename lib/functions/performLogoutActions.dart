@@ -38,7 +38,7 @@ class PerformLogoutActions {
                 ),
                 TextButton(
                   onPressed: () async {
-                    PerformLogoutActions.performLogoutChores(context);
+                    await PerformLogoutActions.performLogoutChores(context);
 
                     Navigator.pushNamed(context, '/');
                   },
