@@ -73,9 +73,9 @@ class _PasswdListState extends State<PasswdList> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
                   ButtonTheme(
                     height: mediaQuery.size.height * 0.05,
                     minWidth: mediaQuery.size.width * 0.8,
