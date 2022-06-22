@@ -1,4 +1,5 @@
 import 'package:encrypt/encrypt.dart';
+
 import 'package:pssswd/functions/app_logger.dart';
 
 class PasswordDecrypter {

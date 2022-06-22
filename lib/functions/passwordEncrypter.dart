@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:encrypt/encrypt.dart';
-import '../functions/app_logger.dart';
+
+import './app_logger.dart';
 
 class PasswordEnrypter {
   encryptPassword(rawPd, masterPassword) async {

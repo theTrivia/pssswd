@@ -29,6 +29,7 @@ class _EditMasterPasswordState extends State<EditMasterPassword> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final mediaQueryWidth = mediaQuery.size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Master Password'),
@@ -119,7 +120,9 @@ class _EditMasterPasswordState extends State<EditMasterPassword> {
                   padding: const EdgeInsets.all(10.0),
                   child: ButtonTheme(
                     height: mediaQuery.size.height * 0.05,
-                    minWidth: mediaQuery.size.width * 0.8,
+                    minWidth: (mediaQueryWidth > 600)
+                        ? mediaQuery.size.width * 0.4
+                        : mediaQuery.size.width * 0.8,
                     child: RaisedButton(
                       onPressed: () async {
                         if (!_newMasterPasswordFormValidationKey.currentState!

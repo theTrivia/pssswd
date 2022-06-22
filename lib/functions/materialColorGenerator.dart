@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../functions/app_logger.dart';
 
 class MaterialColorGenerator {

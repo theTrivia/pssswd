@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/app_logger.dart';
 
+import '../functions/app_logger.dart';
 import '../providers/user_entries.dart';
 
 class DeletePasswordEntry extends StatelessWidget {
@@ -15,9 +15,12 @@ class DeletePasswordEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final mediaQueryWidth = mediaQuery.size.width;
+
     return ButtonTheme(
-      minWidth: mediaQuery.size.width * 0.8,
-      height: mediaQuery.size.height * 0.05,
+      minWidth: (mediaQueryWidth > 600)
+          ? mediaQuery.size.width * 0.4
+          : mediaQuery.size.width * 0.8,
       buttonColor: Colors.red,
       shape: StadiumBorder(),
       child: Padding(
@@ -41,8 +44,9 @@ class DeletePasswordEntry extends StatelessWidget {
                             ),
                           ),
                           ButtonTheme(
-                            minWidth: mediaQuery.size.width * 0.8,
-                            height: mediaQuery.size.height * 0.05,
+                            minWidth: (mediaQueryWidth > 600)
+                                ? mediaQuery.size.width * 0.4
+                                : mediaQuery.size.width * 0.8,
                             shape: StadiumBorder(),
                             buttonColor: Color.fromRGBO(244, 67, 54, 1),
                             child: Padding(
@@ -80,8 +84,9 @@ class DeletePasswordEntry extends StatelessWidget {
                             ),
                           ),
                           ButtonTheme(
-                            minWidth: mediaQuery.size.width * 0.8,
-                            height: mediaQuery.size.height * 0.05,
+                            minWidth: (mediaQueryWidth > 600)
+                                ? mediaQuery.size.width * 0.4
+                                : mediaQuery.size.width * 0.8,
                             shape: StadiumBorder(),
                             child: RaisedButton(
                               onPressed: () {
