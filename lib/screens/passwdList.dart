@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pssswd/functions/app_logger.dart';
 
+import '../functions/app_logger.dart';
 import '../components/passwdCard.dart';
 import '../providers/user_entries.dart';
 import '../components/loadingWidgetForPage.dart';
@@ -40,12 +40,6 @@ class _PasswdListState extends State<PasswdList> {
                   if (context.watch<UserEntries>().entries.length == 0)
                     NoPasswordFound(),
                   Flexible(
-                    // height: (context.watch<UserEntries>().entries.length != 0)
-                    //     ? (mediaQuery.size.height -
-                    //             AppBar().preferredSize.height -
-                    //             mediaQuery.padding.bottom) *
-                    //         0.85
-                    //     : 0.7,
                     child: ListView.builder(
                       itemCount: context.watch<UserEntries>().entries.length,
                       itemBuilder: (ctx, index) {
@@ -77,8 +71,12 @@ class _PasswdListState extends State<PasswdList> {
                   //   height: 10,
                   // ),
                   ButtonTheme(
-                    height: mediaQuery.size.height * 0.05,
-                    minWidth: mediaQuery.size.width * 0.8,
+                    height: (mediaQuery.size.width > 500)
+                        ? mediaQuery.size.height * 0.059
+                        : mediaQuery.size.height * 0.05,
+                    minWidth: (mediaQuery.size.width > 500)
+                        ? 800
+                        : mediaQuery.size.width * 0.8,
                     child: RaisedButton(
                       onPressed: () async {
                         try {

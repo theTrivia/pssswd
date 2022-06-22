@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import './editEntry.dart';
 
 import '../components/deletePasswordEntry.dart';
-import '../components/editEntry.dart';
 
 class EditEntryPage extends StatefulWidget {
   final String password;

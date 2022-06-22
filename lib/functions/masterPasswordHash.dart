@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:pssswd/functions/app_logger.dart';
+
+import './app_logger.dart';
 
 class MasterPasswordHash {
   String hashMasterPassword(String masterPassword) {

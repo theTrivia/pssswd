@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import '../functions/app_logger.dart';
 
 class UserSignup {

@@ -1,18 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
-import 'package:pssswd/functions/performLogoutActions.dart';
-
 import '../components/navigationDrawer.dart';
-import 'addPasswd.dart';
-import 'passwdList.dart';
-
-import 'package:pssswd/functions/app_logger.dart';
-
 import './passwdList.dart';
-
 import '../providers/user_entries.dart';
 
 class AppMainPage extends StatefulWidget {

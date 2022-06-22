@@ -1,6 +1,7 @@
-import './app_logger.dart';
-import 'package:random_string/random_string.dart';
 import 'dart:math' show Random;
+import 'package:random_string/random_string.dart';
+
+import './app_logger.dart';
 
 class RandomPasswordGenerator {
   static String generateRandomPassword() {
