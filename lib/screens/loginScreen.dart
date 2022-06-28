@@ -5,6 +5,7 @@ import 'package:pssswd/components/forgotLoginPassword.dart';
 import 'package:pssswd/functions/app_logger.dart';
 
 import '../components/loadingWidgetForButton.dart';
+import '../functions/blockUserAccount.dart';
 import '../functions/masterPasswordHash.dart';
 import '../functions/userLogin.dart';
 import '../models/User.dart';
@@ -33,6 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
   var _didUserPressedLogin;
   var _errorMessage;
   var isMasterPasswordCorrect;
+  var _incorrectPasswordCount;
+  var _loggedInUserUserId;
+  var _userAccountBlockChoice;
 
   @override
   void initState() {
@@ -166,6 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                               key: 'masterPasswordHash',
                                               value: masterPasswordHash);
 
+                                          await secureStorage.write(
+                                              key: 'incorrectPasswordCount',
+                                              value: '0');
                                           await Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -178,6 +185,45 @@ class _LoginScreenState extends State<LoginScreen> {
                                         setState(() {
                                           isMasterPasswordCorrect = false;
                                         });
+
+                                        _incorrectPasswordCount =
+                                            await secureStorage.read(
+                                                key: 'incorrectPasswordCount');
+                                        if (_incorrectPasswordCount == null) {
+                                          _incorrectPasswordCount = 0;
+                                        } else {
+                                          _incorrectPasswordCount = int.parse(
+                                              _incorrectPasswordCount);
+                                        }
+
+                                        _incorrectPasswordCount =
+                                            _incorrectPasswordCount + 1;
+
+                                        await secureStorage.write(
+                                            key: 'incorrectPasswordCount',
+                                            value: _incorrectPasswordCount
+                                                .toString());
+                                        print(_incorrectPasswordCount);
+                                        assert(_incorrectPasswordCount is int);
+                                        if (_incorrectPasswordCount > 5) {
+                                          var result = await BlockUserAccount
+                                              .getUserSetting(
+                                                  _loggedInUserUserId);
+                                          if (result == true) {
+                                            await BlockUserAccount
+                                                .blockUserAccount(
+                                                    _loggedInUserUserId);
+                                            await secureStorage.write(
+                                                key: 'incorrectPasswordCount',
+                                                value: '0');
+                                            Navigator.pushNamed(
+                                                context, '/login');
+                                          } else {
+                                            await secureStorage.write(
+                                                key: 'incorrectPasswordCount',
+                                                value: '0');
+                                          }
+                                        }
                                         AppLogger.printInfoLog(
                                             'Incorrect Master Password provided');
                                       }
@@ -267,6 +313,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                             emailController.text,
                                             passwordController.text,
                                           );
+                                          print(loginResult['loginStatus']);
+
+                                          // if (loginResult['loginStatus'] ==
+                                          //     'login-block') {
+                                          //   setState(() {
+                                          //     _errorMessage =
+                                          //         loginResult['loginStatus'];
+                                          //     _userDidLogin = false;
+                                          //   });
+                                          // }
 
                                           if (loginResult['loginStatus'] !=
                                               'login-success') {
@@ -280,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               _userDidLogin = true;
                                             });
                                           }
-
+                                          print(loginResult['userCredential']);
                                           var isNewUser =
                                               loginResult['userCredential']
                                                   ['isNewUser'];
@@ -298,6 +354,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           var uniqueUserId =
                                               loginResult['userCredential']
                                                   ['uniqueUserId'];
+                                          _loggedInUserUserId = uniqueUserId;
                                           var masterPasswordHash =
                                               loginResult['userCredential']
                                                   ['masterPasswordHash'];

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:pssswd/functions/blockUserAccount.dart';
 
 import 'package:pssswd/functions/performLogoutActions.dart';
 
@@ -44,6 +45,13 @@ class _AppMainPageState extends State<AppMainPage> {
               height: mediaQuery.size.height * 0.10,
             ),
           ),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  Navigator.pushNamed(context, '/settings');
+                },
+                icon: Icon(Icons.lock))
+          ],
         ),
         body: PasswdList(),
         drawer: NavigationDrawer(),

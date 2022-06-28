@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 
+import '../components/landingPageForm.dart';
 import '../components/loginFailure.dart';
 import '../components/pinInputTheme.dart';
 import '../functions/app_logger.dart';
@@ -134,6 +135,10 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ),
                 ),
+              // if (isUserLoggedInUsingEmailPassword != 'true')
+
+              // LandingPageForm(isUserLoggedInUsingEmailPassword),
+
               if (isUserLoggedInUsingEmailPassword != 'true')
                 Container(
                   height: (mediaQuery.size.height -

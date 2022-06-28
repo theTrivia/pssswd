@@ -56,6 +56,16 @@ class UserAuthFailureMessage {
           ),
         ),
       );
+    } else if (err == 'login-block') {
+      return Container(
+        child: Text(
+          'Account Locked!!! Please contact support.',
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
     }
   }
 }
