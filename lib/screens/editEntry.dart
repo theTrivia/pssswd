@@ -255,7 +255,6 @@ class _EditEntryState extends State<EditEntry> {
                                     final encryptedPasswordMap =
                                         await ep.encryptPassword(
                                             newPasswordValue, _masterPassword);
-
                                     await db
                                         .collection('password_entries')
                                         .doc(widget.entry_id)

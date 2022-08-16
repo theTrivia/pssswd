@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pssswd/screens/searchEntry.dart';
 
 import '../screens/aboutUs.dart';
 import '../screens/addPasswd.dart';
@@ -18,4 +19,5 @@ var routes = <String, WidgetBuilder>{
   "/settings": (context) => AppSettings(),
   "/aboutUs": (context) => AboutUs(),
   "/editMasterPassword": (context) => EditMasterPassword(),
+  "/searchEntry": (context) => SearchEntry(),
 };

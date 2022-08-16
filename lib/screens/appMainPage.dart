@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:pssswd/screens/searchEntry.dart';
 
 import '../components/navigationDrawer.dart';
 import './passwdList.dart';
@@ -28,6 +29,14 @@ class _AppMainPageState extends State<AppMainPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/searchEntry");
+              },
+              icon: Icon(Icons.search),
+            ),
+          ],
           title: Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: Image.asset(
