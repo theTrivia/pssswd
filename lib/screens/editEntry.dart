@@ -280,7 +280,8 @@ class _EditEntryState extends State<EditEntry> {
                                     Fluttertoast.showToast(
                                         msg:
                                             'Your password for entry ${widget.name} has been changed');
-                                    Navigator.pop(context);
+                                    Navigator.pushNamed(
+                                        context, '/appMainPage');
                                   } catch (e) {
                                     AppLogger.printErrorLog(
                                         'Some error occured',
