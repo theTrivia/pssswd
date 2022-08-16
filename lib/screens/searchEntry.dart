@@ -26,7 +26,7 @@ class _SearchEntryState extends State<SearchEntry> {
     var entries = Provider.of<UserEntries>(context, listen: false).entries;
 
     for (var i in entries) {
-      passwordEntries.addAll({i['data']['name']: i});
+      passwordEntries.addAll({i['entry_id']: i});
     }
   }
 
@@ -35,12 +35,12 @@ class _SearchEntryState extends State<SearchEntry> {
     List result = [];
 
     passwordEntries.forEach((key, value) {
-      if (key.contains(entry)) {
+      if ((value['data'] as Map)['name'].contains(entry)) {
         res = (passwordEntries[key]!['data'] as Map);
-
         result.add(value);
       }
     });
+
     setState(() {
       matchedEntries = [...result];
     });
