@@ -77,8 +77,8 @@ class _PasswdCardState extends State<PasswdCard> {
                     ),
                   ),
                   Text(
-                    (widget.name.length > 15
-                        ? '${widget.name.substring(0, 15)}...'
+                    (widget.username.length > 15
+                        ? '${widget.username.substring(0, 15)}...'
                         : widget.username),
                   ),
                 ],
