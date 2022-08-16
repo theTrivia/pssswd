@@ -6,29 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:pssswd/providers/user_entries.dart';
-import 'package:pssswd/screens/appSettings.dart';
-import 'package:pssswd/screens/landingPage.dart';
-import 'package:pssswd/screens/loginScreen.dart';
-import 'package:pssswd/screens/signupScreen.dart';
+import './routes.dart';
+
 import 'firebase_options.dart';
 
-import 'package:pssswd/screens/addPasswd.dart';
-
 import 'functions/materialColorGenerator.dart';
-import 'screens/aboutUs.dart';
-import 'screens/appMainPage.dart';
 
-import 'package:pssswd/screens/editMasterPassword.dart';
 import 'package:url_strategy/url_strategy.dart';
 // import 'package:desktop_window/desktop_window.dart';
 
 import './providers/user_entries.dart';
-import './screens/landingPage.dart';
-import './screens/loginScreen.dart';
-import './screens/signupScreen.dart';
+
 import './firebase_options.dart';
 import './functions/materialColorGenerator.dart';
-import './screens/appMainPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,12 +44,7 @@ void main() async {
   ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,16 +54,7 @@ class _MyAppState extends State<MyApp> {
             Color.fromARGB(247, 14, 14, 14)),
       ),
       initialRoute: '/',
-      routes: {
-        "/": (context) => LandingPage(),
-        "/login": (context) => LoginScreen(),
-        "/signup": (context) => SignupScreen(),
-        "/appMainPage": (context) => AppMainPage(),
-        "/addPassword": (context) => AddPasswd(),
-        "/settings": (context) => AppSettings(),
-        "/aboutUs": (context) => AboutUs(),
-        "/editMasterPassword": (context) => EditMasterPassword(),
-      },
+      routes: routes,
     );
   }
 }
